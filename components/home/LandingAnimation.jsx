@@ -4,28 +4,14 @@ import { motion } from "framer-motion";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Image from "next/image";
-import { useRouter } from "next/navigation"; // Import useRouter from next/navigation
+import { useRouter } from "next/navigation";
 
 const LandingBanner = () => {
   const logoRef = useRef(null);
   const textRef = useRef(null);
   const containerRef = useRef(null);
-  const router = useRouter(); // Initialize the router
-  const [hasRedirected, setHasRedirected] = useState(false); // Track if redirection has occurred
-
-  const handleTextAnimationComplete = () => {
-    console.log("Text animation complete"); // Debugging
-    gsap.to(textRef.current, {
-      duration: 2,
-      repeat: -1,
-      yoyo: true,
-      ease: "sine.inOut",
-      css: {
-        filter: "drop-shadow(0 0 12px rgba(255,255,255,0.9))",
-        textShadow: "0 0 20px rgba(255,255,255,0.5)",
-      },
-    });
-  };
+  const router = useRouter();
+  const [hasRedirected, setHasRedirected] = useState(false);
 
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
@@ -33,108 +19,87 @@ const LandingBanner = () => {
 
     const tl = gsap.timeline();
 
+    // Initial logo animation
     tl.fromTo(
       logoRef.current,
       {
         scale: 0,
         opacity: 0,
-        rotationY: 720,
+        rotationY: 1080, // 3 full spins
         z: 500,
-        transformOrigin: "50% 50%",
       },
       {
         scale: 1,
         opacity: 1,
         rotationY: 0,
         z: 0,
-        duration: 2,
+        duration: 2.5,
         ease: "power4.out",
         onComplete: () => {
           gsap.to(logoRef.current, {
             rotationY: 360,
-            duration: 12,
+            duration: 8,
             repeat: -1,
             ease: "none",
-            transformOrigin: "50% 50%",
           });
         },
       }
     );
 
+    // Scroll-triggered animation
     ScrollTrigger.create({
       trigger: containerRef.current,
       start: "top top",
-      end: "bottom+=200% top",
-      scrub: 1.5,
+      end: "bottom+=150% top", // Reduced scroll distance
+      scrub: 1, // Smoother scrubbing
       pin: true,
       onUpdate: (self) => {
         const progress = self.progress;
-        console.log("Scroll progress:", progress); // Debugging
 
         gsap.to(logoRef.current, {
-          scale: 1 + progress * 15,
-          rotationY: 180 * progress,
+          scale: 1 + progress * 12, // Reduced scaling
+          rotationY: 720 * progress, // 2 full spins during scroll
           z: progress * 1000,
-          opacity: 1 - progress * 0.8,
-          ease: "power3.out",
-          overwrite: "auto",
+          opacity: 1 - progress * 0.9,
+          ease: "power2.out",
         });
 
         gsap.to(textRef.current, {
-          opacity: 1 - progress, // Fade out text as scroll progresses
-          y: -50 * progress, // Reduce y movement
-          ease: "power3.out",
-          overwrite: "auto",
+          opacity: 1 - progress * 2, // Faster text fade
+          y: -80 * progress,
+          ease: "power2.out",
         });
 
-        // Redirect to About Us page when progress reaches a certain point
-        if (progress > 0.5 && !hasRedirected) {
-          console.log("Redirecting to About Us page..."); // Debugging
-          setHasRedirected(true); // Prevent multiple redirects
-          router.push("/aboutus"); // Redirect to the About Us page
+        // Redirect earlier in the animation
+        if (progress > 0.6 && !hasRedirected) {
+          setHasRedirected(true);
+          router.push("/aboutus");
         }
       },
     });
-  }, [router, hasRedirected]); // Add router and hasRedirected to the dependency array
+  }, [router, hasRedirected]);
 
   return (
     <motion.div
       ref={containerRef}
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      transition={{ duration: 1 }}
-      className="min-h-screen flex flex-col justify-center items-center bg-black relative overflow-visible"
+      className="min-h-screen flex flex-col justify-center items-center bg-black relative"
       style={{ perspective: 1000 }}
     >
-      <div
-        ref={logoRef}
-        className="mb-6 relative w-48 h-48 transform-style-preserve-3d"
-      >
+      <div ref={logoRef} className="mb-6 relative w-48 h-48">
         <Image
           src="/bais.png"
           alt="BAIS Logo"
           fill
-          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-          className="object-contain transform-style-preserve-3d"
+          className="object-contain"
           priority
         />
       </div>
 
-      <div
-        ref={textRef}
-        className="transform-style-preserve-3d"
-        style={{ zIndex: 10, opacity: 1 }} // Fallback styles
-      >
-        <div className="text-4xl font-bold text-white text-center">
-          Artificial Intelligence Society
-        </div>
+      <div ref={textRef} className="text-4xl font-bold text-white text-center">
+        Artificial Intelligence Society
       </div>
-
-      <style jsx global>{`
-        .transform-style-preserve-3d {
-          transform-style: preserve-3d;
-        }
-      `}</style>
     </motion.div>
   );
 };

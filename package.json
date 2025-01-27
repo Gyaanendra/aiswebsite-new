@@ -16,9 +16,11 @@
     "@studio-freight/react-lenis": "^0.0.47",
     "@types/gsap": "^1.20.2",
     "framer-motion": "^12.0.5",
+    "grainjs": "^1.0.2",
     "gsap": "^3.12.7",
     "lenis": "^1.1.20",
     "next": "15.1.6",
+    "postprocessing": "^6.36.6",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "three": "^0.172.0"
