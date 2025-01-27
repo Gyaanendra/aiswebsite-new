@@ -29,10 +29,10 @@
     "**/*.jsx",
     ".next/types/**/*.ts",
     "components/home/main.jsx",
-    "components/CustomCursor.jsx",
+    "components/global/CustomCursor.jsx",
     "components/home/ParticleBackground.jsx",
     "components/home/LandingAnimation.jsx",
-    "components/GlassNavbar.jsx"
+    "components/global/GlassNavbar.jsx"
   ],
   "exclude": ["node_modules"]
 }
