@@ -4,43 +4,54 @@ import { motion } from "framer-motion";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
-
+import BlurText from "@/components/global/BlurText";
 
 const LandingBanner = () => {
   const logoRef = useRef(null);
   const textRef = useRef(null);
   const containerRef = useRef(null);
-  const router = useRouter();
-  const redirected = useRef(false);
+
+  const handleTextAnimationComplete = () => {
+    gsap.to(textRef.current, {
+      duration: 2,
+      repeat: -1,
+      yoyo: true,
+      ease: "sine.inOut",
+      css: {
+        filter: "drop-shadow(0 0 12px rgba(255,255,255,0.9))",
+        textShadow: "0 0 20px rgba(255,255,255,0.5)",
+      },
+    });
+  };
 
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
     gsap.defaults({ ease: "power3.inOut" });
 
-    // Initial animations
     const tl = gsap.timeline();
 
-    // Logo animation
+    // Enhanced logo spin-in animation
     tl.fromTo(
       logoRef.current,
       {
         scale: 0,
         opacity: 0,
-        rotationY: 90,
-        transformOrigin: "50% 50%",
+        rotationY: 720, // Start with 2 full rotations (720 degrees)
         z: 500,
+        transformOrigin: "50% 50%",
       },
       {
         scale: 1,
         opacity: 1,
-        rotationY: 0,
+        rotationY: 0, // Animate to 0 degrees
         z: 0,
-        duration: 1.5,
+        duration: 2,
+        ease: "power4.out",
         onComplete: () => {
+          // Continuous subtle rotation after initial spin
           gsap.to(logoRef.current, {
             rotationY: 360,
-            duration: 8,
+            duration: 12,
             repeat: -1,
             ease: "none",
             transformOrigin: "50% 50%",
@@ -49,32 +60,7 @@ const LandingBanner = () => {
       }
     );
 
-    // Text animation
-    tl.fromTo(
-      textRef.current,
-      { y: 50, opacity: 0 },
-      {
-        y: 0,
-        opacity: 1,
-        duration: 1.2,
-        ease: "elastic.out(1, 0.3)",
-        onComplete: () => {
-          gsap.to(textRef.current, {
-            duration: 2,
-            repeat: -1,
-            yoyo: true,
-            ease: "sine.inOut",
-            css: {
-              filter: "drop-shadow(0 0 12px rgba(255,255,255,0.9))",
-              textShadow: "0 0 20px rgba(255,255,255,0.5)",
-            },
-          });
-        },
-      },
-      "-=0.8"
-    );
-
-    // Scroll animation with redirect
+    // Scroll animation without redirect
     ScrollTrigger.create({
       trigger: containerRef.current,
       start: "top top",
@@ -83,7 +69,6 @@ const LandingBanner = () => {
       pin: true,
       onUpdate: (self) => {
         const progress = self.progress;
-
         gsap.to(logoRef.current, {
           scale: 1 + progress * 15,
           rotationY: 180 * progress,
@@ -92,7 +77,6 @@ const LandingBanner = () => {
           ease: "power3.out",
           overwrite: "auto",
         });
-
         gsap.to(textRef.current, {
           opacity: 1 - progress,
           y: -100 * progress,
@@ -100,19 +84,8 @@ const LandingBanner = () => {
           overwrite: "auto",
         });
       },
-      onLeave: () => {
-        if (!redirected.current) {
-          redirected.current = true;
-          // Smooth transition before redirect
-          gsap.to(containerRef.current, {
-            opacity: 0,
-            duration: 0.5,
-            onComplete: () => router.push("/aboutus"),
-          });
-        }
-      },
     });
-  }, [router]);
+  }, []);
 
   return (
     <motion.div
@@ -136,12 +109,17 @@ const LandingBanner = () => {
           priority
         />
       </div>
-      <h1
-        ref={textRef}
-        className="text-4xl font-bold text-white text-center transform-style-preserve-3d"
-      >
-        Artificial Intelligence Society
-      </h1>
+
+      <div ref={textRef} className="transform-style-preserve-3d">
+        <BlurText
+          text="Artificial Intelligence Society"
+          delay={150}
+          animateBy="words"
+          direction="top"
+          onAnimationComplete={handleTextAnimationComplete}
+          className="text-4xl font-bold text-white text-center"
+        />
+      </div>
 
       <style jsx global>{`
         .transform-style-preserve-3d {

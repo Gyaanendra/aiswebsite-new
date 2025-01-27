@@ -206,27 +206,6 @@ h1 {
   box-sizing: border-box;
 }
 
-/* Glowing AIS Text */
-.ais-glow {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  font-size: 15vw;
-  font-weight: bold;
-  color: rgba(255, 255, 255, 0.1);
-  text-shadow: 0 0 10px rgba(255, 255, 255, 0), 0 0 20px rgba(255, 255, 255, 0),
-    0 0 30px rgba(255, 255, 255, 0);
-  z-index: 4;
-  pointer-events: auto; /* Allow hover interaction */
-  transition: text-shadow 0.5s ease, opacity 0.5s ease;
-}
-
-.ais-glow:hover {
-  text-shadow: 0 0 10px rgba(255, 255, 255, 0.3),
-    0 0 20px rgba(255, 255, 255, 0.2), 0 0 30px rgba(255, 255, 255, 0.1);
-  opacity: 1;
-}
 /* Add this to your global CSS file or a CSS module */
 .header {
   position: fixed; /* Keeps the logo fixed at the top-left */
@@ -271,48 +250,4 @@ body {
 
 .flip-card-back {
   transform: rotateY(180deg);
-}
-@media (max-width: 768px) {
-  /* Target only the logo */
-  .header .logo {
-    width: 130px; /* Adjust this value to make the logo smaller */
-    height: auto; /* Maintain aspect ratio */
-    position: fixed; /* Ensure the logo stays in place */
-    top: 130px; /* Move the logo down by increasing this value */
-    left: 20px; /* Adjust horizontal position if needed */
-  }
-}
-/* Wave Sections */
-.wave-section,
-.mobile-wave-section {
-  position: relative;
-  overflow: hidden;
-}
-
-.wave-svg,
-.mobile-wave-svg {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-}
-
-/* Responsive Visibility */
-.wave-section {
-  display: none;
-}
-
-.mobile-wave-section {
-  display: block;
-}
-
-@media (min-width: 769px) {
-  .wave-section {
-    display: block;
-  }
-
-  .mobile-wave-section {
-    display: none;
-  }
 }
