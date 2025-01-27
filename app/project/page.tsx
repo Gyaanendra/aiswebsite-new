@@ -1,0 +1,177 @@
+"use client";
+import { useRef, useEffect } from 'react';
+import { ReactLenis } from '@studio-freight/react-lenis';
+import gsap from 'gsap';
+import ScrollTrigger from 'gsap/ScrollTrigger';
+import Image from 'next/image';
+
+gsap.registerPlugin(ScrollTrigger);
+
+const projects = [
+  { 
+    title: "Synthetic Human", 
+    imagePath: "/projects/synthetic-human.jpg" 
+  },
+  { 
+    title: "Porsche: Dream Machine", 
+    imagePath: "/projects/porsche.jpg" 
+  },
+  { 
+    title: "Virtual Ecosystem", 
+    imagePath: "/projects/virtual-ecosystem.jpg" 
+  },
+  { 
+    title: "Neon Metropolis", 
+    imagePath: "/projects/neon-metropolis.jpg" 
+  },
+  { 
+    title: "AI Revolution", 
+    imagePath: "/projects/ai-revolution.jpg" 
+  },
+  { 
+    title: "Quantum Interface", 
+    imagePath: "/projects/quantum-interface.jpg" 
+  },
+];
+
+// Wrapper component for smooth scrolling
+function SmoothScrollWrapper({ children }) {
+  const onScroll = (e) => {
+    ScrollTrigger.update();
+  };
+
+  return (
+    <ReactLenis
+      root
+      options={{
+        lerp: 0.1,
+        duration: 1.5,
+        smoothWheel: true,
+        wheelMultiplier: 1,
+        touchMultiplier: 2,
+        infinite: false,
+      }}
+      onScroll={onScroll}
+    >
+      {children}
+    </ReactLenis>
+  );
+}
+
+export default function ProjectsSection() {
+  const projectRefs = useRef([]);
+  const sectionRef = useRef(null);
+
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      // Create a timeline for smoother orchestration
+      const tl = gsap.timeline();
+
+      // Animate the heading first
+      tl.from(".section-header", {
+        y: 50,
+        opacity: 0,
+        duration: 1,
+        ease: "power3.out"
+      });
+
+      // Project cards animation
+      projectRefs.current.forEach((project, i) => {
+        ScrollTrigger.create({
+          trigger: project,
+          start: "top bottom-=100",
+          end: "top center",
+          onEnter: () => {
+            gsap.to(project, {
+              scale: 1,
+              opacity: 1,
+              y: 0,
+              duration: 1.2,
+              ease: "power4.out",
+              delay: i * 0.1,
+            });
+          },
+          onLeave: () => {
+            gsap.to(project, {
+              scale: 0.95,
+              opacity: 0.5,
+              duration: 0.8,
+              ease: "power2.in",
+            });
+          },
+          onEnterBack: () => {
+            gsap.to(project, {
+              scale: 1,
+              opacity: 1,
+              duration: 0.8,
+              ease: "power2.out",
+            });
+          },
+          onLeaveBack: () => {
+            gsap.to(project, {
+              scale: 0.9,
+              opacity: 0,
+              y: 100,
+              duration: 0.8,
+              ease: "power2.in",
+            });
+          },
+        });
+
+        // Set initial state
+        gsap.set(project, {
+          scale: 0.9,
+          opacity: 0,
+          y: 100,
+        });
+      });
+    }, sectionRef);
+
+    return () => {
+      ctx.revert();
+      ScrollTrigger.clearScrollMemory();
+      ScrollTrigger.refresh();
+    };
+  }, []);
+
+  return (
+    <SmoothScrollWrapper>
+      <section ref={sectionRef} className="min-h-screen bg-black text-white p-8 md:p-16">
+        <div className="section-header mb-24 text-center">
+          <h2 className="text-6xl md:text-8xl lg:text-9xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-500">
+            PROJECTS
+          </h2>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          {projects.map((project, i) => (
+            <div
+              key={project.title}
+              ref={(el) => el && (projectRefs.current[i] = el)}
+              className="group relative overflow-hidden rounded-lg h-[500px] transition-all duration-700 ease-out"
+            >
+              <Image 
+                src={project.imagePath}
+                alt={project.title}
+                fill
+                sizes="(max-width: 768px) 100vw, 50vw"
+                className="object-cover transform transition-transform duration-700 ease-out group-hover:scale-105"
+                priority={i < 2}
+              />
+              
+              <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent opacity-100 transition-opacity duration-500 z-10" />
+              
+              <div className="relative z-20 p-6 h-full flex flex-col justify-end transform transition-transform duration-500">
+                <h3 className="text-2xl md:text-3xl font-bold transform transition-transform duration-500 group-hover:translate-x-2">
+                  {project.title}
+                </h3>
+              </div>
+              
+              <div className="absolute inset-0 bg-gray-800/50 opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
+            </div>
+          ))}
+        </div>
+      </section>
+    </SmoothScrollWrapper>
+  );
+}
