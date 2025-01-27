@@ -1080,9 +1080,10 @@ function SplashCursor({
     }
 
     function generateColor() {
-      // Translucent grey with electric blue tint
-      return { r: 0.5, g: 0.5, b: 0.8, a: 0.7 }; // Grey with blue tint and 70% opacity
+      // Mixture of grey and black with 20% opacity
+      return { r: 0.3, g: 0.3, b: 0.3, a: 0.2 }; // Dark grey with 20% opacity
     }
+               
   
 
     function HSVtoRGB(h, s, v) {
