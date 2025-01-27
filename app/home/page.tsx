@@ -1,9 +1,11 @@
 import LandingBanner from "@/components/home/LandingAnimation";
 // Import the new component
 import Aboutus from "@/screens/aboutus";
+import SplashCursor from "@/Animations/SplashCursor/SplashCursor";
 export default function Home() {
   return (
     <main className="bg-black">
+      <SplashCursor />
       {/* Add the particle background */}
       <LandingBanner />
       {/* <section className="mt-10">

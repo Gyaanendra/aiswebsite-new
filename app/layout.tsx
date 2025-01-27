@@ -4,7 +4,7 @@ import "./globals.css";
 import CustomCursor from "@/components/global/CustomCursor";
 import GlassNavbar from "@/components/global/GlassNavbar";
 // import ParticleBackground from "@/components/home/ParticleBackground"
-import SplashCursor from "@/Animations/SplashCursor/SplashCursor";
+
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -34,7 +34,6 @@ export default function RootLayout({
         <GlassNavbar />
         <CustomCursor /> {/* Add this line */}
         {/* <ParticleBackground /> */}
-        <SplashCursor />
         {children}
         <div className="orb orb-blue" />
         <div className="orb orb-purple" />
