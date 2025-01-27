@@ -5,7 +5,7 @@ import { ReactLenis } from "@studio-freight/react-lenis";
 import gsap from "gsap";
 import ScrollTrigger from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
-import "./a.css";
+import "../../screensCss/a.css";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -19,7 +19,10 @@ export default function Page() {
       const mm = gsap.matchMedia();
 
       mm.add("(min-width: 769px)", () => {
-        // Desktop Wave Animation
+        const containerEl = container.current;
+        const cards = cardRefs.current;
+        const overlayEl = overlayRef.current;
+
         const wavePath = document.querySelector(".wave-path");
         const waveSection = document.querySelector(".wave-section");
 
@@ -53,27 +56,26 @@ export default function Page() {
           }
         );
 
-        // Card Animations for Desktop
         const totalScrollHeight = window.innerHeight * 2;
         const positions = [14, 38, 62, 86];
         const rotations = [-15, -7.5, 7.5, 15];
 
-        gsap.to(container.current, {
+        gsap.to(containerEl, {
           backgroundColor: "#0a0a0a",
           ease: "none",
           scrollTrigger: {
-            trigger: container.current,
+            trigger: containerEl,
             start: "top top",
             end: `+=${totalScrollHeight * 1.5}`,
             scrub: 0.5,
           },
         });
 
-        gsap.to(overlayRef.current, {
+        gsap.to(overlayEl, {
           backgroundPosition: "100% 0%",
           ease: "none",
           scrollTrigger: {
-            trigger: container.current,
+            trigger: containerEl,
             start: "top top",
             end: `+=${totalScrollHeight}`,
             scrub: 0.5,
@@ -81,7 +83,7 @@ export default function Page() {
         });
 
         ScrollTrigger.create({
-          trigger: container.current.querySelector(".cards"),
+          trigger: containerEl.querySelector(".cards"),
           start: "top top",
           end: `+=${totalScrollHeight}`,
           pin: true,
@@ -89,7 +91,7 @@ export default function Page() {
           anticipatePin: 1,
         });
 
-        cardRefs.current.forEach((card, index) => {
+        cards.forEach((card, index) => {
           gsap.set(card, {
             left: "50%",
             xPercent: -50,
@@ -108,7 +110,7 @@ export default function Page() {
 
           const spreadTL = gsap.timeline({
             scrollTrigger: {
-              trigger: container.current.querySelector(".cards"),
+              trigger: containerEl.querySelector(".cards"),
               start: "top top",
               end: `+=${totalScrollHeight}`,
               scrub: 0.3,
@@ -130,7 +132,9 @@ export default function Page() {
               },
               "<"
             );
+        });
 
+        cards.forEach((card, index) => {
           const frontEl = card.querySelector(".flip-card-front");
           const backEl = card.querySelector(".flip-card-back");
           const contentEl = card.querySelector(".flip-card-inner");
@@ -148,47 +152,38 @@ export default function Page() {
         });
 
         return () => {
-          ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
+          ScrollTrigger.getAll().forEach((trigger) => trigger.revert());
         };
       });
 
       mm.add("(max-width: 768px)", () => {
-        // Mobile Wave Animation
-        const mobileWavePath = document.querySelector(".mobile-wave-path");
-        const mobileWaveSection = document.querySelector(".mobile-wave-section");
+        const containerEl = container.current;
+        const cards = cardRefs.current;
+        const overlayEl = overlayRef.current;
 
-        gsap.set(mobileWavePath, {
-          strokeDasharray: 1000,
-          strokeDashoffset: 1000,
-        });
-
-        gsap.to(mobileWavePath, {
-          strokeDashoffset: 0,
+        gsap.to(containerEl, {
+          backgroundColor: "#0a0a0a",
+          ease: "none",
           scrollTrigger: {
-            trigger: mobileWaveSection,
-            start: "top center",
-            end: "bottom center",
-            scrub: 1,
+            trigger: containerEl,
+            start: "top top",
+            end: "bottom bottom",
+            scrub: 0.5,
           },
         });
 
-        gsap.fromTo(
-          mobileWavePath,
-          { scaleY: 0.5, y: 50 },
-          {
-            scaleY: 1,
-            y: 0,
-            scrollTrigger: {
-              trigger: mobileWaveSection,
-              start: "top center",
-              end: "bottom center",
-              scrub: 1,
-            },
-          }
-        );
+        gsap.to(overlayEl, {
+          backgroundPosition: "100% 0%",
+          ease: "none",
+          scrollTrigger: {
+            trigger: containerEl,
+            start: "top top",
+            end: "bottom bottom",
+            scrub: 0.5,
+          },
+        });
 
-        // Card Animations for Mobile
-        cardRefs.current.forEach((card, index) => {
+        cards.forEach((card, index) => {
           gsap.set(card, { opacity: 0, y: 50 });
 
           gsap.to(card, {
@@ -219,7 +214,7 @@ export default function Page() {
         });
 
         return () => {
-          ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
+          ScrollTrigger.getAll().forEach((trigger) => trigger.revert());
         };
       });
 
@@ -231,7 +226,7 @@ export default function Page() {
   const animateFlip = (front, back, content, index) => {
     gsap.to(content, {
       rotationY: 180,
-      duration: 0.9,
+      duration: 1.5,
       ease: "power4.out",
       overwrite: true,
     });
@@ -255,7 +250,7 @@ export default function Page() {
 
   return (
     <ReactLenis root options={{ lerp: 0.1, smoothWheel: true }}>
-      <div ref={container} className="flex flex-col min-h-screen">
+      <div ref={container}>
         {/* Holographic overlay */}
         <div
           className="holographic-overlay"
@@ -272,10 +267,8 @@ export default function Page() {
         />
 
         <header className="header">
-          <img src="/logo.png" alt="Company Logo" className="logo" />
+          {/* <img src="/logo.png" alt="Company Logo" className="logo" /> */}
         </header>
-
-        <div className="ais-glow">AIS</div>
 
         <div
           ref={overlayRef}
@@ -292,8 +285,7 @@ export default function Page() {
           </h1>
         </section>
 
-        {/* Desktop Wave Animation */}
-        <section className="wave-section min-h-[50vh] hidden md:block">
+        <section className="wave-section min-h-[50vh]">
           <svg
             className="wave-svg w-full h-full"
             viewBox="0 0 1440 400"
@@ -302,23 +294,6 @@ export default function Page() {
             <path
               className="wave-path"
               d="M0,200 C240,0 480,400 720,200 C960,0 1200,400 1440,200 L1440,400 L0,400 Z"
-              fill="none"
-              stroke="#ffffff"
-              strokeWidth="4"
-            />
-          </svg>
-        </section>
-
-        {/* Mobile Wave Animation */}
-        <section className="mobile-wave-section min-h-[30vh] block md:hidden">
-          <svg
-            className="mobile-wave-svg w-full h-full"
-            viewBox="0 0 1440 200"
-            preserveAspectRatio="none"
-          >
-            <path
-              className="mobile-wave-path"
-              d="M0,100 C240,0 480,200 720,100 C960,0 1200,200 1440,100 L1440,200 L0,200 Z"
               fill="none"
               stroke="#ffffff"
               strokeWidth="4"
@@ -346,88 +321,8 @@ export default function Page() {
           ))}
         </section>
 
-        {/* Footer Section */}
-        <section className="footer w-full py-20 px-4 bg-dark text-white mt-auto">
-          <div className="container mx-auto max-w-6xl">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-20">
-              <div className="space-y-2">
-                <h3 className="text-xl font-semibold mb-4">Studio</h3>
-                <p className="opacity-75">
-                  Suite 2<br />
-                  9 Marsh Street<br />
-                  Bristol, BS1 4AA<br />
-                  United Kingdom
-                </p>
-              </div>
-
-              <div className="space-y-2">
-                <h3 className="text-xl font-semibold mb-4">Connect</h3>
-                <div className="flex flex-col space-y-2">
-                  <a href="#" className="hover:text-gray-300 transition-colors">
-                    Twitter / X
-                  </a>
-                  <a href="#" className="hover:text-gray-300 transition-colors">
-                    Instagram
-                  </a>
-                  <a href="#" className="hover:text-gray-300 transition-colors">
-                    LinkedIn
-                  </a>
-                </div>
-              </div>
-
-              <div className="space-y-2">
-                <h3 className="text-xl font-semibold mb-4">Contact</h3>
-                <p className="opacity-75">
-                  General enquiries<br />
-                  <a
-                    href="mailto:hello@AIS.co"
-                    className="hover:text-gray-300 transition-colors"
-                  >
-                    hello@lAIS.co
-                  </a>
-                </p>
-                <p className="opacity-75 mt-4">
-                  New business<br />
-                  <a
-                    href="mailto:business@AIS.co"
-                    className="hover:text-gray-300 transition-colors"
-                  >
-                    business@AIS.co
-                  </a>
-                </p>
-              </div>
-            </div>
-
-            <div className="max-w-md mx-auto mb-20">
-              <h3 className="text-xl font-semibold mb-6 text-center">
-                Subscribe to our newsletter
-              </h3>
-              <div className="flex gap-4">
-                <input
-                  type="email"
-                  placeholder="Your email →"
-                  className="bg-transparent border-b border-white/30 focus:border-white/60 flex-1 px-2 py-1 outline-none"
-                />
-                <button className="border border-white/30 hover:border-white/60 px-4 py-1 transition-colors">
-                  Subscribe
-                </button>
-              </div>
-            </div>
-
-            <div className="text-center opacity-75 text-Lm">
-              <p>©{new Date().getFullYear()} ARTIFICIAL INTELLIGENCE SOCIETY</p>
-              <p className="mt-2">
-                R&D:{" "}
-                <a
-                  href="https://aisociety-bu-pied.vercel.app/"
-                  className="hover:text-gray-300 transition-colors"
-                >
-                  AIS SOCIETY
-                </a>
-              </p>
-              <p className="mt-2">Built by AIS </p>
-            </div>
-          </div>
+        <section className="footer min-h-screen flex items-center justify-center bg-dark">
+          <h1 className="text-6xl font-bold text-white">Footer</h1>
         </section>
       </div>
     </ReactLenis>
