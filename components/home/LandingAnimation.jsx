@@ -1,14 +1,17 @@
 "use client";
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Image from "next/image";
+import { useRouter } from "next/navigation"; // Import useRouter from next/navigation
 
 const LandingBanner = () => {
   const logoRef = useRef(null);
   const textRef = useRef(null);
   const containerRef = useRef(null);
+  const router = useRouter(); // Initialize the router
+  const [hasRedirected, setHasRedirected] = useState(false); // Track if redirection has occurred
 
   const handleTextAnimationComplete = () => {
     console.log("Text animation complete"); // Debugging
@@ -66,6 +69,8 @@ const LandingBanner = () => {
       pin: true,
       onUpdate: (self) => {
         const progress = self.progress;
+        console.log("Scroll progress:", progress); // Debugging
+
         gsap.to(logoRef.current, {
           scale: 1 + progress * 15,
           rotationY: 180 * progress,
@@ -74,15 +79,23 @@ const LandingBanner = () => {
           ease: "power3.out",
           overwrite: "auto",
         });
+
         gsap.to(textRef.current, {
           opacity: 1 - progress, // Fade out text as scroll progresses
           y: -50 * progress, // Reduce y movement
           ease: "power3.out",
           overwrite: "auto",
         });
+
+        // Redirect to About Us page when progress reaches a certain point
+        if (progress > 0.5 && !hasRedirected) {
+          console.log("Redirecting to About Us page..."); // Debugging
+          setHasRedirected(true); // Prevent multiple redirects
+          router.push("/aboutus"); // Redirect to the About Us page
+        }
       },
     });
-  }, []);
+  }, [router, hasRedirected]); // Add router and hasRedirected to the dependency array
 
   return (
     <motion.div
