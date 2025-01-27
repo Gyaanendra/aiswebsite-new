@@ -10,8 +10,30 @@ const LandingBanner = () => {
   const logoRef = useRef(null);
   const textRef = useRef(null);
   const containerRef = useRef(null);
+  const backgroundRef = useRef(null); // Ref for interactive background
   const router = useRouter();
   const [hasRedirected, setHasRedirected] = useState(false);
+
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+
+  const handleTextAnimationComplete = () => {
+    console.log("Text animation complete");
+    gsap.to(textRef.current, {
+      duration: 2,
+      repeat: -1,
+      yoyo: true,
+      ease: "sine.inOut",
+      css: {
+        filter: "drop-shadow(0 0 12px rgba(255,255,255,0.9))",
+        textShadow: "0 0 20px rgba(255,255,255,0.5)",
+      },
+    });
+  };
+
+  const handleMouseMove = (e) => {
+    const { clientX, clientY } = e;
+    setMousePosition({ x: clientX, y: clientY });
+  };
 
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
@@ -55,6 +77,7 @@ const LandingBanner = () => {
       pin: true,
       onUpdate: (self) => {
         const progress = self.progress;
+        console.log("Scroll progress:", progress);
 
         gsap.to(logoRef.current, {
           scale: 1 + progress * 12, // Reduced scaling
@@ -77,7 +100,28 @@ const LandingBanner = () => {
         }
       },
     });
+
+    // Attach mouse move event listener
+    window.addEventListener("mousemove", handleMouseMove);
+
+    return () => {
+      window.removeEventListener("mousemove", handleMouseMove);
+    };
   }, [router, hasRedirected]);
+
+  // Dynamically adjust the background gradient based on mouse position
+  const getGradient = () => {
+    const { x, y } = mousePosition;
+    const width = window.innerWidth;
+    const height = window.innerHeight;
+    const xRatio = x / width;
+    const yRatio = y / height;
+
+    // Adjusting the gradient position based on mouse coordinates
+    return `radial-gradient(circle at ${xRatio * 100}% ${
+      yRatio * 100
+    }%, #636363, #000000, #000000)`;
+  };
 
   return (
     <motion.div
@@ -97,9 +141,43 @@ const LandingBanner = () => {
         />
       </div>
 
-      <div ref={textRef} className="text-4xl font-bold text-white text-center">
-        Artificial Intelligence Society
+      <div
+        ref={textRef}
+        className="transform-style-preserve-3d"
+        style={{ zIndex: 10, opacity: 1 }}
+      >
+        <div className="text-4xl font-bold text-white text-center">
+          Artificial Intelligence Society
+        </div>
       </div>
+
+      {/* Interactive Gradient Background with Grain Effect */}
+      <div
+        ref={backgroundRef}
+        className="absolute top-0 left-0 w-full h-full"
+        style={{
+          zIndex: -1,
+          background: getGradient(),
+          transition: "background 0.1s ease", // Smooth transition for gradient changes
+        }}
+      >
+        {/* Grain Effect Overlay */}
+        <div
+          className="absolute top-0 left-0 w-full h-full"
+          style={{
+            background: "url('/path/to/grain-texture.png')", // Add path to your grain texture image
+            backgroundSize: "cover",
+            opacity: 0.3, // Adjust opacity to control the intensity of the grain effect
+            pointerEvents: "none", // Ensure it doesn't block interaction
+          }}
+        ></div>
+      </div>
+
+      <style jsx global>{`
+        .transform-style-preserve-3d {
+          transform-style: preserve-3d;
+        }
+      `}</style>
     </motion.div>
   );
 };
