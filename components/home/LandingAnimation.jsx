@@ -4,7 +4,6 @@ import { motion } from "framer-motion";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Image from "next/image";
-import BlurText from "@/components/global/BlurText";
 
 const LandingBanner = () => {
   const logoRef = useRef(null);
@@ -12,6 +11,7 @@ const LandingBanner = () => {
   const containerRef = useRef(null);
 
   const handleTextAnimationComplete = () => {
+    console.log("Text animation complete"); // Debugging
     gsap.to(textRef.current, {
       duration: 2,
       repeat: -1,
@@ -30,25 +30,23 @@ const LandingBanner = () => {
 
     const tl = gsap.timeline();
 
-    // Enhanced logo spin-in animation
     tl.fromTo(
       logoRef.current,
       {
         scale: 0,
         opacity: 0,
-        rotationY: 720, // Start with 2 full rotations (720 degrees)
+        rotationY: 720,
         z: 500,
         transformOrigin: "50% 50%",
       },
       {
         scale: 1,
         opacity: 1,
-        rotationY: 0, // Animate to 0 degrees
+        rotationY: 0,
         z: 0,
         duration: 2,
         ease: "power4.out",
         onComplete: () => {
-          // Continuous subtle rotation after initial spin
           gsap.to(logoRef.current, {
             rotationY: 360,
             duration: 12,
@@ -60,7 +58,6 @@ const LandingBanner = () => {
       }
     );
 
-    // Scroll animation without redirect
     ScrollTrigger.create({
       trigger: containerRef.current,
       start: "top top",
@@ -78,8 +75,8 @@ const LandingBanner = () => {
           overwrite: "auto",
         });
         gsap.to(textRef.current, {
-          opacity: 1 - progress,
-          y: -100 * progress,
+          opacity: 1 - progress, // Fade out text as scroll progresses
+          y: -50 * progress, // Reduce y movement
           ease: "power3.out",
           overwrite: "auto",
         });
@@ -110,15 +107,14 @@ const LandingBanner = () => {
         />
       </div>
 
-      <div ref={textRef} className="transform-style-preserve-3d">
-        <BlurText
-          text="Artificial Intelligence Society"
-          delay={150}
-          animateBy="words"
-          direction="top"
-          onAnimationComplete={handleTextAnimationComplete}
-          className="text-4xl font-bold text-white text-center"
-        />
+      <div
+        ref={textRef}
+        className="transform-style-preserve-3d"
+        style={{ zIndex: 10, opacity: 1 }} // Fallback styles
+      >
+        <div className="text-4xl font-bold text-white text-center">
+          Artificial Intelligence Society
+        </div>
       </div>
 
       <style jsx global>{`

@@ -8,7 +8,7 @@
 import { useEffect, useRef } from "react";
 
 function SplashCursor({
-  // Add whatever props you like for customization
+  // Updated default props for silver metallic effect
   SIM_RESOLUTION = 128,
   DYE_RESOLUTION = 1440,
   CAPTURE_RESOLUTION = 512,
@@ -20,9 +20,9 @@ function SplashCursor({
   SPLAT_RADIUS = 0.2,
   SPLAT_FORCE = 6000,
   SHADING = true,
-  COLOR_UPDATE_SPEED = 10,
-  BACK_COLOR = { r: 0.5, g: 0, b: 0 },
-  TRANSPARENT = true,
+  COLOR_UPDATE_SPEED = 0, // Disable color updates
+  BACK_COLOR = { r: 0.1, g: 0.1, b: 0.1 }, // Dark grey background
+  TRANSPARENT = false, // Solid background
 }) {
   const canvasRef = useRef(null);
 
@@ -1001,9 +1001,10 @@ function SplashCursor({
 
     function clickSplat(pointer) {
       const color = generateColor();
-      color.r *= 10.0;
-      color.g *= 10.0;
-      color.b *= 10.0;
+      // Subtle intensity increase for clicks
+      color.r *= 1.2;
+      color.g *= 1.2;
+      color.b *= 1.2;
       let dx = 10 * (Math.random() - 0.5);
       let dy = 30 * (Math.random() - 0.5);
       splat(pointer.texcoordX, pointer.texcoordY, dx, dy, color);
@@ -1079,12 +1080,10 @@ function SplashCursor({
     }
 
     function generateColor() {
-      let c = HSVtoRGB(Math.random(), 1.0, 1.0);
-      c.r *= 0.15;
-      c.g *= 0.15;
-      c.b *= 0.15;
-      return c;
+      // Translucent grey with electric blue tint
+      return { r: 0.5, g: 0.5, b: 0.8, a: 0.7 }; // Grey with blue tint and 70% opacity
     }
+  
 
     function HSVtoRGB(h, s, v) {
       let r, g, b, i, f, p, q, t;
