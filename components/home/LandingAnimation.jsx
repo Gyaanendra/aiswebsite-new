@@ -117,10 +117,10 @@ const LandingBanner = () => {
     const xRatio = x / width;
     const yRatio = y / height;
 
-    // Adjusting the gradient position based on mouse coordinates
+    // Adjusting the gradient position and size based on mouse coordinates
     return `radial-gradient(circle at ${xRatio * 100}% ${
       yRatio * 100
-    }%, #636363, #000000, #000000)`;
+    }%,rgb(108, 106, 106), #000000, #000000 50%)`; // Adjust the last percentage to control the size
   };
 
   return (
