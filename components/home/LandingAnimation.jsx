@@ -160,18 +160,7 @@ const LandingBanner = () => {
           background: getGradient(),
           transition: "background 0.1s ease", // Smooth transition for gradient changes
         }}
-      >
-        {/* Grain Effect Overlay */}
-        <div
-          className="absolute top-0 left-0 w-full h-full"
-          style={{
-            background: "url('/path/to/grain-texture.png')", // Add path to your grain texture image
-            backgroundSize: "cover",
-            opacity: 0.3, // Adjust opacity to control the intensity of the grain effect
-            pointerEvents: "none", // Ensure it doesn't block interaction
-          }}
-        ></div>
-      </div>
+      ></div>
 
       <style jsx global>{`
         .transform-style-preserve-3d {
