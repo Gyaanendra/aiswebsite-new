@@ -10,15 +10,15 @@ gsap.registerPlugin(ScrollTrigger);
 const projects = [
   { 
     title: "Synthetic Human", 
-    imagePath: "/projects/synthetic-human.jpg" 
+    imagePath: "/A4 - 3.png" 
   },
   { 
     title: "Porsche: Dream Machine", 
-    imagePath: "/projects/porsche.jpg" 
+    imagePath: "/A4 - 5.png" 
   },
   { 
     title: "Virtual Ecosystem", 
-    imagePath: "/projects/virtual-ecosystem.jpg" 
+    imagePath: "/A4 - 6.png" 
   },
   { 
     title: "Neon Metropolis", 
