@@ -61,9 +61,27 @@ function SmoothScrollWrapper({ children }) {
 export default function ProjectsSection() {
   const projectRefs = useRef([]);
   const sectionRef = useRef(null);
+  const marqueeRef1 = useRef(null);  // For "PROJECTS"
+  const marqueeRef2 = useRef(null);  // For "Let's Dive In"
 
   useEffect(() => {
     const ctx = gsap.context(() => {
+      //infinite scroll effect for (PROJECTS)
+      gsap.to(marqueeRef1.current, {
+        xPercent: -100,
+        ease: "none",
+        duration: 800,
+        repeat: -1,
+      });
+
+      //infinite scroll effect for (Let's Dive In)
+      gsap.to(marqueeRef2.current, {
+        xPercent: 100,
+        ease: "none",
+        duration: 800,
+        repeat: -1,
+      });
+
       // Create a timeline for smoother orchestration
       const tl = gsap.timeline();
 
@@ -137,10 +155,48 @@ export default function ProjectsSection() {
   return (
     <SmoothScrollWrapper>
       <section ref={sectionRef} className="min-h-screen bg-black text-white p-8 md:p-16">
-        <div className="section-header mb-24 text-center">
-          <h2 className="text-6xl md:text-8xl lg:text-9xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-500">
-            PROJECTS
-          </h2>
+        <div className="section-header mb-32 relative overflow-hidden pt-24">
+          {/* First marquee - PROJECTS */}
+          <div 
+            ref={marqueeRef1}
+            className="whitespace-nowrap"
+            style={{ 
+              width: "fit-content",
+              transform: "translateX(0%)", 
+            }}
+          >
+            <div className="flex">
+              {[...Array(200)].map((_, i) => (
+                <span 
+                  key={i} 
+                  className="text-6xl md:text-8xl lg:text-9xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-500 inline-block pr-8"
+                >
+                  PROJECTS
+                </span>
+              ))}
+            </div>
+          </div>
+          
+          {/* Second marquee - Let's Dive In */}
+          <div 
+            ref={marqueeRef2}
+            className="whitespace-nowrap"
+            style={{ 
+              width: "fit-content",
+              transform: "translateX(-64%)", // Start from the left
+            }}
+          >
+            <div className="flex">
+              {[...Array(200)].map((_, i) => (
+                <span 
+                  key={`dive-${i}`} 
+                  className="text-4xl md:text-6xl lg:text-7xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-500 inline-block pr-8"
+                >
+                  Let's Dive In -
+                </span>
+              ))}
+            </div>
+          </div>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
