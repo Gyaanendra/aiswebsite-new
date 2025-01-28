@@ -6,6 +6,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 
+
 const LandingBanner = () => {
   const logoRef = useRef(null);
   const textRef = useRef(null);
@@ -116,11 +117,11 @@ const LandingBanner = () => {
     const height = window.innerHeight;
     const xRatio = x / width;
     const yRatio = y / height;
-
-    // Adjusting the gradient position based on mouse coordinates
+  
+    // Adjusting the gradient position and size based on mouse coordinates
     return `radial-gradient(circle at ${xRatio * 100}% ${
       yRatio * 100
-    }%, #636363, #000000, #000000)`;
+    }%,rgb(108, 106, 106), #000000, #000000 50%)`; // Adjust the last percentage to control the size
   };
 
   return (
@@ -161,16 +162,7 @@ const LandingBanner = () => {
           transition: "background 0.1s ease", // Smooth transition for gradient changes
         }}
       >
-        {/* Grain Effect Overlay */}
-        <div
-          className="absolute top-0 left-0 w-full h-full"
-          style={{
-            background: "url('/path/to/grain-texture.png')", // Add path to your grain texture image
-            backgroundSize: "cover",
-            opacity: 0.3, // Adjust opacity to control the intensity of the grain effect
-            pointerEvents: "none", // Ensure it doesn't block interaction
-          }}
-        ></div>
+       
       </div>
 
       <style jsx global>{`
