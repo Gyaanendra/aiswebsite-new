@@ -6,13 +6,10 @@ import ParticlesComponent from "@/components/Particles";
 export default function Home() {
   return (
     <main className="bg-black">
-   
-    
       {/* Add the particle background */}
       <LandingBanner />
-      <ParticlesComponent id = "particles-1" />
-      
-      
+      <ParticlesComponent id="particles-1" />
+
       {/* <section className="mt-10">
         <Aboutus />
       </section> */}

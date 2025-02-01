@@ -10,38 +10,21 @@ const LandingBanner = () => {
   const logoRef = useRef(null);
   const textRef = useRef(null);
   const containerRef = useRef(null);
-  const backgroundRef = useRef(null); // Ref for interactive background
+  const backgroundRef = useRef(null);
   const router = useRouter();
   const [hasRedirected, setHasRedirected] = useState(false);
-
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
-
-  const handleTextAnimationComplete = () => {
-    console.log("Text animation complete");
-    gsap.to(textRef.current, {
-      duration: 2,
-      repeat: -1,
-      yoyo: true,
-      ease: "sine.inOut",
-      css: {
-        filter: "drop-shadow(0 0 12px rgba(255,255,255,0.9))",
-        textShadow: "0 0 20px rgba(255,255,255,0.5)",
-      },
-    });
-  };
-
-  const handleMouseMove = (e) => {
-    const { clientX, clientY } = e;
-    setMousePosition({ x: clientX, y: clientY });
-  };
+  const [backgroundStyle, setBackgroundStyle] = useState("black");
 
   useEffect(() => {
+    if (typeof window === "undefined") return;
+
     gsap.registerPlugin(ScrollTrigger);
     gsap.defaults({ ease: "power3.inOut" });
 
     const tl = gsap.timeline();
 
-    // Initial logo animation
+    // Logo animation on page load
     tl.fromTo(
       logoRef.current,
       {
@@ -72,28 +55,26 @@ const LandingBanner = () => {
     ScrollTrigger.create({
       trigger: containerRef.current,
       start: "top top",
-      end: "bottom+=150% top", // Reduced scroll distance
-      scrub: 1, // Smoother scrubbing
+      end: "bottom+=150% top", // Adjusted scroll range
+      scrub: 1,
       pin: true,
       onUpdate: (self) => {
         const progress = self.progress;
-        console.log("Scroll progress:", progress);
 
         gsap.to(logoRef.current, {
-          scale: 1 + progress * 12, // Reduced scaling
-          rotationY: 720 * progress, // 2 full spins during scroll
+          scale: 1 + progress * 12, // Logo grows while scrolling
+          rotationY: 720 * progress, // 2 full spins
           z: progress * 1000,
           opacity: 1 - progress * 0.9,
           ease: "power2.out",
         });
 
         gsap.to(textRef.current, {
-          opacity: 1 - progress * 2, // Faster text fade
+          opacity: 1 - progress * 2, // Text fades out
           y: -80 * progress,
           ease: "power2.out",
         });
 
-        // Redirect earlier in the animation
         if (progress > 0.6 && !hasRedirected) {
           setHasRedirected(true);
           router.push("/aboutus");
@@ -101,27 +82,31 @@ const LandingBanner = () => {
       },
     });
 
-    // Attach mouse move event listener
-    window.addEventListener("mousemove", handleMouseMove);
-
-    return () => {
-      window.removeEventListener("mousemove", handleMouseMove);
+    const handleMouseMove = (e) => {
+      const { clientX, clientY } = e;
+      setMousePosition({ x: clientX, y: clientY });
     };
+
+    window.addEventListener("mousemove", handleMouseMove);
+    return () => window.removeEventListener("mousemove", handleMouseMove);
   }, [router, hasRedirected]);
 
-  // Dynamically adjust the background gradient based on mouse position
-  const getGradient = () => {
+  // Update background dynamically on mouse move
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+
     const { x, y } = mousePosition;
     const width = window.innerWidth;
     const height = window.innerHeight;
     const xRatio = x / width;
     const yRatio = y / height;
 
-    // Adjusting the gradient position and size based on mouse coordinates
-    return `radial-gradient(circle at ${xRatio * 100}% ${
-      yRatio * 100
-    }%,rgb(108, 106, 106), #000000, #000000 50%)`; // Adjust the last percentage to control the size
-  };
+    setBackgroundStyle(
+      `radial-gradient(circle at ${xRatio * 100}% ${
+        yRatio * 100
+      }%, rgb(108, 106, 106), #000000, #000000 50%)`
+    );
+  }, [mousePosition]);
 
   return (
     <motion.div
@@ -141,24 +126,20 @@ const LandingBanner = () => {
         />
       </div>
 
-      <div
-        ref={textRef}
-        className="transform-style-preserve-3d"
-        style={{ zIndex: 10, opacity: 1 }}
-      >
+      <div ref={textRef} className="transform-style-preserve-3d">
         <div className="text-4xl font-bold text-white text-center">
           Artificial Intelligence Society
         </div>
       </div>
 
-      {/* Interactive Gradient Background with Grain Effect */}
+      {/* Interactive Gradient Background */}
       <div
         ref={backgroundRef}
         className="absolute top-0 left-0 w-full h-full"
         style={{
           zIndex: -1,
-          background: getGradient(),
-          transition: "background 0.1s ease", // Smooth transition for gradient changes
+          background: backgroundStyle,
+          transition: "background 0.1s ease",
         }}
       ></div>
 
