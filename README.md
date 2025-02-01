@@ -2,7 +2,7 @@
 
 # made by RL Team
 
-Welcome to the repository for the **Gyaanendra AI Website**, a modern and interactive web experience built with Next.js, Tailwind CSS, and various exciting animations. This site features AI-related content, animations, and a dynamic layout that adapts to different sections of the website.
+Welcome to the repository for the **AIS Website**, a modern and interactive web experience built with Next.js, Tailwind CSS, and various exciting animations. This site features AI-related content, animations, and a dynamic layout that adapts to different sections of the website.
 
 ## Table of Contents
 
@@ -10,7 +10,6 @@ Welcome to the repository for the **Gyaanendra AI Website**, a modern and intera
 - [Directory Structure](#directory-structure)
 - [Technologies](#technologies)
 - [Features](#features)
-- [License](#license)
 
 ## Installation
 
