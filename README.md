@@ -34,3 +34,50 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+
+Directory structure:
+└── gyaanendra-aiswebsite-new/
+├── README.md
+├── eslint.config.mjs
+├── jsrepo.json
+├── next.config.ts
+├── package.json
+├── postcss.config.mjs
+├── tailwind.config.ts
+├── tsconfig.json
+├── Animations/
+│ └── SplashCursor/
+│ └── SplashCursor.jsx
+├── app/
+│ ├── globals.css
+│ ├── layout.tsx
+│ ├── page.tsx
+│ ├── aboutus/
+│ │ ├── a.css
+│ │ └── page.tsx
+│ ├── home/
+│ │ └── page.tsx
+│ └── project/
+│ └── page.tsx
+├── components/
+│ ├── AnimatedGradient.tsx
+│ ├── Footer.tsx
+│ ├── Particles.tsx
+│ ├── aboutus/
+│ │ └── Card.tsx
+│ ├── global/
+│ │ ├── BlurText.jsx
+│ │ ├── CustomCursor.jsx
+│ │ ├── GlassNavbar.jsx
+│ │ └── GrainBackground.jsx
+│ └── home/
+│ ├── LandingAnimation.jsx
+│ └── ParticleBackground.jsx
+├── public/
+│ ├── Abstract_Butterfly_Em_0125071252_texture.glb
+│ └── bais.glb
+├── screens/
+│ └── aboutus.tsx
+└── screensCss/
+├── a.css
+└── land.css
