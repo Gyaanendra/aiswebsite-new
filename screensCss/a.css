@@ -29,17 +29,7 @@ section {
   height: 100%;
   background-color: black;
 }
-h1 {
-  color: white;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  text-align: center;
-  font-size: 5vw;
-  font-weight: lighter;
-  line-height: 100%;
-}
+
 .card {
   position: absolute;
   top: 50%;
@@ -251,3 +241,70 @@ body {
 .flip-card-back {
   transform: rotateY(180deg);
 }
+.wave-section {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(to bottom, #000000 0%, #000000 100%);
+}
+
+.wave-path {
+  filter: drop-shadow(0 0 2px rgba(255, 255, 255, 0.3));
+}
+
+.secondary-wave {
+  filter: drop-shadow(0 0 4px rgba(255, 255, 255, 0.2));
+}
+
+.wave-shine {
+  animation: shine 3s infinite linear;
+}
+
+@keyframes shine {
+  0% { transform: translateX(-100%) rotate(-20deg); }
+  100% { transform: translateX(200%) rotate(-20deg); }
+}
+
+@media (max-width: 768px) {
+  .wave-section {
+    min-height: 30vh !important;
+  }
+  
+  .wave-path {
+    stroke-width: 4px !important;
+  }
+  
+  .secondary-wave {
+    stroke-width: 3px !important;
+  }
+}
+.wave-section {
+  display: none;
+}
+
+.mobile-wave-section {
+  display: block;
+}
+
+@media (min-width: 769px) {
+  .wave-section {
+    display: block;
+  }
+
+  .mobile-wave-section {
+    display: none;
+  }
+}
+@media (max-width: 768px) {
+  /* Target only the logo */
+  .header .logo {
+    width: 150px;
+    height: auto;
+    position: absolute; /* Change from fixed to absolute */
+    top: 10px; /* Reduced top spacing */
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1000; /* Ensure it stays above other content */
+  }
+}
+
+
