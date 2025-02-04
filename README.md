@@ -1,36 +1,89 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# AIS Website
 
-## Getting Started
+# made by RL Team
 
-First, run the development server:
+Welcome to the repository for the **AIS Website**, a modern and interactive web experience built with Next.js, Tailwind CSS, and various exciting animations. This site features AI-related content, animations, and a dynamic layout that adapts to different sections of the website.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+## Table of Contents
+
+- [Installation](#installation)
+- [Directory Structure](#directory-structure)
+- [Technologies](#technologies)
+- [Features](#features)
+
+## Installation
+
+Follow these steps to get the website up and running locally.
+
+1. Clone the repository:
+
+   ```bash
+   git clone https://github.com/yourusername/gyaanendra-aiswebsite-new.git
+   cd gyaanendra-aiswebsite-new
+   ```
+
+2. Install the required dependencies:
+
+   ```bash
+   npm install
+   ```
+
+3. Run the development server:
+
+   ```bash
+   npm run dev
+   ```
+
+4. Visit [http://localhost:3000](http://localhost:3000) to view the website.
+
+## Directory Structure
+
+Here is a breakdown of the directory structure:
+
+```
+└── gyaanendra-aiswebsite-new/
+    ├── README.md                  # This file
+    ├── eslint.config.mjs           # ESLint configuration
+    ├── jsrepo.json                # JSON configuration for project-related settings
+    ├── next.config.ts             # Next.js configuration
+    ├── package.json               # Project dependencies and scripts
+    ├── postcss.config.mjs         # PostCSS configuration for styling
+    ├── tailwind.config.ts         # Tailwind CSS configuration
+    ├── tsconfig.json              # TypeScript configuration
+    ├── Animations/                # Folder for custom animations
+    │   └── SplashCursor/          # Splash screen animation for the cursor
+    │       └── SplashCursor.jsx   # JSX for SplashCursor animation
+    ├── app/                        # Core layout and pages
+    │   ├── globals.css            # Global styles for the app
+    │   ├── layout.tsx             # Layout component for the app
+    │   ├── page.tsx               # Main page of the app
+    │   ├── aboutus/               # About Us page and styles
+    │   ├── home/                  # Home page components
+    │   └── project/               # Project page components
+    ├── components/                # Reusable components for the website
+    │   ├── AnimatedGradient.tsx   # Gradient animation component
+    │   ├── Footer.tsx             # Footer component
+    │   ├── Particles.tsx          # Particle animation component
+    │   ├── aboutus/               # Components related to the About Us page
+    │   ├── global/                # Global UI components like Navbar and Background
+    │   └── home/                  # Components for Home page features
+    ├── public/                    # Public assets like 3D models and static files
+    ├── screens/                   # Specific screens, including About Us page
+    └── screensCss/                # CSS styles for specific screens (e.g., About Us, Landing)
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Technologies
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- **Next.js**: A React framework for building server-rendered React applications.
+- **Tailwind CSS**: A utility-first CSS framework for custom and responsive styling.
+- **TypeScript**: Type-safe JavaScript for improved development experience.
+- **React**: JavaScript library for building user interfaces.
+- **GLTF Models**: 3D assets used in the public directory to create immersive experiences.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Features
 
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- Interactive landing animations with custom cursors.
+- Smooth, animated gradient backgrounds.
+- Parallax particle background for enhanced user experience.
+- Glass effect and blur text styling for a modern, glassmorphism design.
+- Full-page layout with dynamic content sections (About Us, Home, Project).

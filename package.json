@@ -11,8 +11,8 @@
   "dependencies": {
     "@gsap/react": "^2.1.2",
     "@react-spring/web": "^9.7.5",
-    "@react-three/drei": "^9.121.3",
-    "@react-three/fiber": "^8.17.12",
+    "@react-three/drei": "^9.121.4",
+    "@react-three/fiber": "^8.17.14",
     "@studio-freight/react-lenis": "^0.0.47",
     "@tsparticles/engine": "^3.8.0",
     "@tsparticles/react": "^3.0.0",
@@ -22,6 +22,7 @@
     "grainjs": "^1.0.2",
     "gsap": "^3.12.7",
     "lenis": "^1.1.20",
+    "lucide-react": "^0.474.0",
     "next": "15.1.6",
     "postprocessing": "^6.36.6",
     "react": "^19.0.0",
