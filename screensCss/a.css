@@ -296,7 +296,7 @@ body {
 }
 @media (max-width: 768px) {
   /* Target only the logo */
-  .header .logo {
+  .header .logo { 
     width: 150px;
     height: auto;
     position: absolute; /* Change from fixed to absolute */

@@ -12,7 +12,7 @@ const LandingBanner = () => {
   const containerRef = useRef(null);
   const backgroundRef = useRef(null);
   const router = useRouter();
-  const [hasRedirected, setHasRedirected] = useState(false);
+  const hasRedirectedRef = useRef(false);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [backgroundStyle, setBackgroundStyle] = useState("black");
 
@@ -30,7 +30,7 @@ const LandingBanner = () => {
       {
         scale: 0,
         opacity: 0,
-        rotationY: 1080, // 3 full spins
+        rotationY: 1080,
         z: 500,
       },
       {
@@ -52,32 +52,37 @@ const LandingBanner = () => {
     );
 
     // Scroll-triggered animation
-    ScrollTrigger.create({
+    const st = ScrollTrigger.create({
       trigger: containerRef.current,
       start: "top top",
-      end: "bottom+=150% top", // Adjusted scroll range
+      end: "bottom+=100% top",
       scrub: 1,
       pin: true,
       onUpdate: (self) => {
         const progress = self.progress;
 
         gsap.to(logoRef.current, {
-          scale: 1 + progress * 12, // Logo grows while scrolling
-          rotationY: 720 * progress, // 2 full spins
+          scale: 1 + progress * 8,
+          rotationY: 720 * progress,
           z: progress * 1000,
           opacity: 1 - progress * 0.9,
           ease: "power2.out",
         });
 
         gsap.to(textRef.current, {
-          opacity: 1 - progress * 2, // Text fades out
+          opacity: 1 - progress * 2,
           y: -80 * progress,
           ease: "power2.out",
         });
 
-        if (progress > 0.6 && !hasRedirected) {
-          setHasRedirected(true);
-          router.push("/aboutus");
+        if (progress > 0.75 && !hasRedirectedRef.current) {
+          hasRedirectedRef.current = true;
+          // Smooth transition before redirect
+          gsap.to(containerRef.current, {
+            opacity: 0,
+            duration: 0.8,
+            onComplete: () => router.push("/aboutus")
+          });
         }
       },
     });
@@ -88,10 +93,15 @@ const LandingBanner = () => {
     };
 
     window.addEventListener("mousemove", handleMouseMove);
-    return () => window.removeEventListener("mousemove", handleMouseMove);
-  }, [router, hasRedirected]);
+    
+    return () => {
+      st.kill();
+      tl.kill();
+      gsap.killTweensOf([logoRef.current, textRef.current, containerRef.current]);
+      window.removeEventListener("mousemove", handleMouseMove);
+    };
+  }, [router]);
 
-  // Update background dynamically on mouse move
   useEffect(() => {
     if (typeof window === "undefined") return;
 
@@ -132,7 +142,6 @@ const LandingBanner = () => {
         </div>
       </div>
 
-      {/* Interactive Gradient Background */}
       <div
         ref={backgroundRef}
         className="absolute top-0 left-0 w-full h-full"

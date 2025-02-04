@@ -221,7 +221,8 @@ const Footer = () => {
             © 2025 AI Society, Specialization Club of Bennett University Under SCSET BU
           </p>
           <p ref={addToRefs} className="hover:text-white transition-colors group cursor-pointer">
-            Built by RL Team
+            Built by RL Team  
+           
             <span className="block h-0.5 bg-white transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300" />
           </p>
         </div>
