@@ -9,28 +9,34 @@ gsap.registerPlugin(ScrollTrigger);
 
 const projects = [
   { 
-    title: "Synthetic Human", 
-    imagePath: "/A4 - 3.png" 
+    title: "Project 1", 
+    imagePath: "/A4 - 6.png",
+    tag: "AI & Robotics"
   },
   { 
-    title: "Porsche: Dream Machine", 
-    imagePath: "/A4 - 5.png" 
+    title: "Project 2", 
+    imagePath: "/A4 - 5.png",
+    tag: "Automotive Design"
   },
   { 
-    title: "Virtual Ecosystem", 
-    imagePath: "/A4 - 6.png" 
+    title: "Project 3", 
+    imagePath: "/A4 - 6.png",
+    tag: "Sustainability"
   },
   { 
-    title: "Neon Metropolis", 
-    imagePath: "/projects/neon-metropolis.jpg" 
+    title: "Project 4", 
+    imagePath: "/A4 - 5.png",
+    tag: "Urban Design"
   },
   { 
-    title: "AI Revolution", 
-    imagePath: "/projects/ai-revolution.jpg" 
+    title: "Project 5", 
+    imagePath: "/A4 - 6.png",
+    tag: "Technology"
   },
   { 
-    title: "Quantum Interface", 
-    imagePath: "/projects/quantum-interface.jpg" 
+    title: "Project 6", 
+    imagePath: "/A4 - 5.png",
+    tag: "Quantum Computing"
   },
 ];
 
@@ -63,6 +69,33 @@ export default function ProjectsSection() {
   const sectionRef = useRef(null);
   const marqueeRef1 = useRef(null);  // For "PROJECTS"
   const marqueeRef2 = useRef(null);  // For "Let's Dive In"
+
+  // Add mouse move handler for tilt effect
+  const handleMouseMove = (e, card) => {
+    const rect = card.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    
+    const xPercent = (x / rect.width - 0.5) * 2; // -1 to 1
+    const yPercent = (y / rect.height - 0.5) * 2; // -1 to 1
+    
+    gsap.to(card, {
+      rotateY: xPercent * 5, // Adjust multiplier for more/less rotation
+      rotateX: -yPercent * 5,
+      transformPerspective: 1000,
+      duration: 0.5,
+      ease: "power2.out"
+    });
+  };
+
+  const handleMouseLeave = (card) => {
+    gsap.to(card, {
+      rotateY: 0,
+      rotateX: 0,
+      duration: 0.5,
+      ease: "power2.out"
+    });
+  };
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -111,8 +144,8 @@ export default function ProjectsSection() {
           },
           onLeave: () => {
             gsap.to(project, {
-              scale: 0.95,
-              opacity: 0.5,
+              scale: 1,
+              opacity: 1,
               duration: 0.8,
               ease: "power2.in",
             });
@@ -127,9 +160,8 @@ export default function ProjectsSection() {
           },
           onLeaveBack: () => {
             gsap.to(project, {
-              scale: 0.9,
-              opacity: 0,
-              y: 100,
+              scale: 1,
+              opacity: 1,
               duration: 0.8,
               ease: "power2.in",
             });
@@ -138,9 +170,9 @@ export default function ProjectsSection() {
 
         // Set initial state
         gsap.set(project, {
-          scale: 0.9,
-          opacity: 0,
-          y: 100,
+          scale: 1,
+          opacity: 1,
+          y: 0,
         });
       });
     }, sectionRef);
@@ -205,6 +237,11 @@ export default function ProjectsSection() {
               key={project.title}
               ref={(el) => el && (projectRefs.current[i] = el)}
               className="group relative overflow-hidden rounded-lg h-[500px] transition-all duration-700 ease-out"
+              onMouseMove={(e) => handleMouseMove(e, projectRefs.current[i])}
+              onMouseLeave={() => handleMouseLeave(projectRefs.current[i])}
+              style={{
+                transformStyle: 'preserve-3d'
+              }}
             >
               <Image 
                 src={project.imagePath}
@@ -213,14 +250,21 @@ export default function ProjectsSection() {
                 sizes="(max-width: 768px) 100vw, 50vw"
                 className="object-cover transform transition-transform duration-700 ease-out group-hover:scale-105"
                 priority={i < 2}
+                style={{
+                  transformStyle: 'preserve-3d'
+                }}
               />
               
-              <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent opacity-100 transition-opacity duration-500 z-10" />
+              {/* Removed the gradient overlay */}
+              {/* <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent opacity-100 transition-opacity duration-500 z-10" /> */}
               
               <div className="relative z-20 p-6 h-full flex flex-col justify-end transform transition-transform duration-500">
                 <h3 className="text-2xl md:text-3xl font-bold transform transition-transform duration-500 group-hover:translate-x-2">
                   {project.title}
                 </h3>
+                <p className="text-lg md:text-xl font-light transform transition-transform duration-500 group-hover:translate-x-2">
+                  {project.tag}
+                </p>
               </div>
               
               <div className="absolute inset-0 bg-gray-800/50 opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
