@@ -8,6 +8,7 @@ import { useGSAP } from "@gsap/react";
 import { useMotionValue } from "framer-motion";
 import "../../screensCss/a.css";
 import Footer from "@/components/Footer";
+import WaveAnimation from "@/components/WaveAnimation";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -16,6 +17,7 @@ const Page = () => {
   const overlayRef = useRef(null);
   const textRef = useRef(null);
 
+  // (For potential future use—the motion values aren’t used in this snippet.)
   const pathLengths = [
     useMotionValue(0),
     useMotionValue(0),
@@ -34,10 +36,11 @@ const Page = () => {
         const overlayEl = overlayRef.current;
         const textEl = textRef.current;
 
+        // Get the SVG wave elements
         const wavePath = document.querySelector(".wave-path");
         const waveSection = document.querySelector(".wave-section");
 
-        gsap.set(textEl, { opacity: 0, y: 20 });
+        // (The inline initial state for textEl now includes translateY(20px), so we remove the gsap.set call.)
         gsap.set(wavePath, { strokeDasharray: 2000, strokeDashoffset: 2000 });
 
         const waveTimeline = gsap.timeline({
@@ -389,7 +392,6 @@ const Page = () => {
         const secondGroup = containerEl.querySelector(".second-cards");
         const secondCards = secondGroup.querySelectorAll(".card");
         secondCards.forEach((card, index) => {
-          // Initial fade-in and slide
           gsap.set(card, { opacity: 0, y: 30 });
           gsap.to(card, {
             opacity: 1,
@@ -404,10 +406,9 @@ const Page = () => {
             },
           });
 
-          // Additional mobile animation for second group: a faster rotation and scale effect.
           gsap.to(card, {
-            rotation: 5, // slight rotation in degrees
-            scale: 1.05, // a small scale up
+            rotation: 5,
+            scale: 1.05,
             duration: 0.2,
             ease: "power3.out",
             scrollTrigger: {
@@ -441,7 +442,7 @@ const Page = () => {
     { scope: container }
   );
 
-  // Faster flip animation: duration reduced to 0.5 seconds.
+  // Flip animation functions
   const animateFlip = (front, back, content, index) => {
     gsap.to(content, {
       rotationY: 180,
@@ -457,7 +458,6 @@ const Page = () => {
     });
   };
 
-  // Faster reset flip: duration reduced to 0.3 seconds.
   const resetFlip = (front, back, content) => {
     gsap.to(content, {
       rotationY: 0,
@@ -495,7 +495,6 @@ const Page = () => {
               "linear-gradient(180deg, rgba(10,10,10,0.8) 0%, rgba(10,10,10,0) 100%)",
           }}
         />
-
         <section className="hero min-h-screen flex flex-col items-center justify-center px-4 pt-24">
           <div className="flex flex-col md:flex-row items-start justify-center w-full max-w-6xl mx-auto">
             <div className="flex-1 md:pr-10">
@@ -531,7 +530,6 @@ const Page = () => {
             </div>
           </div>
         </section>
-
         <section className="wave-section min-h-[50vh] relative">
           <div
             ref={textRef}
@@ -540,7 +538,8 @@ const Page = () => {
               position: "absolute",
               top: "80%",
               left: "50%",
-              transform: "translate(-50%, -50%)",
+              // Set the initial transform to match GSAP’s starting y offset
+              transform: "translateX(-50%) translateY(20px)",
               zIndex: 10,
               opacity: 0,
             }}
@@ -558,10 +557,11 @@ const Page = () => {
               fill="none"
               stroke="#ffffff"
               strokeWidth="4"
+              strokeDasharray="2000"
+              strokeDashoffset="2000"
             />
           </svg>
         </section>
-
         <section className="first-cards cards-group relative min-h-screen px-4 md:px-0">
           <h2 className="cards-header text-white text-2xl md:text-3xl text-center mb-8 pt-8 md:pt-0">
             TECHNICAL TEAMS
@@ -584,7 +584,6 @@ const Page = () => {
             ))}
           </div>
         </section>
-
         <section className="second-cards cards-group relative min-h-screen">
           <h2 className="cards-header text-white text-2xl md:text-3xl text-center mb-8 pt-8 md:pt-0">
             COMMUNITY OUTREACH
@@ -605,7 +604,6 @@ const Page = () => {
             />
           ))}
         </section>
-
         <section className="footer min-h-screen flex items-center justify-center bg-dark">
           <Footer />
         </section>

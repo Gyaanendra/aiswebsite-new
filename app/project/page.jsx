@@ -4,6 +4,7 @@ import { ReactLenis } from "@studio-freight/react-lenis";
 import gsap from "gsap";
 import ScrollTrigger from "gsap/ScrollTrigger";
 import Image from "next/image";
+import Footer from "../../components/Footer";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -231,6 +232,10 @@ export default function ProjectsSection() {
           ))}
         </div>
       </section>
+      <section className="footer w-full flex items-center justify-center bg-black">
+    <Footer />
+</section>
+
     </SmoothScrollWrapper>
   );
 }

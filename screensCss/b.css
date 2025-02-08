@@ -1,0 +1,133 @@
+@import url("https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&display=swap");
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  html, body {
+    width: 100%;
+    height: 100%;
+    font-family: "Instrument Serif";
+    background-color: #000;
+    color: #fff;
+  }
+  
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  
+  section {
+    position: relative;
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .hero {
+    min-height: 100vh; /* Ensures it takes full viewport height */
+  }
+  
+  .hero .img {
+    width: 50%;
+    aspect-ratio: 1;
+  }
+  
+  .main {
+    width: 100vw;
+    min-height: 100vh; /* Prevents stretching beyond viewport */
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .row {
+    position: relative;
+    width: 100vw;
+    margin: 1em 0;
+    display: flex;
+    justify-content: center;
+    gap: 2em;
+  }
+  
+  .card {
+    position: relative;
+    width: 40%;
+    height: 360px;
+    border-radius: 0.75em;
+    overflow: hidden;
+    will-change: transform;
+  }
+  
+  .main-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%); /* Fixed syntax */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .logo {
+    width: 150px;
+    height: 150px;
+    border: 2px solid #fff;
+    border-radius: 100%;
+    overflow: hidden;
+    transform: scale(0);
+  }
+  
+  .copy {
+    margin: 2em 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .line {
+    position: relative;
+    margin: 0.5em 0;
+    width: max-content;
+    height: 28px;
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%); /* Fixed syntax */
+  }
+  
+  .line p {
+    position: relative;
+    font-size: 24px;
+    transform: translateY(30px);
+  }
+  
+  button {
+    position: relative;
+    padding: 1em 2em;
+    font-size: 18px;
+    color: #fff;
+    border: 2px solid #fff;
+    border-radius: 8em;
+    background: none;
+    outline: none;
+    transform: translateY(30px);
+    opacity: 0;
+  }
+  
+  /* Footer Fix */
+  .footer {
+    width: 100%;
+    padding: 1em 0;
+    text-align: center;
+    background: #000;
+    color: #fff;
+  }
+  
+  @media (max-width: 900px) {
+    .card {
+      width: 50%;
+      height: 240px;
+    }
+  }
+  

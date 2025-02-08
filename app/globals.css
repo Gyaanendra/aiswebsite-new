@@ -23,6 +23,7 @@ button,
     background-position: 100% 100%;
   }
 }
+
 @keyframes pulse {
   0%,
   100% {
@@ -36,6 +37,7 @@ button,
 .animate-glitch {
   animation: glitch 2s linear infinite;
 }
+
 .animate-pulse {
   animation: pulse 3s ease-in-out infinite;
 }
@@ -84,15 +86,29 @@ button,
   mix-blend-mode: difference;
 }
 
-/* Add this to your global CSS file or a CSS module */
+/* Hide scrollbar for Chrome, Safari and Opera */
+::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+html {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;     /* Firefox */
+}
+
 @media (max-width: 768px) {
   .custom-cursor {
     display: none !important;
   }
 }
+
 #particles canvas {
   z-index: -1;
   height: 100%;
   width: 100%;
   position: absolute;
+}
+footer {
+  min-height: auto !important;
 }

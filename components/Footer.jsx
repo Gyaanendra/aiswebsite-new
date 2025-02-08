@@ -237,9 +237,12 @@ const Footer = () => {
       {/* Scroll to Top Button */}
       <button
         onClick={scrollToTop}
-        className={`fixed bottom-8 right-1 p-3 bg-gray-800 rounded-full shadow-lg hover:bg-gray-700 transition-all transform group ${
+        className={`fixed bottom-8 right-0 m-16 p-3 bg-gray-800 rounded-full shadow-lg hover:bg-gray-700 transition-all transform group ${
           showScrollTop ? 'translate-y-0 opacity-100' : 'translate-y-16 opacity-0'
         }`}
+        
+        
+        
         aria-label="Scroll to top"
       >
         <ArrowUp className="w-5 h-5 group-hover:-translate-y-1 transition-transform duration-300" />

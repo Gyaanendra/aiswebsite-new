@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import CustomCursor from "@/components/global/CustomCursor";
 import GlassNavbar from "@/components/global/GlassNavbar";
+
 // import ParticleBackground from "@/components/home/ParticleBackground"
 
 
@@ -32,10 +33,12 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         {" "}
+     
         
         <GlassNavbar />
         <CustomCursor /> {/* Add this line */}
         {/* <ParticleBackground /> */}
+        
         
      
         {children}

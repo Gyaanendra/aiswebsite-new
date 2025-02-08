@@ -7,6 +7,7 @@ export default function Home() {
   return (
     <main className="bg-black">
       {/* Add the particle background */}
+      
       <LandingBanner />
       <ParticlesComponent id="particles-1" />
 
