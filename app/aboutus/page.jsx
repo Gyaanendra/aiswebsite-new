@@ -8,7 +8,7 @@ import { useGSAP } from "@gsap/react";
 import { useMotionValue } from "framer-motion";
 import "../../screensCss/a.css";
 import Footer from "@/components/Footer";
-import WaveAnimation from "@/components/WaveAnimation";
+
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -25,24 +25,52 @@ const Page = () => {
     useMotionValue(0),
     useMotionValue(0),
   ];
+  // Define three different wave shapes for the foreground
+  const waveShape1 =
+    "M0,200 C240,0 480,400 720,200 C960,0 1200,400 1440,200 L1440,400 L0,400 Z";
+  const waveShape2 =
+    "M0,200 C240,100 480,300 720,200 C960,100 1200,300 1440,200 L1440,400 L0,400 Z";
+  const waveShape3 =
+    "M0,200 C240,300 480,100 720,200 C960,300 1200,100 1440,200 L1440,400 L0,400 Z";
+
+  // Define three different wave shapes for the background (slightly offset vertically)
+  const waveShapeBg1 =
+    "M0,220 C240,20 480,380 720,220 C960,20 1200,380 1440,220 L1440,400 L0,400 Z";
+  const waveShapeBg2 =
+    "M0,220 C240,120 480,280 720,220 C960,120 1200,280 1440,220 L1440,400 L0,400 Z";
+  const waveShapeBg3 =
+    "M0,220 C240,320 480,120 720,220 C960,320 1200,120 1440,220 L1440,400 L0,400 Z";
 
   useGSAP(
     () => {
       const mm = gsap.matchMedia();
 
-      // Desktop Animations
+      // ---------------------------
+      // Desktop Animations (min-width: 769px)
+      // ---------------------------
       mm.add("(min-width: 769px)", () => {
         const containerEl = container.current;
         const overlayEl = overlayRef.current;
         const textEl = textRef.current;
-
-        // Get the SVG wave elements
-        const wavePath = document.querySelector(".wave-path");
         const waveSection = document.querySelector(".wave-section");
 
-        // (The inline initial state for textEl now includes translateY(20px), so we remove the gsap.set call.)
-        gsap.set(wavePath, { strokeDasharray: 2000, strokeDashoffset: 2000 });
+        // Select the two wave paths by class name:
+        const wavePathFg = document.querySelector(".wave-path-fg");
+        const wavePathBg = document.querySelector(".wave-path-bg");
 
+        // Set initial states for both waves (using strokeDash settings plus the starting path)
+        gsap.set(wavePathFg, {
+          strokeDasharray: 2000,
+          strokeDashoffset: 2000,
+          attr: { d: waveShape1 },
+        });
+        gsap.set(wavePathBg, {
+          strokeDasharray: 2000,
+          strokeDashoffset: 2000,
+          attr: { d: waveShapeBg1 },
+        });
+
+        // Create a scroll-triggered timeline for the advanced wave animations
         const waveTimeline = gsap.timeline({
           scrollTrigger: {
             trigger: waveSection,
@@ -52,9 +80,87 @@ const Page = () => {
           },
         });
 
+        // ----- Foreground wave animations -----
         waveTimeline
-          .to(wavePath, { strokeDashoffset: 0 }, 0)
-          .to(wavePath, { scaleY: 1, y: 0 }, 0)
+          .to(wavePathFg, { strokeDashoffset: 0, duration: 1, ease: "power2.out" }, 0)
+          .to(
+            wavePathFg,
+            { attr: { d: waveShape2 }, duration: 1, ease: "power1.inOut" },
+            0.3
+          )
+          .to(
+            wavePathFg,
+            { attr: { d: waveShape3 }, duration: 1, ease: "power1.inOut" },
+            0.6
+          )
+          .to(
+            wavePathFg,
+            { attr: { d: waveShape1 }, duration: 1, ease: "power1.inOut" },
+            0.9
+          )
+          .to(
+            wavePathFg,
+            { strokeWidth: 8, duration: 1, ease: "power1.inOut" },
+            0.3
+          )
+          .to(
+            wavePathFg,
+            { stroke: "#e8e8e8", duration: 1, ease: "power1.inOut" },
+            0.3
+          )
+          .to(
+            wavePathFg,
+            { strokeWidth: 4, duration: 1, ease: "power1.inOut" },
+            0.9
+          )
+          .to(
+            wavePathFg,
+            { stroke: "#f5f5f5", duration: 1, ease: "power1.inOut" },
+            0.9
+          );
+
+        // ----- Background wave animations -----
+        waveTimeline
+          .to(wavePathBg, { strokeDashoffset: 0, duration: 1, ease: "power2.out" }, 0)
+          .to(
+            wavePathBg,
+            { attr: { d: waveShapeBg2 }, duration: 1, ease: "power1.inOut" },
+            0.3
+          )
+          .to(
+            wavePathBg,
+            { attr: { d: waveShapeBg3 }, duration: 1, ease: "power1.inOut" },
+            0.6
+          )
+          .to(
+            wavePathBg,
+            { attr: { d: waveShapeBg1 }, duration: 1, ease: "power1.inOut" },
+            0.9
+          )
+          .to(
+            wavePathBg,
+            { strokeWidth: 4, duration: 1, ease: "power1.inOut" },
+            0.3
+          )
+          .to(
+            wavePathBg,
+            { stroke: "#d3d3d3", duration: 1, ease: "power1.inOut" },
+            0.3
+          )
+          .to(
+            wavePathBg,
+            { strokeWidth: 2, duration: 1, ease: "power1.inOut" },
+            0.9
+          )
+          .to(
+            wavePathBg,
+            { stroke: "#ffffff", duration: 1, ease: "power1.inOut" },
+            0.9
+          );
+
+        // Animate scroll-text in the wave section
+        gsap.set(textEl, { opacity: 0, y: 20 });
+        waveTimeline
           .to(textEl, { opacity: 1, y: 0, duration: 0.5 }, 0.2)
           .to(textEl, { opacity: 0, y: -40, duration: 0.5 }, 0.8);
 
@@ -82,9 +188,13 @@ const Page = () => {
           },
         });
 
-        // Animate Headers in First and Second Card Groups
-        const firstHeader = containerEl.querySelector(".first-cards .cards-header");
-        const secondHeader = containerEl.querySelector(".second-cards .cards-header");
+        // (Animations for card headers and groups below remain unchanged)
+        const firstHeader = containerEl.querySelector(
+          ".first-cards .cards-header"
+        );
+        const secondHeader = containerEl.querySelector(
+          ".second-cards .cards-header"
+        );
 
         gsap.from(firstHeader, {
           opacity: 0,
@@ -288,12 +398,68 @@ const Page = () => {
         };
       });
 
-      // Mobile animations (sped up further)
+      // ---------------------------
+      // Mobile Animations (max-width: 768px)
+      // ---------------------------
       mm.add("(max-width: 768px)", () => {
         const containerEl = container.current;
         const overlayEl = overlayRef.current;
         const textEl = textRef.current;
         const waveSection = document.querySelector(".wave-section");
+
+        // For mobile, select the wave paths and set their starting d attribute
+        const wavePathFg = document.querySelector(".wave-path-fg");
+        const wavePathBg = document.querySelector(".wave-path-bg");
+        gsap.set(wavePathFg, { attr: { d: waveShape1 } });
+        gsap.set(wavePathBg, { attr: { d: waveShapeBg1 } });
+
+        // Animate the foreground wave morph on scroll (simpler version)
+        gsap.to(wavePathFg, {
+          attr: { d: waveShape2 },
+          duration: 0.5,
+          ease: "power1.inOut",
+          scrollTrigger: {
+            trigger: waveSection,
+            start: "top 80%",
+            end: "center center",
+            scrub: 0.4,
+          },
+        });
+        gsap.to(wavePathFg, {
+          attr: { d: waveShape1 },
+          duration: 0.5,
+          ease: "power1.inOut",
+          scrollTrigger: {
+            trigger: waveSection,
+            start: "center center",
+            end: "bottom center",
+            scrub: 0.4,
+          },
+        });
+
+        // Animate the background wave morph on scroll (simpler version)
+        gsap.to(wavePathBg, {
+          attr: { d: waveShapeBg2 },
+          duration: 0.5,
+          ease: "power1.inOut",
+          scrollTrigger: {
+            trigger: waveSection,
+            start: "top 80%",
+            end: "center center",
+            scrub: 0.4,
+          },
+        });
+        gsap.to(wavePathBg, {
+          attr: { d: waveShapeBg1 },
+          duration: 0.5,
+          ease: "power1.inOut",
+          scrollTrigger: {
+            trigger: waveSection,
+            start: "center center",
+            end: "bottom center",
+            scrub: 0.4,
+          },
+        });
 
         gsap.to(textEl, {
           opacity: 1,
@@ -330,8 +496,12 @@ const Page = () => {
           },
         });
 
-        const firstHeader = containerEl.querySelector(".first-cards .cards-header");
-        const secondHeader = containerEl.querySelector(".second-cards .cards-header");
+        const firstHeader = containerEl.querySelector(
+          ".first-cards .cards-header"
+        );
+        const secondHeader = containerEl.querySelector(
+          ".second-cards .cards-header"
+        );
 
         gsap.from(firstHeader, {
           opacity: 0,
@@ -538,7 +708,6 @@ const Page = () => {
               position: "absolute",
               top: "80%",
               left: "50%",
-              // Set the initial transform to match GSAP’s starting y offset
               transform: "translateX(-50%) translateY(20px)",
               zIndex: 10,
               opacity: 0,
@@ -551,11 +720,22 @@ const Page = () => {
             viewBox="0 0 1440 400"
             preserveAspectRatio="none"
           >
+            {/* Background wave (lower stroke weight, different starting shape) */}
             <path
-              className="wave-path"
-              d="M0,200 C240,0 480,400 720,200 C960,0 1200,400 1440,200 L1440,400 L0,400 Z"
+              className="wave-path wave-path-bg"
+              d={waveShapeBg1}
               fill="none"
-              stroke="#ffffff"
+              stroke="#666666"
+              strokeWidth="2"
+              strokeDasharray="2000"
+              strokeDashoffset="2000"
+            />
+            {/* Foreground wave */}
+            <path
+              className="wave-path wave-path-fg"
+              d={waveShape1}
+              fill="none"
+              stroke="#888888"
               strokeWidth="4"
               strokeDasharray="2000"
               strokeDashoffset="2000"
@@ -604,7 +784,7 @@ const Page = () => {
             />
           ))}
         </section>
-        <section className="footer min-h-screen flex items-center justify-center bg-dark">
+        <section className="footer min-h-screen flex items-center justify-center bg-black">
           <Footer />
         </section>
       </div>

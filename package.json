@@ -27,6 +27,7 @@
     "postprocessing": "^6.36.6",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+    "react-tsparticles": "^2.12.2",
     "three": "^0.172.0"
   },
   "devDependencies": {

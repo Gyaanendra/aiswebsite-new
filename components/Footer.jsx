@@ -5,7 +5,7 @@ import { ScrollTrigger } from 'gsap/dist/ScrollTrigger';
 import Lenis from '@studio-freight/lenis';
 import { Github, Instagram, Linkedin, ArrowUp } from 'lucide-react';
 import Image from "next/image";
-import NeuralNetworkVisualizer from './NeuralNetworkVisualizer';
+
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -227,12 +227,7 @@ const Footer = () => {
           </p>
         </div>
       </div>
-      <div className="mt-12 border-t border-gray-800 pt-8">
-        <h3 ref={addToRefs} className="text-xl font-bold text-center mb-4">
-          Explore Neural Network
-        </h3>
-        <NeuralNetworkVisualizer />
-      </div>
+     
 
       {/* Scroll to Top Button */}
       <button
