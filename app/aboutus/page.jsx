@@ -655,7 +655,7 @@ const Page = () => {
           }}
         />
         <header className="header">
-          <img src="/logo.png" alt="Company Logo" className="logo" />
+          <img src="/ais.png" alt="Company Logo" className="logo" />
         </header>
         <div
           ref={overlayRef}

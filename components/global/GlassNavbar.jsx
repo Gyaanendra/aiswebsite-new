@@ -21,7 +21,6 @@ const GlassNavbar = () => {
     const checkScreenSize = () => {
       setIsMobile(window.innerWidth <= 768)
     }
-
     checkScreenSize()
     window.addEventListener("resize", checkScreenSize)
     return () => window.removeEventListener("resize", checkScreenSize)
@@ -33,7 +32,11 @@ const GlassNavbar = () => {
       if (menuOpen) {
         // Ensure the overlay is visible before animating.
         mobileMenuOverlayRef.current.style.display = "flex"
-        gsap.fromTo(mobileMenuOverlayRef.current, { y: "-100%" }, { y: "0%", duration: 0.6, ease: "power2.out" })
+        gsap.fromTo(
+          mobileMenuOverlayRef.current,
+          { y: "-100%" },
+          { y: "0%", duration: 0.6, ease: "power2.out" }
+        )
         // Animate each nav link with a stagger.
         const navLinks = mobileMenuOverlayRef.current.querySelectorAll("nav a")
         gsap.fromTo(
@@ -46,7 +49,7 @@ const GlassNavbar = () => {
             ease: "power2.out",
             stagger: 0.1,
             delay: 0.3,
-          },
+          }
         )
       } else {
         gsap.to(mobileMenuOverlayRef.current, {
@@ -54,7 +57,8 @@ const GlassNavbar = () => {
           duration: 0.6,
           ease: "power2.in",
           onComplete: () => {
-            if (mobileMenuOverlayRef.current) mobileMenuOverlayRef.current.style.display = "none"
+            if (mobileMenuOverlayRef.current)
+              mobileMenuOverlayRef.current.style.display = "none"
           },
         })
       }
@@ -82,7 +86,7 @@ const GlassNavbar = () => {
         }}
       >
         {isMobile ? (
-          // Mobile Header with title & animated hamburger button.
+          // Mobile Header with title & hamburger button.
           <div
             style={{
               display: "flex",
@@ -96,6 +100,7 @@ const GlassNavbar = () => {
                 fontSize: "1rem",
                 fontWeight: "700",
                 margin: 0,
+                textShadow: "0px 0px 4px rgba(0, 0, 0, 0.5)",
               }}
             >
               Artificial Intelligence Society
@@ -108,6 +113,10 @@ const GlassNavbar = () => {
                 cursor: "pointer",
                 padding: "0.5rem",
                 color: "#FFFFFF",
+                fontSize: "1.5rem",
+                textShadow: "0px 0px 4px rgba(0, 0, 0, 0.5)",
+                transform: "none", // override global styles
+                opacity: 1,        // override global styles
               }}
             >
               ⋮
@@ -181,7 +190,7 @@ const GlassNavbar = () => {
         )}
       </div>
 
-      {/* Mobile Full-Screen Overlay Menu with Blue Background */}
+      {/* Mobile Full-Screen Overlay Menu */}
       {isMobile && (
         <div
           ref={mobileMenuOverlayRef}
@@ -191,7 +200,7 @@ const GlassNavbar = () => {
             left: 0,
             width: "100vw",
             height: "100vh",
-            background: "#191919", // Changed to blue
+            background: "#191919",
             display: "none",
             flexDirection: "column",
             alignItems: "center",
@@ -234,6 +243,8 @@ const GlassNavbar = () => {
                 width: "40px",
                 height: "40px",
                 borderRadius: "50%",
+                transform: "none", // override global styles
+                opacity: 1,        // override global styles
               }}
             >
               ✕
@@ -282,6 +293,7 @@ const GlassNavbar = () => {
               padding: "1.5rem",
               width: "100%",
               marginBottom: "1rem",
+              color: "#000", // ensure text inside is visible
             }}
           >
             <h4
@@ -291,9 +303,7 @@ const GlassNavbar = () => {
                 fontWeight: "500",
               }}
             >
-              Subscribe to
-              <br />
-              our newsletter
+              SUBSCRIBE TO OUR NEW SETTLER
             </h4>
             <div
               style={{
@@ -310,6 +320,7 @@ const GlassNavbar = () => {
                   borderRadius: "0.5rem",
                   border: "none",
                   backgroundColor: "#F5F5F5",
+                  color: "#000",
                 }}
               />
               <button
@@ -319,6 +330,8 @@ const GlassNavbar = () => {
                   border: "none",
                   borderRadius: "0.5rem",
                   cursor: "pointer",
+                  transform: "none",
+                  opacity: 1,
                 }}
               >
                 →
@@ -335,7 +348,6 @@ const GlassNavbar = () => {
               gap: "1rem",
             }}
           >
-            {/* "LET'S TALK" now acts as a mailto link */}
             <a
               href="mailto:ais@bennett.edu.in"
               style={{
@@ -350,30 +362,13 @@ const GlassNavbar = () => {
                 alignItems: "center",
                 justifyContent: "space-between",
                 textDecoration: "none",
-                color: "inherit",
+                color: "black",
               }}
             >
               LET'S TALK
               <span>💬</span>
             </a>
-            <button
-              style={{
-                width: "100%",
-                padding: "1rem",
-                backgroundColor: "#000000",
-                color: "#FFFFFF",
-                border: "none",
-                borderRadius: "1rem",
-                fontSize: "1rem",
-                fontWeight: "500",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "space-between",
-              }}
-            >
-              LABS
-              <span>↗</span>
-            </button>
+          
           </div>
         </div>
       )}

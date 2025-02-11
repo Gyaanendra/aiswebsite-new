@@ -6,6 +6,7 @@ import ScrollTrigger from 'gsap/ScrollTrigger';
 import Image from 'next/image';
 import Link from 'next/link';
 import Footer from '@/components/Footer';
+import "../../screensCss/c.css";
 gsap.registerPlugin(ScrollTrigger);
 
 const projects = [
@@ -187,6 +188,20 @@ export default function ProjectsSection() {
 
   return (
     <SmoothScrollWrapper>
+            <header className="header">
+  <div className="logo-container">
+    <Image
+      src="/ais.png"
+      alt="AI Society Logo"
+      width={250}
+      height={100}
+      className="object-contain"
+      priority
+    />
+  </div>
+
+</header>
+
       <section ref={sectionRef} className="min-h-screen bg-black text-white p-8 md:p-16">
         <div className="section-header mb-32 relative overflow-hidden pt-24">
           {/* First marquee - PROJECTS */}

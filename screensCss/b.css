@@ -130,4 +130,35 @@
       height: 240px;
     }
   }
+  .header {
+    position: fixed;
+    top: 10;
+    left: 0;
+    width: 100%;
+    background-color: transparent; /* Makes it fully transparent */
+    padding: 15px 20px; /* Adjust padding to match navbar */
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    z-index: 1000;
+}
+
+  .logo-container {
+    position: absolute;
+    top: 10px; /* Adjust to align with navbar */
+    left: 20px; /* Adjust for spacing */
+    width: 250px; /* Adjust size as needed */
+    height: auto;
+      filter: drop-shadow(0 0 10px #ffffff80);
+  }
   
+  @media (max-width: 768px) {
+    .header {
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.5s ease-in-out;
+    }
+}
+
+  
+
