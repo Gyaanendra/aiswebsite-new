@@ -25,7 +25,7 @@ const leftImages = [
       "AIS proudly participated in TechArena 2025, presenting innovative projects and connecting with a vibrant community of tech enthusiasts and industry experts."
   },
   { 
-    src: "/workshop.png", 
+    src: "/Workshop.png", 
     alt: "Workshop", 
     overlayTitle: "Workshop", 
     overlayText:
