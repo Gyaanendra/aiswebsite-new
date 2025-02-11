@@ -8,7 +8,7 @@ import { ReactLenis } from "lenis/react";
 import "../../screensCss/b.css";
 import Footer from "@/components/Footer";
 
-// Card arrays
+// Card arrays for the main event cards
 const leftImages = [
   { 
     src: "/AI 101.png", 
@@ -55,6 +55,25 @@ const rightImages = [
     overlayText:
       "Freshers Orientation and Club Carnival for the new batch of students. Included a variety of fun demos, games, and fun events."
   }
+];
+
+// New arrays for cube images – one object per face in the order: front, back, right, left, top, bottom.
+const leftCubeImages = [
+  { src: "/cube-left-front.png", alt: "Left Cube Front" },
+  { src: "/cube-left-back.png", alt: "Left Cube Back" },
+  { src: "/cube-left-right.png", alt: "Left Cube Right" },
+  { src: "/cube-left-left.png", alt: "Left Cube Left" },
+  { src: "/cube-left-top.png", alt: "Left Cube Top" },
+  { src: "/cube-left-bottom.png", alt: "Left Cube Bottom" }
+];
+
+const rightCubeImages = [
+  { src: "/cube-right-front.png", alt: "Right Cube Front" },
+  { src: "/cube-right-back.png", alt: "Right Cube Back" },
+  { src: "/cube-right-right.png", alt: "Right Cube Right" },
+  { src: "/cube-right-left.png", alt: "Right Cube Left" },
+  { src: "/cube-right-top.png", alt: "Right Cube Top" },
+  { src: "/cube-right-bottom.png", alt: "Right Cube Bottom" }
 ];
 
 export default function Events() {
@@ -290,17 +309,17 @@ export default function Events() {
         </div>
       </header>
 
-      {/* The hero section includes two interactive 3D cubes */}
+      {/* Hero section with interactive 3D cubes */}
       <section className="hero" style={{ position: "relative", overflow: "hidden" }}>
         {/* Left 3D Cube */}
         <div className="threeD-container left-cube">
           <div className="cube-wrapper">
             <div className="cube">
-              {["front", "back", "right", "left", "top", "bottom"].map((face) => (
+              {["front", "back", "right", "left", "top", "bottom"].map((face, index) => (
                 <div
                   key={face}
                   className={`face face-${face}`}
-                  style={{ backgroundImage: `url(${leftImages[0].src})` }}
+                  style={{ backgroundImage: `url(${leftCubeImages[index].src})` }}
                 />
               ))}
             </div>
@@ -310,11 +329,11 @@ export default function Events() {
         <div className="threeD-container right-cube">
           <div className="cube-wrapper">
             <div className="cube">
-              {["front", "back", "right", "left", "top", "bottom"].map((face) => (
+              {["front", "back", "right", "left", "top", "bottom"].map((face, index) => (
                 <div
                   key={face}
                   className={`face face-${face}`}
-                  style={{ backgroundImage: `url(${rightImages[0].src})` }}
+                  style={{ backgroundImage: `url(${rightCubeImages[index].src})` }}
                 />
               ))}
             </div>

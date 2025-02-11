@@ -33,6 +33,6 @@
     "components/home/ParticleBackground.jsx",
     "components/home/LandingAnimation.jsx",
     "components/global/GlassNavbar.jsx"
-  ],
+, "data/data.js"  ],
   "exclude": ["node_modules"]
 }

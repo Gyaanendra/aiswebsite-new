@@ -1,5 +1,6 @@
 "use client";
 import { useRef, useEffect } from 'react';
+
 import { ReactLenis } from '@studio-freight/react-lenis';
 import gsap from 'gsap';
 import ScrollTrigger from 'gsap/ScrollTrigger';
@@ -7,40 +8,11 @@ import Image from 'next/image';
 import Link from 'next/link';
 import Footer from '@/components/Footer';
 import "../../screensCss/c.css";
+import { data } from "@/data/data";
 gsap.registerPlugin(ScrollTrigger);
 
-const projects = [
-  { 
-    title: "Project 1", 
-    imagePath: "/A4 - 6.png",
-    tag: "AI & Robotics"
-  },
-  { 
-    title: "Project 2", 
-    imagePath: "/A4 - 5.png",
-    tag: "Automotive Design"
-  },
-  { 
-    title: "Project 3", 
-    imagePath: "/A4 - 6.png",
-    tag: "Sustainability"
-  },
-  { 
-    title: "Project 4", 
-    imagePath: "/A4 - 5.png",
-    tag: "Urban Design"
-  },
-  { 
-    title: "Project 5", 
-    imagePath: "/A4 - 6.png",
-    tag: "Technology"
-  },
-  { 
-    title: "Project 6", 
-    imagePath: "/A4 - 5.png",
-    tag: "Quantum Computing"
-  },
-];
+
+const projects =data.projects 
 
 // Wrapper component for smooth scrolling
 function SmoothScrollWrapper({ children }) {
@@ -259,7 +231,7 @@ export default function ProjectsSection() {
                 transformStyle: 'preserve-3d'
               }}
             >
-              <Link href={`/projects/${i + 1}`}>
+              <Link href={`/project/${i + 1}`}>
                 <Image 
                   src={project.imagePath}
                   alt={project.title}
