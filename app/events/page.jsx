@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -39,7 +39,7 @@ const rightImages = [
     alt: "AI Hunt 2.0", 
     overlayTitle: "AI Hunt 2.0", 
     overlayText:
-      "AI Hunt 2.0 was an exciting 48-hour online cryptic treasure hunt, featuring a Gen AI workshop, an info session, and dynamic problem-solving challenges that pushed the boundaries of AI exploration."
+      "AI Hunt 2.0 was an exciting 48‑hour online cryptic treasure hunt, featuring a Gen AI workshop, an info session, and dynamic problem‑solving challenges that pushed the boundaries of AI exploration."
   },
   { 
     src: "/Project Showcase.png", 
@@ -57,7 +57,7 @@ const rightImages = [
   }
 ];
 
-// New arrays for cube images – one object per face in the order: front, back, right, left, top, bottom.
+// Desktop cube images (used when NOT on mobile)
 const leftCubeImages = [
   { src: "/cube-left-front.png", alt: "Left Cube Front" },
   { src: "/cube-left-back.png", alt: "Left Cube Back" },
@@ -77,8 +77,15 @@ const rightCubeImages = [
 ];
 
 export default function Events() {
+  // State to check if we are on mobile
+  const [isMobile, setIsMobile] = useState(false);
+
   useEffect(() => {
-    // Register GSAP plugins
+    // Set initial mobile state and update on resize
+    setIsMobile(window.innerWidth < 768);
+    const handleResize = () => setIsMobile(window.innerWidth < 768);
+    window.addEventListener("resize", handleResize);
+
     gsap.registerPlugin(ScrollTrigger);
     const mm = gsap.matchMedia();
 
@@ -288,11 +295,36 @@ export default function Events() {
     window.addEventListener("mousemove", handleMouseMove);
 
     return () => {
+      window.removeEventListener("resize", handleResize);
+      window.removeEventListener("mousemove", handleMouseMove);
       ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
       mm.revert();
-      window.removeEventListener("mousemove", handleMouseMove);
     };
   }, []);
+
+  // For mobile, create cube faces using card images.
+  // Here, we only use the first two images from leftImages to avoid showing Workshop.png.
+  const leftCubeFaces = isMobile
+    ? [
+        { src: leftImages[0].src, alt: leftImages[0].alt },
+        { src: leftImages[1].src, alt: leftImages[1].alt },
+        { src: leftImages[0].src, alt: leftImages[0].alt },
+        { src: leftImages[1].src, alt: leftImages[1].alt },
+        { src: leftImages[0].src, alt: leftImages[0].alt },
+        { src: leftImages[1].src, alt: leftImages[1].alt },
+      ]
+    : leftCubeImages;
+
+  const rightCubeFaces = isMobile
+    ? [
+        { src: rightImages[0].src, alt: rightImages[0].alt },
+        { src: rightImages[1].src, alt: rightImages[1].alt },
+        { src: rightImages[2].src, alt: rightImages[2].alt },
+        { src: rightImages[0].src, alt: rightImages[0].alt },
+        { src: rightImages[1].src, alt: rightImages[1].alt },
+        { src: rightImages[2].src, alt: rightImages[2].alt },
+      ]
+    : rightCubeImages;
 
   return (
     <ReactLenis root>
@@ -311,29 +343,28 @@ export default function Events() {
 
       {/* Hero section with interactive 3D cubes */}
       <section className="hero" style={{ position: "relative", overflow: "hidden" }}>
-        {/* Left 3D Cube */}
-        <div className="threeD-container left-cube">
+        {/* On mobile, use "top-cube" and "bottom-cube"; on desktop use left/right */}
+        <div className={`threeD-container ${isMobile ? "top-cube" : "left-cube"}`}>
           <div className="cube-wrapper">
             <div className="cube">
               {["front", "back", "right", "left", "top", "bottom"].map((face, index) => (
                 <div
                   key={face}
                   className={`face face-${face}`}
-                  style={{ backgroundImage: `url(${leftCubeImages[index].src})` }}
+                  style={{ backgroundImage: `url(${leftCubeFaces[index].src})` }}
                 />
               ))}
             </div>
           </div>
         </div>
-        {/* Right 3D Cube */}
-        <div className="threeD-container right-cube">
+        <div className={`threeD-container ${isMobile ? "bottom-cube" : "right-cube"}`}>
           <div className="cube-wrapper">
             <div className="cube">
               {["front", "back", "right", "left", "top", "bottom"].map((face, index) => (
                 <div
                   key={face}
                   className={`face face-${face}`}
-                  style={{ backgroundImage: `url(${rightCubeImages[index].src})` }}
+                  style={{ backgroundImage: `url(${rightCubeFaces[index].src})` }}
                 />
               ))}
             </div>
@@ -410,7 +441,7 @@ export default function Events() {
           z-index: 0;
           opacity: 1;
         }
-        /* Position left and right cubes */
+        /* Desktop positions */
         .left-cube {
           top: 20%;
           left: 10%;
@@ -418,6 +449,19 @@ export default function Events() {
         .right-cube {
           top: 20%;
           right: 10%;
+        }
+        /* Mobile positions: one cube on top and one on bottom */
+        @media (max-width: 767px) {
+          .top-cube {
+            top: 5%;
+            left: 50%;
+            transform: translateX(-50%);
+          }
+          .bottom-cube {
+            bottom: 5%;
+            left: 50%;
+            transform: translateX(-50%);
+          }
         }
         .cube-wrapper {
           width: 100%;
@@ -450,7 +494,7 @@ export default function Events() {
           to { transform: rotateX(360deg) rotateY(360deg); }
         }
 
-        /* New styles to ensure proper horizontal alignment on desktop */
+        /* Row and Card styles */
         .row {
           display: flex;
           justify-content: center;
@@ -462,8 +506,6 @@ export default function Events() {
           margin: 0 1rem;
           max-width: 500px;
         }
-
-        /* Hover container and overlay styles for cards */
         .hover-container {
           position: relative;
           display: inline-block;
@@ -496,7 +538,6 @@ export default function Events() {
         .overlay-content {
           z-index: 1;
         }
-        /* Gap adjustments between hero text and cards */
         .hero {
           margin-bottom: 0.5rem;
         }
@@ -506,7 +547,6 @@ export default function Events() {
         .main-content {
           margin-bottom: 0.5rem;
         }
-        /* Mobile responsive styles */
         @media (max-width: 767px) {
           .hero-title {
             font-size: 2.5rem !important;

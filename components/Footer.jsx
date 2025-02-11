@@ -6,7 +6,6 @@ import Lenis from '@studio-freight/lenis';
 import { Github, Instagram, Linkedin, ArrowUp } from 'lucide-react';
 import Image from "next/image";
 
-
 gsap.registerPlugin(ScrollTrigger);
 
 const Footer = () => {
@@ -23,6 +22,9 @@ const Footer = () => {
   }, []);
 
   useEffect(() => {
+    // Determine if we're on a mobile screen.
+    const isMobileScreen = window.innerWidth < 768;
+
     // Initialize Lenis for smooth scrolling.
     const lenis = new Lenis({
       lerp: 0.1,
@@ -70,18 +72,6 @@ const Footer = () => {
       }
     };
 
-    // Animate social icons (floating animation).
-    const socialIcons = document.querySelectorAll('.social-icon-container');
-    socialIcons.forEach((icon) => {
-      gsap.to(icon, {
-        y: '-8px',
-        duration: 1.5,
-        repeat: -1,
-        yoyo: true,
-        ease: 'power1.inOut',
-      });
-    });
-
     // Add event listeners for the logo.
     const logo = logoRef.current;
     if (logo) {
@@ -89,41 +79,47 @@ const Footer = () => {
       logo.addEventListener('mouseleave', handleMouseLeave);
     }
 
-    // GSAP animations for the footer.
-    gsap.fromTo(
-      footerRef.current,
-      { opacity: 0, y: 50 },
-      {
-        opacity: 1,
-        y: 0,
-        duration: 1,
-        scrollTrigger: {
-          trigger: footerRef.current,
-          start: 'top 80%',
-          end: 'bottom 20%',
-          toggleActions: 'play none none reverse',
-        },
-      }
-    );
-
-    textRefs.current.forEach((el, index) => {
+    // For mobile screens, immediately set the footer and text elements to visible.
+    if (isMobileScreen) {
+      gsap.set(footerRef.current, { opacity: 1, y: 0 });
+      textRefs.current.forEach((el) => gsap.set(el, { opacity: 1, y: 0 }));
+    } else {
+      // GSAP animations for the footer (desktop).
       gsap.fromTo(
-        el,
-        { opacity: 0, y: 20 },
+        footerRef.current,
+        { opacity: 0, y: 50 },
         {
           opacity: 1,
           y: 0,
-          duration: 0.5,
-          delay: index * 0.2,
+          duration: 1,
           scrollTrigger: {
-            trigger: el,
+            trigger: footerRef.current,
             start: 'top 80%',
             end: 'bottom 20%',
             toggleActions: 'play none none reverse',
           },
         }
       );
-    });
+
+      textRefs.current.forEach((el, index) => {
+        gsap.fromTo(
+          el,
+          { opacity: 0, y: 20 },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.5,
+            delay: index * 0.2,
+            scrollTrigger: {
+              trigger: el,
+              start: 'top 80%',
+              end: 'bottom 20%',
+              toggleActions: 'play none none reverse',
+            },
+          }
+        );
+      });
+    }
 
     return () => {
       lenis.destroy();
@@ -180,7 +176,7 @@ const Footer = () => {
                 Greater Noida, India
               </p>
 
-              {/* Social Media Links */}
+              {/* Social Media Links (Static, without animation) */}
               <div className="flex flex-col md:flex-row md:items-center gap-4">
                 {[
                   { Icon: Github, href: "https://github.com/bennettai", label: "Github" },
@@ -191,11 +187,10 @@ const Footer = () => {
                     key={label}
                     ref={addToRefs}
                     href={href}
-                    className="social-icon-container flex items-center space-x-2 text-gray-400 hover:text-white transition-all group relative"
+                    className="flex items-center space-x-2 text-gray-400 hover:text-white transition-all group relative"
                   >
                     <div className="relative">
-                      <Icon className="w-5 h-5 transition-transform duration-300 group-hover:scale-110" />
-                      <div className="absolute inset-0 bg-white/10 rounded-full scale-0 group-hover:scale-150 opacity-0 group-hover:opacity-100 transition-all duration-500" />
+                      <Icon className="w-5 h-5 transition-transform duration-300" />
                     </div>
                     <span className="relative z-10">{label}</span>
                   </a>
@@ -216,18 +211,19 @@ const Footer = () => {
             </div>
           </div>
         </div>
-        <div className="mt-12 text-center text-gray-400 space-y-2 relative">
-          <p ref={addToRefs}>
+        <div className="mt-12 text-center space-y-2 relative">
+          <p ref={addToRefs} className="text-gray-400">
             © 2025 AI Society, Specialization Club of Bennett University Under SCSET BU
           </p>
-          <p ref={addToRefs} className="hover:text-white transition-colors group cursor-pointer">
-            Built by RL Team  
-           
+          <p
+            ref={addToRefs}
+            className="text-white hover:text-white transition-colors group cursor-pointer relative z-10"
+          >
+            Built by RL Team
             <span className="block h-0.5 bg-white transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300" />
           </p>
         </div>
       </div>
-     
 
       {/* Scroll to Top Button */}
       <button
@@ -235,9 +231,6 @@ const Footer = () => {
         className={`fixed bottom-8 right-0 m-16 p-3 bg-gray-800 rounded-full shadow-lg hover:bg-gray-700 transition-all transform group ${
           showScrollTop ? 'translate-y-0 opacity-100' : 'translate-y-16 opacity-0'
         }`}
-        
-        
-        
         aria-label="Scroll to top"
       >
         <ArrowUp className="w-5 h-5 group-hover:-translate-y-1 transition-transform duration-300" />
