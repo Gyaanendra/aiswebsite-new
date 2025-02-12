@@ -237,7 +237,7 @@ const Footer = () => {
             ref={addToRefs}
             className="text-white hover:text-white transition-colors group cursor-pointer relative z-10"
           >
-            Built by RL Team
+            Built by RL Team & Designed By Garvita.
             <span className="block h-0.5 bg-white transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300" />
           </p>
         </div>

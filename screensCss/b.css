@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&display=swap");
+@import url('https://cdn.jsdelivr.net/npm/ailerons-typeface@1.0.0/stylesheet.css');
 
 * {
   margin: 0;
@@ -11,7 +11,7 @@ html,
 body {
   width: 100%;
   height: 100%;
-  font-family: "Instrument Serif";
+  font-family: "Ailerons";
   background: transparent; /* Changed from #000 to transparent */
   color: #fff;
 }

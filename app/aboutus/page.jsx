@@ -9,6 +9,7 @@ import { useMotionValue } from "framer-motion";
 import "../../screensCss/a.css";
 import Footer from "@/components/Footer";
 import TeamCards from "@/components/TeamCards";
+import LiquidChrome from "@/components/LiquidChrome";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -189,13 +190,8 @@ const Page = () => {
           },
         });
 
-        // (Animations for card headers and groups below remain unchanged)
-        const firstHeader = containerEl.querySelector(
-          ".first-cards .cards-header"
-        );
-        const secondHeader = containerEl.querySelector(
-          ".second-cards .cards-header"
-        );
+        const firstHeader = containerEl.querySelector(".first-cards .cards-header");
+        const secondHeader = containerEl.querySelector(".second-cards .cards-header");
 
         gsap.from(firstHeader, {
           opacity: 0,
@@ -221,7 +217,7 @@ const Page = () => {
           },
         });
 
-        // FIRST CARD GROUP ANIMATION
+        // FIRST CARD GROUP ANIMATION (Desktop)
         const firstGroup = containerEl.querySelector(".first-cards");
         const firstCards = firstGroup.querySelectorAll(".card");
 
@@ -279,6 +275,7 @@ const Page = () => {
               "<"
             );
 
+          // Flip animation for desktop cards remains unchanged
           const frontEl = card.querySelector(".flip-card-front");
           const backEl = card.querySelector(".flip-card-back");
           const contentEl = card.querySelector(".flip-card-inner");
@@ -294,7 +291,7 @@ const Page = () => {
           });
         });
 
-        // SECOND CARD GROUP ANIMATION (ADVANCED)
+        // SECOND CARD GROUP ANIMATION (Desktop - Advanced)
         const secondGroup = containerEl.querySelector(".second-cards");
         const secondCards = secondGroup.querySelectorAll(".card");
 
@@ -317,7 +314,7 @@ const Page = () => {
             rotation: 0,
             scale: 0.8,
             opacity: 0,
-            y: 50, // start slightly lower
+            y: 50,
           });
 
           gsap.to(card, {
@@ -379,6 +376,7 @@ const Page = () => {
               0.8
             );
 
+          // Flip animation for desktop second group
           const frontEl = card.querySelector(".flip-card-front");
           const backEl = card.querySelector(".flip-card-back");
           const contentEl = card.querySelector(".flip-card-inner");
@@ -497,12 +495,8 @@ const Page = () => {
           },
         });
 
-        const firstHeader = containerEl.querySelector(
-          ".first-cards .cards-header"
-        );
-        const secondHeader = containerEl.querySelector(
-          ".second-cards .cards-header"
-        );
+        const firstHeader = containerEl.querySelector(".first-cards .cards-header");
+        const secondHeader = containerEl.querySelector(".second-cards .cards-header");
 
         gsap.from(firstHeader, {
           opacity: 0,
@@ -528,7 +522,7 @@ const Page = () => {
           },
         });
 
-        // FIRST CARD GROUP ANIMATION (Mobile)
+        // FIRST CARD GROUP ANIMATION (Mobile) with Advanced Flip Animation
         const firstGroup = containerEl.querySelector(".first-cards");
         const firstCards = firstGroup.querySelectorAll(".card");
         firstCards.forEach((card, index) => {
@@ -549,17 +543,43 @@ const Page = () => {
           const frontEl = card.querySelector(".flip-card-front");
           const backEl = card.querySelector(".flip-card-back");
           const contentEl = card.querySelector(".flip-card-inner");
-          ScrollTrigger.create({
-            trigger: card,
-            start: "top center",
-            end: "bottom center",
-            onEnter: () => animateFlip(frontEl, backEl, contentEl, index),
-            onLeaveBack: () => resetFlip(frontEl, backEl, contentEl),
-            scrub: 0.4,
+
+          // Create an advanced flip timeline for mobile that uses scroll progress
+          const flipTimeline = gsap.timeline({
+            scrollTrigger: {
+              trigger: card,
+              start: "top center",
+              end: "bottom center",
+              scrub: 0.5,
+            }
           });
+          flipTimeline
+            .to(card, {
+              scale: 1.1,
+              boxShadow: "0px 15px 30px rgba(0, 0, 0, 0.5)",
+              duration: 0.3,
+              ease: "power3.out"
+            })
+            .to(contentEl, {
+              rotationY: 90,
+              duration: 0.3,
+              ease: "power3.inOut"
+            }, "-=0.2")
+            .set([frontEl, backEl], { zIndex: index % 2 === 0 ? 50 : -50 })
+            .to(contentEl, {
+              rotationY: 180,
+              duration: 0.3,
+              ease: "power3.inOut"
+            })
+            .to(card, {
+              scale: 1,
+              boxShadow: "0px 5px 15px rgba(0, 0, 0, 0.2)",
+              duration: 0.3,
+              ease: "power3.out"
+            }, "+=0.1");
         });
 
-        // SECOND CARD GROUP ANIMATION (Mobile) with additional, faster animation
+        // SECOND CARD GROUP ANIMATION (Mobile) with Advanced Flip Animation and Additional Rotation
         const secondGroup = containerEl.querySelector(".second-cards");
         const secondCards = secondGroup.querySelectorAll(".card");
         secondCards.forEach((card, index) => {
@@ -576,7 +596,7 @@ const Page = () => {
               toggleActions: "play none none none",
             },
           });
-
+          // Additional subtle rotation animation for second cards
           gsap.to(card, {
             rotation: 5,
             scale: 1.05,
@@ -593,14 +613,42 @@ const Page = () => {
           const frontEl = card.querySelector(".flip-card-front");
           const backEl = card.querySelector(".flip-card-back");
           const contentEl = card.querySelector(".flip-card-inner");
-          ScrollTrigger.create({
-            trigger: card,
-            start: "top center",
-            end: "bottom center",
-            onEnter: () => animateFlip(frontEl, backEl, contentEl, index),
-            onLeaveBack: () => resetFlip(frontEl, backEl, contentEl),
-            scrub: 0.4,
+
+          // Create an advanced flip timeline for the second cards on mobile
+          const flipTimeline = gsap.timeline({
+            scrollTrigger: {
+              trigger: card,
+              start: "top center",
+              end: "bottom center",
+              scrub: 0.5,
+            }
           });
+          flipTimeline
+            .to(card, {
+              scale: 1.1,
+              rotation: 5,
+              boxShadow: "0px 15px 30px rgba(0, 0, 0, 0.5)",
+              duration: 0.3,
+              ease: "power3.out"
+            })
+            .to(contentEl, {
+              rotationY: 90,
+              duration: 0.3,
+              ease: "power3.inOut"
+            }, "-=0.2")
+            .set([frontEl, backEl], { zIndex: index % 2 === 0 ? 50 : -50 })
+            .to(contentEl, {
+              rotationY: 180,
+              duration: 0.3,
+              ease: "power3.inOut"
+            })
+            .to(card, {
+              scale: 1,
+              rotation: 0,
+              boxShadow: "0px 5px 15px rgba(0, 0, 0, 0.2)",
+              duration: 0.3,
+              ease: "power3.out"
+            }, "+=0.1");
         });
 
         return () => {
@@ -613,7 +661,7 @@ const Page = () => {
     { scope: container }
   );
 
-  // Flip animation functions
+  // Desktop flip animation functions (used only on desktop in this example)
   const animateFlip = (front, back, content, index) => {
     gsap.to(content, {
       rotationY: 180,
@@ -641,7 +689,21 @@ const Page = () => {
 
   return (
     <ReactLenis root options={{ lerp: 0.1, smoothWheel: true }}>
-      <div ref={container}>
+      {/* LiquidChrome Background with Fixed Position and a Low z-index */}
+      <LiquidChrome
+        className="liquid-chrome-bg"
+        style={{
+          position: "fixed",
+          top: 0,
+          left: 0,
+          width: "100%",
+          height: "100%",
+          zIndex: -1,
+        }}
+      />
+
+      {/* Main page content */}
+      <div ref={container} style={{ position: "relative", zIndex: 1 }}>
         <div
           className="holographic-overlay"
           style={{
@@ -754,12 +816,7 @@ const Page = () => {
                 id={`card-first-${index + 1}`}
                 frontSrc="/back.png"
                 frontAlt="Card Image"
-                backSrc={[
-                  "/RL.png",
-                  "/GENAI.png",
-                  "/NLP.png",
-                  "/CV.png",
-                ][index]}
+                backSrc={["/RL.png", "/GENAI.png", "/NLP.png", "/CV.png"][index]}
                 className="card mb-8 md:mb-0"
               />
             ))}
@@ -775,12 +832,7 @@ const Page = () => {
               id={`card-second-${index + 1}`}
               frontSrc="/back.png"
               frontAlt="Card Image"
-              backSrc={[
-                "/DESIGN.png",
-                "/MANAGEMENT.png",
-                "/PR.png",
-                "/MULTIMEDIA.png",
-              ][index]}
+              backSrc={["/DESIGN.png", "/MANAGEMENT.png", "/PR.png", "/MULTIMEDIA.png"][index]}
               className="card"
             />
           ))}

@@ -9,6 +9,8 @@ import Link from 'next/link';
 import Footer from '@/components/Footer';
 import "../../screensCss/c.css";
 import { data } from "@/data/data";
+import LiquidChrome from '@/components/LiquidChrome';
+
 gsap.registerPlugin(ScrollTrigger);
 
 
@@ -160,6 +162,7 @@ export default function ProjectsSection() {
 
   return (
     <SmoothScrollWrapper>
+       < LiquidChrome className="liquid-chrome-bg" />
             <header className="header">
   <div className="logo-container">
     <Image
@@ -174,7 +177,7 @@ export default function ProjectsSection() {
 
 </header>
 
-      <section ref={sectionRef} className="min-h-screen bg-black text-white p-8 md:p-16">
+      <section ref={sectionRef} className="min-h-screen  text-white p-8 md:p-16">
         <div className="section-header mb-32 relative overflow-hidden pt-24">
           {/* First marquee - PROJECTS */}
           <div 
@@ -256,7 +259,7 @@ export default function ProjectsSection() {
           ))}
         </div>
       </section>
-      <section className="footer min-h-screen flex items-center justify-center bg-black">
+      <section className="footer min-h-screen flex items-center justify-center ">
           <Footer />
         </section>
     </SmoothScrollWrapper>

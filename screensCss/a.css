@@ -1,4 +1,5 @@
-@import url("https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&display=swap");
+
+@import url('https://cdn.jsdelivr.net/npm/ailerons-typeface@1.0.0/stylesheet.css');
 
 /* Global Reset & Box Sizing */
 * {
@@ -12,8 +13,8 @@ html,
 body {
   width: 100%;
   height: 500vh;
-  font-family: "Instrument Serif";
-  background-color: black;
+  font-family: "Ailerons";
+  background-color: transparent;
 }
 
 /* Container & Image Defaults */
@@ -33,7 +34,7 @@ section {
   position: relative;
   width: 100%;
   height: 100%;
-  background-color: black;
+  background-color: transparent;
 }
 
 /* Card Global Styles (used in layout & animations) */
@@ -229,7 +230,7 @@ section {
 .wave-section {
   position: relative;
   overflow: hidden;
-  background: linear-gradient(to bottom, #000000 0%, #000000 100%);
+  background: transparent;
   display: none;
 }
 
@@ -245,5 +246,12 @@ section {
     display: none;
   }
 }
-
-/* --- Additional CSS for Members List Visibility --- */
+.liquid-chrome-bg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  pointer-events: none;
+}

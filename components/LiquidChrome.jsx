@@ -9,8 +9,8 @@ import { Renderer, Program, Mesh, Triangle } from "ogl";
 
 export const LiquidChrome = ({
   baseColor = [0.1, 0.1, 0.1],
-  speed = 0.2,
-  amplitude = 0.5,
+  speed = 0.3,
+  amplitude = 0.35,
   frequencyX = 3,
   frequencyY = 2,
   interactive = true,

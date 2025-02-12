@@ -8,6 +8,7 @@ import GlassNavbar from "@/components/global/GlassNavbar";
 
 
 
+
 // import ParticleBackground from "@/components/home/ParticleBackground"
 
 
@@ -38,7 +39,6 @@ export default function RootLayout({
       >
         {" "}
      
-        
         <GlassNavbar />
         <CustomCursor /> {/* Add this line */}
         {/* <ParticleBackground /> */}
