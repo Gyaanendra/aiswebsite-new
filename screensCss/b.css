@@ -12,7 +12,7 @@ body {
   width: 100%;
   height: 100%;
   font-family: "Instrument Serif";
-  background: transparent; /* Changed from #000 to transparent */
+  background: #000000;
   color: #fff;
 }
 
@@ -28,13 +28,14 @@ section {
   display: flex;
   justify-content: center;
   align-items: center;
+  background: #000000;
 }
 
 /* Ensure hero, main, and footer are transparent */
 .hero,
 .main,
 .footer {
-  background: transparent !important;
+  background: #000000 !important;
 }
 
 .hero {
@@ -209,4 +210,69 @@ button {
   .card-overlay p {
     font-size: 0.9rem;
   }
+}
+
+/* Update cube and face styles */
+.face {
+  position: absolute;
+  width: 150px;
+  height: 150px;
+  background-size: cover;
+  background-position: center;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  backface-visibility: visible;
+  background-color: #000000;
+}
+
+.cube-wrapper {
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  perspective: 1000px;
+  background: #000000;
+}
+
+.cube {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  transform-style: preserve-3d;
+  animation: spinCube 20s infinite linear;
+  background: #000000;
+}
+
+/* Update face transformations */
+.face-front  { 
+  transform: rotateY(0deg) translateZ(75px);
+  background-color: #000000;
+}
+.face-back   { 
+  transform: rotateY(180deg) translateZ(75px);
+  background-color: #000000;
+}
+.face-right  { 
+  transform: rotateY(90deg) translateZ(75px);
+  background-color: #000000;
+}
+.face-left   { 
+  transform: rotateY(-90deg) translateZ(75px);
+  background-color: #000000;
+}
+.face-top    { 
+  transform: rotateX(90deg) translateZ(75px);
+  background-color: #000000;
+}
+.face-bottom { 
+  transform: rotateX(-90deg) translateZ(75px);
+  background-color: #000000;
+}
+
+/* Add background styles */
+.threeD-container {
+  position: absolute;
+  width: 150px;
+  height: 150px;
+  perspective: 1000px;
+  z-index: 1;
+  background: #000000;
 }

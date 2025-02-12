@@ -1,5 +1,5 @@
 "use client";
-import React, { useRef, useEffect } from "react";
+import React, { useRef } from "react";
 import Card from "@/components/aboutus/Card";
 import { ReactLenis } from "@studio-freight/react-lenis";
 import gsap from "gsap";
@@ -8,9 +8,7 @@ import { useGSAP } from "@gsap/react";
 import { useMotionValue } from "framer-motion";
 import "../../screensCss/a.css";
 import Footer from "@/components/Footer";
-import TeamCards from "@/components/TeamCards";
 
-// Register the plugin
 gsap.registerPlugin(ScrollTrigger);
 
 const Page = () => {
@@ -18,7 +16,7 @@ const Page = () => {
   const overlayRef = useRef(null);
   const textRef = useRef(null);
 
-  // (Motion values—for future use if needed)
+  // (For potential future use—the motion values aren’t used in this snippet.)
   const pathLengths = [
     useMotionValue(0),
     useMotionValue(0),
@@ -27,7 +25,7 @@ const Page = () => {
     useMotionValue(0),
   ];
 
-  // Define wave shapes (foreground)
+  // Define three different wave shapes for the foreground
   const waveShape1 =
     "M0,200 C240,0 480,400 720,200 C960,0 1200,400 1440,200 L1440,400 L0,400 Z";
   const waveShape2 =
@@ -35,7 +33,7 @@ const Page = () => {
   const waveShape3 =
     "M0,200 C240,300 480,100 720,200 C960,300 1200,100 1440,200 L1440,400 L0,400 Z";
 
-  // Define wave shapes (background)
+  // Define three different wave shapes for the background (slightly offset vertically)
   const waveShapeBg1 =
     "M0,220 C240,20 480,380 720,220 C960,20 1200,380 1440,220 L1440,400 L0,400 Z";
   const waveShapeBg2 =
@@ -43,83 +41,591 @@ const Page = () => {
   const waveShapeBg3 =
     "M0,220 C240,320 480,120 720,220 C960,320 1200,120 1440,220 L1440,400 L0,400 Z";
 
-  // Technical teams
-  const technicalTeams = [
-    {
-      name: "AIS RL TEAM",
-      logo: "/RL.png",
-      members: ["RL Member 1", "RL Member 2", "RL Member 3", "RL Member 4"],
-    },
-    {
-      name: "AIS GEN AI TEAM",
-      logo: "/GENAI.png",
-      members: [
-        "Gen AI Member 1",
-        "Gen AI Member 2",
-        "Gen AI Member 3",
-        "Gen AI Member 4",
-      ],
-    },
-    {
-      name: "AIS NLP TEAM",
-      logo: "/NLP.png",
-      members: ["NLP Member 1", "NLP Member 2", "NLP Member 3", "NLP Member 4"],
-    },
-    {
-      name: "AIS CV TEAM",
-      logo: "/CV.png",
-      members: ["CV Member 1", "CV Member 2", "CV Member 3", "CV Member 4"],
-    },
-  ];
+  useGSAP(
+    () => {
+      const mm = gsap.matchMedia();
 
-  // Community outreach teams
-  const communityTeams = [
-    {
-      name: "AIS MULTIMEDIA TEAM",
-      logo: "/MULTIMEDIA.png",
-      members: [
-        "Multimedia Member 1",
-        "Multimedia Member 2",
-        "Multimedia Member 3",
-        "Multimedia Member 4",
-      ],
-    },
-    {
-      name: "AIS PR TEAM",
-      logo: "/PR.png",
-      members: ["PR Member 1", "PR Member 2", "PR Member 3", "PR Member 4"],
-    },
-    {
-      name: "AIS MANAGEMENT TEAM",
-      logo: "/MANAGEMENT.png",
-      members: [
-        "Management Member 1",
-        "Management Member 2",
-        "Management Member 3",
-        "Management Member 4",
-      ],
-    },
-    {
-      name: "AIS DESIGN TEAM",
-      logo: "/DESIGN.png",
-      members: [
-        "Design Member 1",
-        "Design Member 2",
-        "Design Member 3",
-        "Design Member 4",
-      ],
-    },
-  ];
+      // ---------------------------
+      // Desktop Animations (min-width: 769px)
+      // ---------------------------
+      mm.add("(min-width: 769px)", () => {
+        const containerEl = container.current;
+        const overlayEl = overlayRef.current;
+        const textEl = textRef.current;
+        const waveSection = document.querySelector(".wave-section");
 
-  // ─── FLIP ANIMATION FUNCTIONS ──────────────────────────────
-  const animateFlip = (front, back, content) => {
+        // Select the two wave paths by class name:
+        const wavePathFg = document.querySelector(".wave-path-fg");
+        const wavePathBg = document.querySelector(".wave-path-bg");
+
+        // Set initial states for both waves (using strokeDash settings plus the starting path)
+        gsap.set(wavePathFg, {
+          strokeDasharray: 2000,
+          strokeDashoffset: 2000,
+          attr: { d: waveShape1 },
+        });
+        gsap.set(wavePathBg, {
+          strokeDasharray: 2000,
+          strokeDashoffset: 2000,
+          attr: { d: waveShapeBg1 },
+        });
+
+        // Create a scroll-triggered timeline for the advanced wave animations
+        const waveTimeline = gsap.timeline({
+          scrollTrigger: {
+            trigger: waveSection,
+            start: "top center",
+            end: "bottom center",
+            scrub: 1,
+          },
+        });
+
+        // ----- Foreground wave animations -----
+        waveTimeline
+          .to(wavePathFg, { strokeDashoffset: 0, duration: 1, ease: "power2.out" }, 0)
+          .to(
+            wavePathFg,
+            { attr: { d: waveShape2 }, duration: 1, ease: "power1.inOut" },
+            0.3
+          )
+          .to(
+            wavePathFg,
+            { attr: { d: waveShape3 }, duration: 1, ease: "power1.inOut" },
+            0.6
+          )
+          .to(
+            wavePathFg,
+            { attr: { d: waveShape1 }, duration: 1, ease: "power1.inOut" },
+            0.9
+          )
+          .to(
+            wavePathFg,
+            { strokeWidth: 8, duration: 1, ease: "power1.inOut" },
+            0.3
+          )
+          .to(
+            wavePathFg,
+            { stroke: "#e8e8e8", duration: 1, ease: "power1.inOut" },
+            0.3
+          )
+          .to(
+            wavePathFg,
+            { strokeWidth: 4, duration: 1, ease: "power1.inOut" },
+            0.9
+          )
+          .to(
+            wavePathFg,
+            { stroke: "#f5f5f5", duration: 1, ease: "power1.inOut" },
+            0.9
+          );
+
+        // ----- Background wave animations -----
+        waveTimeline
+          .to(wavePathBg, { strokeDashoffset: 0, duration: 1, ease: "power2.out" }, 0)
+          .to(
+            wavePathBg,
+            { attr: { d: waveShapeBg2 }, duration: 1, ease: "power1.inOut" },
+            0.3
+          )
+          .to(
+            wavePathBg,
+            { attr: { d: waveShapeBg3 }, duration: 1, ease: "power1.inOut" },
+            0.6
+          )
+          .to(
+            wavePathBg,
+            { attr: { d: waveShapeBg1 }, duration: 1, ease: "power1.inOut" },
+            0.9
+          )
+          .to(
+            wavePathBg,
+            { strokeWidth: 4, duration: 1, ease: "power1.inOut" },
+            0.3
+          )
+          .to(
+            wavePathBg,
+            { stroke: "#d3d3d3", duration: 1, ease: "power1.inOut" },
+            0.3
+          )
+          .to(
+            wavePathBg,
+            { strokeWidth: 2, duration: 1, ease: "power1.inOut" },
+            0.9
+          )
+          .to(
+            wavePathBg,
+            { stroke: "#ffffff", duration: 1, ease: "power1.inOut" },
+            0.9
+          );
+
+        // Animate scroll-text in the wave section
+        gsap.set(textEl, { opacity: 0, y: 20 });
+        waveTimeline
+          .to(textEl, { opacity: 1, y: 0, duration: 0.5 }, 0.2)
+          .to(textEl, { opacity: 0, y: -40, duration: 0.5 }, 0.8);
+
+        const totalScrollHeight = window.innerHeight * 2;
+
+        gsap.to(containerEl, {
+          backgroundColor: "#0a0a0a",
+          ease: "none",
+          scrollTrigger: {
+            trigger: containerEl,
+            start: "top top",
+            end: `+=${totalScrollHeight * 1.5}`,
+            scrub: 0.5,
+          },
+        });
+
+        gsap.to(overlayEl, {
+          backgroundPosition: "100% 0%",
+          ease: "none",
+          scrollTrigger: {
+            trigger: containerEl,
+            start: "top top",
+            end: `+=${totalScrollHeight}`,
+            scrub: 0.5,
+          },
+        });
+
+        // (Animations for card headers and groups below remain unchanged)
+        const firstHeader = containerEl.querySelector(
+          ".first-cards .cards-header"
+        );
+        const secondHeader = containerEl.querySelector(
+          ".second-cards .cards-header"
+        );
+
+        gsap.from(firstHeader, {
+          opacity: 0,
+          y: 30,
+          duration: 1,
+          scrollTrigger: {
+            trigger: firstHeader,
+            start: "top 80%",
+            end: "top 60%",
+            scrub: true,
+          },
+        });
+
+        gsap.from(secondHeader, {
+          opacity: 0,
+          y: 30,
+          duration: 1,
+          scrollTrigger: {
+            trigger: secondHeader,
+            start: "top 80%",
+            end: "top 60%",
+            scrub: true,
+          },
+        });
+
+        // FIRST CARD GROUP ANIMATION
+        const firstGroup = containerEl.querySelector(".first-cards");
+        const firstCards = firstGroup.querySelectorAll(".card");
+
+        const positions1 = [14, 38, 62, 86];
+        const rotations1 = [-15, -7.5, 7.5, 15];
+
+        ScrollTrigger.create({
+          trigger: firstGroup,
+          start: "top top",
+          end: `+=${totalScrollHeight}`,
+          pin: true,
+          pinSpacing: true,
+          anticipatePin: 1,
+        });
+
+        firstCards.forEach((card, index) => {
+          gsap.set(card, {
+            left: "50%",
+            xPercent: -50,
+            rotation: 0,
+            scale: 0.8,
+            opacity: 0,
+          });
+
+          gsap.to(card, {
+            opacity: 1,
+            scale: 1,
+            duration: 0.5,
+            delay: index * 0.1,
+            ease: "back.out(1.7)",
+          });
+
+          const spreadTL = gsap.timeline({
+            scrollTrigger: {
+              trigger: firstGroup,
+              start: "top top",
+              end: `+=${totalScrollHeight}`,
+              scrub: 0.3,
+            },
+          });
+
+          spreadTL
+            .to(card, {
+              left: `${positions1[index]}%`,
+              rotation: rotations1[index],
+              ease: "power2.out",
+            })
+            .to(
+              card,
+              {
+                scale: 1.05,
+                boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.5)",
+                duration: 1,
+              },
+              "<"
+            );
+
+          const frontEl = card.querySelector(".flip-card-front");
+          const backEl = card.querySelector(".flip-card-back");
+          const contentEl = card.querySelector(".flip-card-inner");
+          gsap.set(contentEl, { transformPerspective: 1000 });
+
+          ScrollTrigger.create({
+            trigger: card,
+            start: "center center",
+            end: "+=200%",
+            scrub: 0.5,
+            onEnter: () => animateFlip(frontEl, backEl, contentEl, index),
+            onLeaveBack: () => resetFlip(frontEl, backEl, contentEl),
+          });
+        });
+
+        // SECOND CARD GROUP ANIMATION (ADVANCED)
+        const secondGroup = containerEl.querySelector(".second-cards");
+        const secondCards = secondGroup.querySelectorAll(".card");
+
+        const positions2 = [86, 62, 38, 14]; // mirrored positions
+        const rotations2 = [15, 7.5, -7.5, -15]; // mirrored rotations
+
+        ScrollTrigger.create({
+          trigger: secondGroup,
+          start: "top top",
+          end: `+=${totalScrollHeight}`,
+          pin: true,
+          pinSpacing: true,
+          anticipatePin: 1,
+        });
+
+        secondCards.forEach((card, index) => {
+          gsap.set(card, {
+            left: "50%",
+            xPercent: -50,
+            rotation: 0,
+            scale: 0.8,
+            opacity: 0,
+            y: 50, // start slightly lower
+          });
+
+          gsap.to(card, {
+            opacity: 1,
+            scale: 1,
+            y: 0,
+            duration: 0.5,
+            delay: index * 0.1,
+            ease: "back.out(1.7)",
+          });
+
+          const advancedTL = gsap.timeline({
+            scrollTrigger: {
+              trigger: secondGroup,
+              start: "top top",
+              end: `+=${totalScrollHeight}`,
+              scrub: 0.3,
+            },
+          });
+
+          advancedTL
+            .to(
+              card,
+              {
+                left: `${positions2[index]}%`,
+                rotation: rotations2[index] + 10,
+                skewX: 10,
+                ease: "power2.out",
+                duration: 0.8,
+              },
+              0
+            )
+            .to(
+              card,
+              {
+                y: -30,
+                ease: "back.out(1.5)",
+                duration: 0.8,
+              },
+              0.2
+            )
+            .to(
+              card,
+              {
+                scale: 1.2,
+                boxShadow: "0 35px 70px -15px rgba(0, 0, 0, 0.7)",
+                duration: 1,
+              },
+              0.2
+            )
+            .to(
+              card,
+              {
+                rotation: rotations2[index],
+                skewX: 0,
+                ease: "elastic.out(1, 0.5)",
+                duration: 1,
+              },
+              0.8
+            );
+
+          const frontEl = card.querySelector(".flip-card-front");
+          const backEl = card.querySelector(".flip-card-back");
+          const contentEl = card.querySelector(".flip-card-inner");
+          gsap.set(contentEl, { transformPerspective: 1000 });
+
+          ScrollTrigger.create({
+            trigger: card,
+            start: "center center",
+            end: "+=200%",
+            scrub: 0.5,
+            onEnter: () => animateFlip(frontEl, backEl, contentEl, index),
+            onLeaveBack: () => resetFlip(frontEl, backEl, contentEl),
+          });
+        });
+
+        return () => {
+          ScrollTrigger.getAll().forEach((trigger) => trigger.revert());
+        };
+      });
+
+      // ---------------------------
+      // Mobile Animations (max-width: 768px)
+      // ---------------------------
+      mm.add("(max-width: 768px)", () => {
+        const containerEl = container.current;
+        const overlayEl = overlayRef.current;
+        const textEl = textRef.current;
+        const waveSection = document.querySelector(".wave-section");
+
+        // For mobile, select the wave paths and set their starting d attribute
+        const wavePathFg = document.querySelector(".wave-path-fg");
+        const wavePathBg = document.querySelector(".wave-path-bg");
+        gsap.set(wavePathFg, { attr: { d: waveShape1 } });
+        gsap.set(wavePathBg, { attr: { d: waveShapeBg1 } });
+
+        // Animate the foreground wave morph on scroll (simpler version)
+        gsap.to(wavePathFg, {
+          attr: { d: waveShape2 },
+          duration: 0.5,
+          ease: "power1.inOut",
+          scrollTrigger: {
+            trigger: waveSection,
+            start: "top 80%",
+            end: "center center",
+            scrub: 0.4,
+          },
+        });
+        gsap.to(wavePathFg, {
+          attr: { d: waveShape1 },
+          duration: 0.5,
+          ease: "power1.inOut",
+          scrollTrigger: {
+            trigger: waveSection,
+            start: "center center",
+            end: "bottom center",
+            scrub: 0.4,
+          },
+        });
+
+        // Animate the background wave morph on scroll (simpler version)
+        gsap.to(wavePathBg, {
+          attr: { d: waveShapeBg2 },
+          duration: 0.5,
+          ease: "power1.inOut",
+          scrollTrigger: {
+            trigger: waveSection,
+            start: "top 80%",
+            end: "center center",
+            scrub: 0.4,
+          },
+        });
+        gsap.to(wavePathBg, {
+          attr: { d: waveShapeBg1 },
+          duration: 0.5,
+          ease: "power1.inOut",
+          scrollTrigger: {
+            trigger: waveSection,
+            start: "center center",
+            end: "bottom center",
+            scrub: 0.4,
+          },
+        });
+
+        gsap.to(textEl, {
+          opacity: 1,
+          y: 0,
+          duration: 0.2,
+          scrollTrigger: {
+            trigger: waveSection,
+            start: "top 80%",
+            end: "center center",
+            scrub: 0.4,
+          },
+        });
+
+        gsap.to(textEl, {
+          opacity: 0,
+          y: -20,
+          duration: 0.2,
+          scrollTrigger: {
+            trigger: waveSection,
+            start: "center center",
+            end: "bottom center",
+            scrub: 0.4,
+          },
+        });
+
+        gsap.to(containerEl, {
+          backgroundColor: "#0a0a0a",
+          ease: "power2.out",
+          scrollTrigger: {
+            trigger: containerEl,
+            start: "top top",
+            end: "bottom bottom",
+            scrub: 0.8,
+          },
+        });
+
+        const firstHeader = containerEl.querySelector(
+          ".first-cards .cards-header"
+        );
+        const secondHeader = containerEl.querySelector(
+          ".second-cards .cards-header"
+        );
+
+        gsap.from(firstHeader, {
+          opacity: 0,
+          y: 30,
+          duration: 0.4,
+          scrollTrigger: {
+            trigger: firstHeader,
+            start: "top 85%",
+            end: "top 65%",
+            toggleActions: "play none none none",
+          },
+        });
+
+        gsap.from(secondHeader, {
+          opacity: 0,
+          y: 30,
+          duration: 0.4,
+          scrollTrigger: {
+            trigger: secondHeader,
+            start: "top 85%",
+            end: "top 65%",
+            toggleActions: "play none none none",
+          },
+        });
+
+        // FIRST CARD GROUP ANIMATION (Mobile)
+        const firstGroup = containerEl.querySelector(".first-cards");
+        const firstCards = firstGroup.querySelectorAll(".card");
+        firstCards.forEach((card, index) => {
+          gsap.set(card, { opacity: 0, y: 30 });
+          gsap.to(card, {
+            opacity: 1,
+            y: 0,
+            duration: 0.2,
+            ease: "power3.out",
+            scrollTrigger: {
+              trigger: card,
+              start: "top 85%",
+              end: "top 30%",
+              toggleActions: "play none none none",
+            },
+          });
+
+          const frontEl = card.querySelector(".flip-card-front");
+          const backEl = card.querySelector(".flip-card-back");
+          const contentEl = card.querySelector(".flip-card-inner");
+          ScrollTrigger.create({
+            trigger: card,
+            start: "top center",
+            end: "bottom center",
+            onEnter: () => animateFlip(frontEl, backEl, contentEl, index),
+            onLeaveBack: () => resetFlip(frontEl, backEl, contentEl),
+            scrub: 0.4,
+          });
+        });
+
+        // SECOND CARD GROUP ANIMATION (Mobile) with additional, faster animation
+        const secondGroup = containerEl.querySelector(".second-cards");
+        const secondCards = secondGroup.querySelectorAll(".card");
+        secondCards.forEach((card, index) => {
+          gsap.set(card, { opacity: 0, y: 30 });
+          gsap.to(card, {
+            opacity: 1,
+            y: 0,
+            duration: 0.2,
+            ease: "power3.out",
+            scrollTrigger: {
+              trigger: card,
+              start: "top 85%",
+              end: "top 30%",
+              toggleActions: "play none none none",
+            },
+          });
+
+          gsap.to(card, {
+            rotation: 5,
+            scale: 1.05,
+            duration: 0.2,
+            ease: "power3.out",
+            scrollTrigger: {
+              trigger: card,
+              start: "top 80%",
+              end: "top 70%",
+              scrub: true,
+            },
+          });
+
+          const frontEl = card.querySelector(".flip-card-front");
+          const backEl = card.querySelector(".flip-card-back");
+          const contentEl = card.querySelector(".flip-card-inner");
+          ScrollTrigger.create({
+            trigger: card,
+            start: "top center",
+            end: "bottom center",
+            onEnter: () => animateFlip(frontEl, backEl, contentEl, index),
+            onLeaveBack: () => resetFlip(frontEl, backEl, contentEl),
+            scrub: 0.4,
+          });
+        });
+
+        return () => {
+          ScrollTrigger.getAll().forEach((trigger) => trigger.revert());
+        };
+      });
+
+      return () => mm.revert();
+    },
+    { scope: container }
+  );
+
+  // Flip animation functions
+  const animateFlip = (front, back, content, index) => {
     gsap.to(content, {
       rotationY: 180,
       duration: 0.5,
       ease: "power4.out",
-      overwrite: "auto",
+      overwrite: true,
     });
-    gsap.to([front, back], { zIndex: 50, duration: 0.5, ease: "power3.out" });
+
+    gsap.to([front, back], {
+      zIndex: index % 2 === 0 ? 50 : -50,
+      duration: 0.5,
+      ease: "power3.out",
+    });
   };
 
   const resetFlip = (front, back, content) => {
@@ -128,583 +634,9 @@ const Page = () => {
       duration: 0.3,
       ease: "power2.out",
     });
+
     gsap.to([front, back], { zIndex: 0, duration: 0.3 });
   };
-
-  // ─── ENHANCED GSAP ANIMATION SETUP ──────────────────────────────
-  useGSAP(
-    () => {
-      // Delay initialization slightly to allow assets to settle.
-      gsap.delayedCall(0.1, () => {
-        const mm = gsap.matchMedia();
-
-        // ---------------------------
-        // Desktop Animations (min-width: 769px)
-        // ---------------------------
-        mm.add("(min-width: 769px)", () => {
-          const containerEl = container.current;
-          const overlayEl = overlayRef.current;
-          const textEl = textRef.current;
-          const waveSection = document.querySelector(".wave-section");
-
-          // Select wave paths
-          const wavePathFg = document.querySelector(".wave-path-fg");
-          const wavePathBg = document.querySelector(".wave-path-bg");
-
-          // Set initial wave states
-          gsap.set(wavePathFg, {
-            strokeDasharray: 2000,
-            strokeDashoffset: 2000,
-            attr: { d: waveShape1 },
-          });
-          gsap.set(wavePathBg, {
-            strokeDasharray: 2000,
-            strokeDashoffset: 2000,
-            attr: { d: waveShapeBg1 },
-          });
-
-          // Create timeline for wave animations
-          const waveTimeline = gsap.timeline({
-            scrollTrigger: {
-              trigger: waveSection,
-              start: "top center",
-              end: "bottom center",
-              scrub: 1,
-            },
-          });
-
-          // Animate foreground wave
-          waveTimeline
-            .to(wavePathFg, { strokeDashoffset: 0, duration: 1, ease: "power2.out" }, 0)
-            .to(
-              wavePathFg,
-              { attr: { d: waveShape2 }, duration: 1, ease: "power1.inOut" },
-              0.3
-            )
-            .to(
-              wavePathFg,
-              { attr: { d: waveShape3 }, duration: 1, ease: "power1.inOut" },
-              0.6
-            )
-            .to(
-              wavePathFg,
-              { attr: { d: waveShape1 }, duration: 1, ease: "power1.inOut" },
-              0.9
-            )
-            .to(
-              wavePathFg,
-              { strokeWidth: 8, duration: 1, ease: "power1.inOut" },
-              0.3
-            )
-            .to(
-              wavePathFg,
-              { stroke: "#e8e8e8", duration: 1, ease: "power1.inOut" },
-              0.3
-            )
-            .to(
-              wavePathFg,
-              { strokeWidth: 4, duration: 1, ease: "power1.inOut" },
-              0.9
-            )
-            .to(
-              wavePathFg,
-              { stroke: "#f5f5f5", duration: 1, ease: "power1.inOut" },
-              0.9
-            );
-
-          // Animate background wave
-          waveTimeline
-            .to(wavePathBg, { strokeDashoffset: 0, duration: 1, ease: "power2.out" }, 0)
-            .to(
-              wavePathBg,
-              { attr: { d: waveShapeBg2 }, duration: 1, ease: "power1.inOut" },
-              0.3
-            )
-            .to(
-              wavePathBg,
-              { attr: { d: waveShapeBg3 }, duration: 1, ease: "power1.inOut" },
-              0.6
-            )
-            .to(
-              wavePathBg,
-              { attr: { d: waveShapeBg1 }, duration: 1, ease: "power1.inOut" },
-              0.9
-            )
-            .to(
-              wavePathBg,
-              { strokeWidth: 4, duration: 1, ease: "power1.inOut" },
-              0.3
-            )
-            .to(
-              wavePathBg,
-              { stroke: "#d3d3d3", duration: 1, ease: "power1.inOut" },
-              0.3
-            )
-            .to(
-              wavePathBg,
-              { strokeWidth: 2, duration: 1, ease: "power1.inOut" },
-              0.9
-            )
-            .to(
-              wavePathBg,
-              { stroke: "#ffffff", duration: 1, ease: "power1.inOut" },
-              0.9
-            );
-
-          // Animate scrolling text in the wave section
-          gsap.set(textEl, { opacity: 0, y: 20 });
-          waveTimeline
-            .to(textEl, { opacity: 1, y: 0, duration: 0.5 }, 0.2)
-            .to(textEl, { opacity: 0, y: -40, duration: 0.5 }, 0.8);
-
-          const totalScrollHeight = window.innerHeight * 2;
-
-          // Animate background color and overlay
-          gsap.to(containerEl, {
-            backgroundColor: "#0a0a0a",
-            ease: "none",
-            scrollTrigger: {
-              trigger: containerEl,
-              start: "top top",
-              end: `+=${totalScrollHeight * 1.5}`,
-              scrub: 0.5,
-            },
-          });
-
-          gsap.to(overlayEl, {
-            backgroundPosition: "100% 0%",
-            ease: "none",
-            scrollTrigger: {
-              trigger: containerEl,
-              start: "top top",
-              end: `+=${totalScrollHeight}`,
-              scrub: 0.5,
-            },
-          });
-
-          // Animate card headers
-          const firstHeader = containerEl.querySelector(".first-cards .cards-header");
-          const secondHeader = containerEl.querySelector(".second-cards .cards-header");
-
-          gsap.from(firstHeader, {
-            opacity: 0,
-            y: 30,
-            duration: 1,
-            scrollTrigger: {
-              trigger: firstHeader,
-              start: "top 80%",
-              end: "top 60%",
-              scrub: true,
-            },
-          });
-
-          gsap.from(secondHeader, {
-            opacity: 0,
-            y: 30,
-            duration: 1,
-            scrollTrigger: {
-              trigger: secondHeader,
-              start: "top 80%",
-              end: "top 60%",
-              scrub: true,
-            },
-          });
-
-          // ── TECHNICAL TEAMS (First Card Group) ──
-          const firstGroup = containerEl.querySelector(".first-cards");
-          const firstCards = firstGroup.querySelectorAll(".card");
-          const positions1 = [14, 38, 62, 86];
-          const rotations1 = [-15, -7.5, 7.5, 15];
-
-          ScrollTrigger.create({
-            trigger: firstGroup,
-            start: "top top",
-            end: `+=${totalScrollHeight}`,
-            pin: true,
-            pinSpacing: true,
-            anticipatePin: 1,
-          });
-
-          firstCards.forEach((card, index) => {
-            gsap.set(card, {
-              left: "50%",
-              xPercent: -50,
-              rotation: 0,
-              scale: 0.8,
-              opacity: 0,
-            });
-
-            // Fade and scale in
-            gsap.to(card, {
-              opacity: 1,
-              scale: 1,
-              duration: 0.5,
-              delay: index * 0.1,
-              ease: "back.out(1.7)",
-            });
-
-            // Timeline to spread and rotate the cards
-            const spreadTL = gsap.timeline({
-              scrollTrigger: {
-                trigger: firstGroup,
-                start: "top top",
-                end: `+=${totalScrollHeight}`,
-                scrub: 0.3,
-              },
-            });
-
-            spreadTL
-              .to(card, {
-                left: `${positions1[index]}%`,
-                rotation: rotations1[index],
-                ease: "power2.out",
-              })
-              .to(
-                card,
-                {
-                  scale: 1.05,
-                  boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.5)",
-                  duration: 1,
-                },
-                "<"
-              );
-
-            // Set up flip animations
-            const frontEl = card.querySelector(".flip-card-front");
-            const backEl = card.querySelector(".flip-card-back");
-            const contentEl = card.querySelector(".flip-card-inner");
-            gsap.set(contentEl, { transformPerspective: 1000 });
-
-            ScrollTrigger.create({
-              trigger: card,
-              start: "center center",
-              end: "+=200%",
-              scrub: 0.5,
-              onEnter: () => animateFlip(frontEl, backEl, contentEl),
-              onLeaveBack: () => resetFlip(frontEl, backEl, contentEl),
-            });
-          });
-
-          // ── COMMUNITY OUTREACH (Second Card Group) ──
-          const secondGroup = containerEl.querySelector(".second-cards");
-          const secondCards = secondGroup.querySelectorAll(".card");
-          const positions2 = [86, 62, 38, 14]; // mirrored positions
-          const rotations2 = [15, 7.5, -7.5, -15]; // mirrored rotations
-
-          ScrollTrigger.create({
-            trigger: secondGroup,
-            start: "top top",
-            end: `+=${totalScrollHeight}`,
-            pin: true,
-            pinSpacing: true,
-            anticipatePin: 1,
-          });
-
-          secondCards.forEach((card, index) => {
-            gsap.set(card, {
-              left: "50%",
-              xPercent: -50,
-              rotation: 0,
-              scale: 0.8,
-              opacity: 0,
-              y: 50,
-            });
-
-            gsap.to(card, {
-              opacity: 1,
-              scale: 1,
-              y: 0,
-              duration: 0.5,
-              delay: index * 0.1,
-              ease: "back.out(1.7)",
-            });
-
-            const advancedTL = gsap.timeline({
-              scrollTrigger: {
-                trigger: secondGroup,
-                start: "top top",
-                end: `+=${totalScrollHeight}`,
-                scrub: 0.3,
-              },
-            });
-
-            advancedTL
-              .to(
-                card,
-                {
-                  left: `${positions2[index]}%`,
-                  rotation: rotations2[index] + 10,
-                  skewX: 10,
-                  ease: "power2.out",
-                  duration: 0.8,
-                },
-                0
-              )
-              .to(
-                card,
-                {
-                  y: -30,
-                  ease: "back.out(1.5)",
-                  duration: 0.8,
-                },
-                0.2
-              )
-              .to(
-                card,
-                {
-                  scale: 1.2,
-                  boxShadow: "0 35px 70px -15px rgba(0, 0, 0, 0.7)",
-                  duration: 1,
-                },
-                0.2
-              )
-              .to(
-                card,
-                {
-                  rotation: rotations2[index],
-                  skewX: 0,
-                  ease: "elastic.out(1, 0.5)",
-                  duration: 1,
-                },
-                0.8
-              );
-
-            const frontEl = card.querySelector(".flip-card-front");
-            const backEl = card.querySelector(".flip-card-back");
-            const contentEl = card.querySelector(".flip-card-inner");
-            gsap.set(contentEl, { transformPerspective: 1000 });
-
-            ScrollTrigger.create({
-              trigger: card,
-              start: "center center",
-              end: "+=200%",
-              scrub: 0.5,
-              onEnter: () => animateFlip(frontEl, backEl, contentEl),
-              onLeaveBack: () => resetFlip(frontEl, backEl, contentEl),
-            });
-          });
-
-          // Refresh ScrollTrigger after setup
-          ScrollTrigger.refresh();
-        });
-
-        // ---------------------------
-        // Mobile Animations (max-width: 768px)
-        // ---------------------------
-        mm.add("(max-width: 768px)", () => {
-          const containerEl = container.current;
-          const overlayEl = overlayRef.current;
-          const textEl = textRef.current;
-          const waveSection = document.querySelector(".wave-section");
-
-          const wavePathFg = document.querySelector(".wave-path-fg");
-          const wavePathBg = document.querySelector(".wave-path-bg");
-          gsap.set(wavePathFg, { attr: { d: waveShape1 } });
-          gsap.set(wavePathBg, { attr: { d: waveShapeBg1 } });
-
-          gsap.to(wavePathFg, {
-            attr: { d: waveShape2 },
-            duration: 0.5,
-            ease: "power1.inOut",
-            scrollTrigger: {
-              trigger: waveSection,
-              start: "top 80%",
-              end: "center center",
-              scrub: 0.4,
-            },
-          });
-          gsap.to(wavePathFg, {
-            attr: { d: waveShape1 },
-            duration: 0.5,
-            ease: "power1.inOut",
-            scrollTrigger: {
-              trigger: waveSection,
-              start: "center center",
-              end: "bottom center",
-              scrub: 0.4,
-            },
-          });
-          gsap.to(wavePathBg, {
-            attr: { d: waveShapeBg2 },
-            duration: 0.5,
-            ease: "power1.inOut",
-            scrollTrigger: {
-              trigger: waveSection,
-              start: "top 80%",
-              end: "center center",
-              scrub: 0.4,
-            },
-          });
-          gsap.to(wavePathBg, {
-            attr: { d: waveShapeBg1 },
-            duration: 0.5,
-            ease: "power1.inOut",
-            scrollTrigger: {
-              trigger: waveSection,
-              start: "center center",
-              end: "bottom center",
-              scrub: 0.4,
-            },
-          });
-
-          gsap.to(textEl, {
-            opacity: 1,
-            y: 0,
-            duration: 0.2,
-            scrollTrigger: {
-              trigger: waveSection,
-              start: "top 80%",
-              end: "center center",
-              scrub: 0.4,
-            },
-          });
-          gsap.to(textEl, {
-            opacity: 0,
-            y: -20,
-            duration: 0.2,
-            scrollTrigger: {
-              trigger: waveSection,
-              start: "center center",
-              end: "bottom center",
-              scrub: 0.4,
-            },
-          });
-          gsap.to(containerEl, {
-            backgroundColor: "#0a0a0a",
-            ease: "power2.out",
-            scrollTrigger: {
-              trigger: containerEl,
-              start: "top top",
-              end: "bottom bottom",
-              scrub: 0.8,
-            },
-          });
-
-          const firstHeader = containerEl.querySelector(".first-cards .cards-header");
-          const secondHeader = containerEl.querySelector(".second-cards .cards-header");
-
-          gsap.from(firstHeader, {
-            opacity: 0,
-            y: 30,
-            duration: 0.4,
-            scrollTrigger: {
-              trigger: firstHeader,
-              start: "top 85%",
-              end: "top 65%",
-              toggleActions: "play none none none",
-            },
-          });
-
-          gsap.from(secondHeader, {
-            opacity: 0,
-            y: 30,
-            duration: 0.4,
-            scrollTrigger: {
-              trigger: secondHeader,
-              start: "top 85%",
-              end: "top 65%",
-              toggleActions: "play none none none",
-            },
-          });
-
-          // Mobile animations for Technical Teams
-          const firstGroup = containerEl.querySelector(".first-cards");
-          const firstCards = firstGroup.querySelectorAll(".card");
-          firstCards.forEach((card) => {
-            gsap.set(card, { opacity: 0, y: 30 });
-            gsap.to(card, {
-              opacity: 1,
-              y: 0,
-              duration: 0.2,
-              ease: "power3.out",
-              scrollTrigger: {
-                trigger: card,
-                start: "top 85%",
-                end: "top 30%",
-                toggleActions: "play none none none",
-              },
-            });
-
-            const frontEl = card.querySelector(".flip-card-front");
-            const backEl = card.querySelector(".flip-card-back");
-            const contentEl = card.querySelector(".flip-card-inner");
-            ScrollTrigger.create({
-              trigger: card,
-              start: "top center",
-              end: "bottom center",
-              onEnter: () => animateFlip(frontEl, backEl, contentEl),
-              onLeaveBack: () => resetFlip(frontEl, backEl, contentEl),
-              scrub: 0.4,
-            });
-          });
-
-          // Mobile animations for Community Outreach
-          const secondGroup = containerEl.querySelector(".second-cards");
-          const secondCards = secondGroup.querySelectorAll(".card");
-          secondCards.forEach((card) => {
-            gsap.set(card, { opacity: 0, y: 30 });
-            gsap.to(card, {
-              opacity: 1,
-              y: 0,
-              duration: 0.2,
-              ease: "power3.out",
-              scrollTrigger: {
-                trigger: card,
-                start: "top 85%",
-                end: "top 30%",
-                toggleActions: "play none none none",
-              },
-            });
-            gsap.to(card, {
-              rotation: 5,
-              scale: 1.05,
-              duration: 0.2,
-              ease: "power3.out",
-              scrollTrigger: {
-                trigger: card,
-                start: "top 80%",
-                end: "top 70%",
-                scrub: true,
-              },
-            });
-
-            const frontEl = card.querySelector(".flip-card-front");
-            const backEl = card.querySelector(".flip-card-back");
-            const contentEl = card.querySelector(".flip-card-inner");
-            ScrollTrigger.create({
-              trigger: card,
-              start: "top center",
-              end: "bottom center",
-              onEnter: () => animateFlip(frontEl, backEl, contentEl),
-              onLeaveBack: () => resetFlip(frontEl, backEl, contentEl),
-              scrub: 0.4,
-            });
-          });
-
-          ScrollTrigger.refresh();
-        });
-
-        // Ensure ScrollTrigger refreshes on window resize
-        window.addEventListener("resize", ScrollTrigger.refresh);
-      });
-
-      // Cleanup function: remove event listeners and kill triggers
-      return () => {
-        window.removeEventListener("resize", ScrollTrigger.refresh);
-        ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
-      };
-    },
-    { scope: container }
-  );
-
-  // Refresh ScrollTrigger once all assets are loaded
-  useEffect(() => {
-    const onLoadHandler = () => {
-      ScrollTrigger.refresh();
-    };
-    window.addEventListener("load", onLoadHandler);
-    return () => window.removeEventListener("load", onLoadHandler);
-  }, []);
 
   return (
     <ReactLenis root options={{ lerp: 0.1, smoothWheel: true }}>
@@ -745,7 +677,8 @@ const Page = () => {
               <p className="mt-10 text-xl text-white max-w-4xl">
                 The AI Specialization Club (AIS) at Bennett University is dedicated to
                 fostering a deep passion for Artificial Intelligence. The club engages in end-to-end project development, achieves victories in hackathons,
-                conducts informative workshops, upskills members through guidance from senior student mentors as well as experienced faculty members. We actively
+                conducts informative workshops, upskills members through guidance from
+                senior student mentors as well as experienced faculty members. We actively
                 participate in open-source development as well.
               </p>
             </div>
@@ -782,8 +715,12 @@ const Page = () => {
           >
             Keep scrolling to reveal teams&lt;3
           </div>
-          <svg className="wave-svg w-full h-full" viewBox="0 0 1440 400" preserveAspectRatio="none">
-            {/* Background wave */}
+          <svg
+            className="wave-svg w-full h-full"
+            viewBox="0 0 1440 400"
+            preserveAspectRatio="none"
+          >
+            {/* Background wave (lower stroke weight, different starting shape) */}
             <path
               className="wave-path wave-path-bg"
               d={waveShapeBg1}
@@ -810,15 +747,18 @@ const Page = () => {
             TECHNICAL TEAMS
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:block gap-8 md:gap-4">
-            {technicalTeams.map((team, index) => (
+            {[...Array(4)].map((_, index) => (
               <Card
                 key={`first-${index}`}
                 id={`card-first-${index + 1}`}
                 frontSrc="/back.png"
                 frontAlt="Card Image"
-                backText={team.name}
-                backLogo={team.logo}
-                members={team.members}
+                backText={[
+                  "AIS RL TEAM",
+                  "AIS GEN AI TEAM",
+                  "AIS NLP TEAM",
+                  "AIS CV TEAM",
+                ][index]}
                 className="card mb-8 md:mb-0"
               />
             ))}
@@ -828,22 +768,21 @@ const Page = () => {
           <h2 className="cards-header text-white text-2xl md:text-3xl text-center mb-8 pt-8 md:pt-0">
             COMMUNITY OUTREACH
           </h2>
-          {communityTeams.map((team, index) => (
+          {[...Array(4)].map((_, index) => (
             <Card
               key={`second-${index}`}
               id={`card-second-${index + 1}`}
               frontSrc="/back.png"
               frontAlt="Card Image"
-              backText={team.name}
-              backLogo={team.logo}
-              members={team.members}
+              backText={[
+                "AIS MULTIMEDIA TEAM",
+                "AIS PR TEAM",
+                "AIS MANAGEMENT TEAM",
+                "AIS DESIGN TEAM",
+              ][index]}
               className="card"
             />
           ))}
-        </section>
-        {/* NEW COMPONENT: TeamCards */}
-        <section className="extra-team-info-section">
-          <TeamCards />
         </section>
         <section className="footer min-h-screen flex items-center justify-center bg-black">
           <Footer />
