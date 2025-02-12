@@ -136,12 +136,18 @@ const Footer = () => {
   };
 
   return (
-    <footer ref={footerRef} className="bg-black text-white p-8 relative overflow-hidden">
+    <footer
+      ref={footerRef}
+      className="bg-transparent text-white p-8 relative overflow-hidden"
+    >
       <div className="container mx-auto relative">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-16">
           {/* Left Section */}
           <div className="space-y-6 md:pr-8">
-            <div ref={logoRef} className="flex items-center space-x-4 transform-gpu transition-transform duration-300 cursor-pointer p-4">
+            <div
+              ref={logoRef}
+              className="flex items-center space-x-4 transform-gpu transition-transform duration-300 cursor-pointer p-4"
+            >
               {/* Enhanced AI Society Logo with 3D effect */}
               <div className="relative group">
                 <Image
@@ -179,9 +185,21 @@ const Footer = () => {
               {/* Social Media Links (Static, without animation) */}
               <div className="flex flex-col md:flex-row md:items-center gap-4">
                 {[
-                  { Icon: Github, href: "https://github.com/bennettai", label: "Github" },
-                  { Icon: Instagram, href: "https://www.instagram.com/ais.bennett/", label: "Instagram" },
-                  { Icon: Linkedin, href: "https://www.linkedin.com/company/bennett-artificial-intelligence-society/", label: "LinkedIn" }
+                  {
+                    Icon: Github,
+                    href: 'https://github.com/bennettai',
+                    label: 'Github',
+                  },
+                  {
+                    Icon: Instagram,
+                    href: 'https://www.instagram.com/ais.bennett/',
+                    label: 'Instagram',
+                  },
+                  {
+                    Icon: Linkedin,
+                    href: 'https://www.linkedin.com/company/bennett-artificial-intelligence-society/',
+                    label: 'LinkedIn',
+                  },
                 ].map(({ Icon, href, label }) => (
                   <a
                     key={label}
@@ -200,8 +218,8 @@ const Footer = () => {
               {/* Contact Email */}
               <p ref={addToRefs} className="text-gray-300">
                 General enquiries:{' '}
-                <a 
-                  href="mailto:ais@bennett.edu.in" 
+                <a
+                  href="mailto:ais@bennett.edu.in"
                   className="text-gray-400 hover:text-white transition-all hover:underline relative group"
                 >
                   <span className="relative z-10">ais@bennett.edu.in</span>

@@ -1,164 +1,213 @@
 @import url("https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&display=swap");
+
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-  }
-  
-  html, body {
-    width: 100%;
-    height: 100%;
-    font-family: "Instrument Serif";
-    background-color: #000;
-    color: #fff;
-  }
-  
-  img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-  
-  section {
-    position: relative;
-    width: 100vw;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-  
-  .hero {
-    min-height: 100vh; /* Ensures it takes full viewport height */
-  }
-  
-  .hero .img {
-    width: 50%;
-    aspect-ratio: 1;
-  }
-  
-  .main {
-    width: 100vw;
-    min-height: 100vh; /* Prevents stretching beyond viewport */
-    display: flex;
-    flex-direction: column;
-  }
-  
-  .row {
-    position: relative;
-    width: 100vw;
-    margin: 1em 0;
-    display: flex;
-    justify-content: center;
-    gap: 2em;
-  }
-  
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Remove the black background from the html/body so LiquidChrome shows */
+html,
+body {
+  width: 100%;
+  height: 100%;
+  font-family: "Instrument Serif";
+  background: transparent; /* Changed from #000 to transparent */
+  color: #fff;
+}
+
+img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+section {
+  position: relative;
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Ensure hero, main, and footer are transparent */
+.hero,
+.main,
+.footer {
+  background: transparent !important;
+}
+
+.hero {
+  min-height: 100vh; /* Full viewport height */
+}
+
+.hero .img {
+  width: 50%;
+  aspect-ratio: 1;
+}
+
+.main {
+  width: 100vw;
+  min-height: 100vh;
+  flex-direction: column;
+}
+
+.row {
+  position: relative;
+  width: 100vw;
+  margin: 1em 0;
+  display: flex;
+  justify-content: center;
+  gap: 2em;
+}
+
+.card {
+  position: relative;
+  width: 40%;
+  height: 360px;
+  border-radius: 0.75em;
+  overflow: hidden;
+  will-change: transform;
+  cursor: pointer;
+}
+
+.card-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 0.9),
+    rgba(0, 0, 0, 0.5),
+    transparent
+  );
+  padding: 20px;
+  transform: translateY(100%);
+  transition: transform 0.3s ease-in-out;
+}
+
+.card:hover .card-overlay {
+  transform: translateY(0);
+}
+
+.card-overlay h3 {
+  font-size: 1.5rem;
+  margin-bottom: 10px;
+  color: white;
+}
+
+.card-overlay p {
+  font-size: 1rem;
+  color: rgba(255, 255, 255, 0.9);
+  line-height: 1.4;
+}
+
+.main-content {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.logo {
+  width: 150px;
+  height: 150px;
+  border: 2px solid #fff;
+  border-radius: 100%;
+  overflow: hidden;
+  transform: scale(0);
+}
+
+.copy {
+  margin: 2em 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.line {
+  position: relative;
+  margin: 0.5em 0;
+  width: max-content;
+  height: 28px;
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+}
+
+.line p {
+  position: relative;
+  font-size: 24px;
+  transform: translateY(30px);
+}
+
+button {
+  position: relative;
+  padding: 1em 2em;
+  font-size: 18px;
+  color: #fff;
+  border: 2px solid #fff;
+  border-radius: 8em;
+  background: none;
+  outline: none;
+  transform: translateY(30px);
+  opacity: 0;
+}
+
+/* Remove the footer's black background */
+.footer {
+  width: 100%;
+  padding: 1em 0;
+  text-align: center;
+  background: transparent !important;
+  color: #fff;
+}
+
+@media (max-width: 900px) {
   .card {
-    position: relative;
-    width: 40%;
-    height: 360px;
-    border-radius: 0.75em;
-    overflow: hidden;
-    will-change: transform;
+    width: 50%;
+    height: 240px;
   }
-  
-  .main-content {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%); /* Fixed syntax */
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-  
-  .logo {
-    width: 150px;
-    height: 150px;
-    border: 2px solid #fff;
-    border-radius: 100%;
-    overflow: hidden;
-    transform: scale(0);
-  }
-  
-  .copy {
-    margin: 2em 0;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-  }
-  
-  .line {
-    position: relative;
-    margin: 0.5em 0;
-    width: max-content;
-    height: 28px;
-    clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%); /* Fixed syntax */
-  }
-  
-  .line p {
-    position: relative;
-    font-size: 24px;
-    transform: translateY(30px);
-  }
-  
-  button {
-    position: relative;
-    padding: 1em 2em;
-    font-size: 18px;
-    color: #fff;
-    border: 2px solid #fff;
-    border-radius: 8em;
-    background: none;
-    outline: none;
-    transform: translateY(30px);
-    opacity: 0;
-  }
-  
-  /* Footer Fix */
-  .footer {
-    width: 100%;
-    padding: 1em 0;
-    text-align: center;
-    background: #000;
-    color: #fff;
-  }
-  
-  @media (max-width: 900px) {
-    .card {
-      width: 50%;
-      height: 240px;
-    }
-  }
+}
+
+.header {
+  position: fixed;
+  top: 10px; /* Use explicit units */
+  left: 0;
+  width: 100%;
+  background: transparent;
+  padding: 15px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  z-index: 1000;
+}
+
+.logo-container {
+  position: absolute;
+  top: 10px;
+  left: 20px;
+  width: 250px;
+  height: auto;
+  filter: drop-shadow(0 0 10px #ffffff80);
+}
+
+@media (max-width: 768px) {
   .header {
-    position: fixed;
-    top: 10;
-    left: 0;
-    width: 100%;
-    background-color: transparent; /* Makes it fully transparent */
-    padding: 15px 20px; /* Adjust padding to match navbar */
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    z-index: 1000;
-}
-
-  .logo-container {
-    position: absolute;
-    top: 10px; /* Adjust to align with navbar */
-    left: 20px; /* Adjust for spacing */
-    width: 250px; /* Adjust size as needed */
-    height: auto;
-      filter: drop-shadow(0 0 10px #ffffff80);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.5s ease-in-out;
   }
-  
-  @media (max-width: 768px) {
-    .header {
-        opacity: 0;
-        visibility: hidden;
-        transition: opacity 0.5s ease-in-out;
-    }
+  .card-overlay {
+    padding: 15px;
+  }
+  .card-overlay h3 {
+    font-size: 1.2rem;
+  }
+  .card-overlay p {
+    font-size: 0.9rem;
+  }
 }
-
-  
-

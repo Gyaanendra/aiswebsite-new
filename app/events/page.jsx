@@ -7,6 +7,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { ReactLenis } from "lenis/react";
 import "../../screensCss/b.css";
 import Footer from "@/components/Footer";
+import LiquidChrome from "@/components/LiquidChrome";
 
 // Card arrays for the main event cards
 const leftImages = [
@@ -303,7 +304,6 @@ export default function Events() {
   }, []);
 
   // For mobile, create cube faces using card images.
-  // Here, we only use the first two images from leftImages to avoid showing Workshop.png.
   const leftCubeFaces = isMobile
     ? [
         { src: leftImages[0].src, alt: leftImages[0].alt },
@@ -328,110 +328,142 @@ export default function Events() {
 
   return (
     <ReactLenis root>
-      <header className="header">
-        <div className="logo-container">
-          <Image
-            src="/ais.png"
-            alt="AI Society Logo"
-            width={250}
-            height={100}
-            className="object-contain"
-            priority
-          />
-        </div>
-      </header>
+      {/* LiquidChrome Background */}
+      <div className="liquid-chrome-bg">
+        <LiquidChrome />
+      </div>
 
-      {/* Hero section with interactive 3D cubes */}
-      <section className="hero" style={{ position: "relative", overflow: "hidden" }}>
-        {/* On mobile, use "top-cube" and "bottom-cube"; on desktop use left/right */}
-        <div className={`threeD-container ${isMobile ? "top-cube" : "left-cube"}`}>
-          <div className="cube-wrapper">
-            <div className="cube">
-              {["front", "back", "right", "left", "top", "bottom"].map((face, index) => (
-                <div
-                  key={face}
-                  className={`face face-${face}`}
-                  style={{ backgroundImage: `url(${leftCubeFaces[index].src})` }}
-                />
-              ))}
+      {/* All other content */}
+      <div className="content">
+        <header className="header">
+          <div className="logo-container">
+            <Image
+              src="/ais.png"
+              alt="AI Society Logo"
+              width={250}
+              height={100}
+              className="object-contain"
+              priority
+            />
+          </div>
+        </header>
+
+        {/* Hero section */}
+        <section className="hero" style={{ position: "relative", overflow: "hidden" }}>
+          <div className={`threeD-container ${isMobile ? "top-cube" : "left-cube"}`}>
+            <div className="cube-wrapper">
+              <div className="cube">
+                {["front", "back", "right", "left", "top", "bottom"].map((face, index) => (
+                  <div
+                    key={face}
+                    className={`face face-${face}`}
+                    style={{ backgroundImage: `url(${leftCubeFaces[index].src})` }}
+                  />
+                ))}
+              </div>
             </div>
           </div>
-        </div>
-        <div className={`threeD-container ${isMobile ? "bottom-cube" : "right-cube"}`}>
-          <div className="cube-wrapper">
-            <div className="cube">
-              {["front", "back", "right", "left", "top", "bottom"].map((face, index) => (
-                <div
-                  key={face}
-                  className={`face face-${face}`}
-                  style={{ backgroundImage: `url(${rightCubeFaces[index].src})` }}
-                />
-              ))}
+          <div className={`threeD-container ${isMobile ? "bottom-cube" : "right-cube"}`}>
+            <div className="cube-wrapper">
+              <div className="cube">
+                {["front", "back", "right", "left", "top", "bottom"].map((face, index) => (
+                  <div
+                    key={face}
+                    className={`face face-${face}`}
+                    style={{ backgroundImage: `url(${rightCubeFaces[index].src})` }}
+                  />
+                ))}
+              </div>
             </div>
           </div>
-        </div>
-        <div className="hero-text">
-          <h1 className="hero-title" style={{ fontSize: "4rem", whiteSpace: "nowrap" }}>
-            Events
-          </h1>
-          <h2 className="hero-subtitle" style={{ fontSize: "2.5rem", whiteSpace: "nowrap" }}>
-            Let's dive in
-          </h2>
-        </div>
-      </section>
+          <div className="hero-text">
+            <h1 className="hero-title" style={{ fontSize: "4rem", whiteSpace: "nowrap" }}>
+              Events
+            </h1>
+            <h2 className="hero-subtitle" style={{ fontSize: "2.5rem", whiteSpace: "nowrap" }}>
+              Let's dive in
+            </h2>
+          </div>
+        </section>
 
-      <section className="main">
-        <div className="main-content">
-          <h1 className="middle-text">Artificial Intelligence Society</h1>
-        </div>
-        {[0, 1, 2].map((i) => (
-          <div className="row" key={i}>
-            {/* Left Card */}
-            <div className="card card-left">
-              <div className="hover-container">
-                <Image
-                  src={leftImages[i].src}
-                  alt={leftImages[i].alt}
-                  width={500}
-                  height={300}
-                  priority
-                />
-                <div className="overlay">
-                  <div className="overlay-content">
-                    <h3>{leftImages[i].overlayTitle}</h3>
-                    <p>{leftImages[i].overlayText}</p>
+        {/* Main content */}
+        <section className="main">
+          <div className="main-content">
+            <h1 className="middle-text">Artificial Intelligence Society</h1>
+          </div>
+          {[0, 1, 2].map((i) => (
+            <div className="row" key={i}>
+              {/* Left Card */}
+              <div className="card card-left">
+                <div className="hover-container">
+                  <Image
+                    src={leftImages[i].src}
+                    alt={leftImages[i].alt}
+                    width={500}
+                    height={300}
+                    priority
+                  />
+                  <div className="overlay">
+                    <div className="overlay-content">
+                      <h3>{leftImages[i].overlayTitle}</h3>
+                      <p>{leftImages[i].overlayText}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              {/* Right Card */}
+              <div className="card card-right">
+                <div className="hover-container">
+                  <Image
+                    src={rightImages[i].src}
+                    alt={rightImages[i].alt}
+                    width={500}
+                    height={300}
+                    priority
+                  />
+                  <div className="overlay">
+                    <div className="overlay-content">
+                      <h3>{rightImages[i].overlayTitle}</h3>
+                      <p>{rightImages[i].overlayText}</p>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
-            {/* Right Card */}
-            <div className="card card-right">
-              <div className="hover-container">
-                <Image
-                  src={rightImages[i].src}
-                  alt={rightImages[i].alt}
-                  width={500}
-                  height={300}
-                  priority
-                />
-                <div className="overlay">
-                  <div className="overlay-content">
-                    <h3>{rightImages[i].overlayTitle}</h3>
-                    <p>{rightImages[i].overlayText}</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        ))}
-      </section>
+          ))}
+        </section>
 
-      <section className="footer min-h-screen flex items-center justify-center bg-dark">
-        <Footer />
-      </section>
+        {/* Footer section – note: background set to transparent */}
+        <section className="footer min-h-screen flex items-center justify-center">
+          <Footer />
+        </section>
+      </div>
 
-      {/* Inline CSS for hover effects, responsiveness, and the 3D cubes */}
+      {/* Inline CSS */}
       <style jsx>{`
+        /* LiquidChrome Background Styles */
+        .liquid-chrome-bg {
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          z-index: -1;
+          pointer-events: none;
+        }
+
+        /* Content Layer */
+        .content {
+          position: relative;
+          z-index: 1;
+        }
+
+        /* Ensure hero and footer have transparent backgrounds */
+        .hero,
+        .footer {
+          background: transparent;
+        }
+
         /* 3D Cube Styles */
         .threeD-container {
           position: absolute;
@@ -483,15 +515,31 @@ export default function Events() {
           background-position: center;
           border: 2px solid rgba(255, 255, 255, 0.3);
         }
-        .face-front  { transform: rotateY(0deg)    translateZ(75px); }
-        .face-back   { transform: rotateY(180deg)  translateZ(75px); }
-        .face-right  { transform: rotateY(90deg)   translateZ(75px); }
-        .face-left   { transform: rotateY(-90deg)  translateZ(75px); }
-        .face-top    { transform: rotateX(90deg)   translateZ(75px); }
-        .face-bottom { transform: rotateX(-90deg)  translateZ(75px); }
+        .face-front {
+          transform: rotateY(0deg) translateZ(75px);
+        }
+        .face-back {
+          transform: rotateY(180deg) translateZ(75px);
+        }
+        .face-right {
+          transform: rotateY(90deg) translateZ(75px);
+        }
+        .face-left {
+          transform: rotateY(-90deg) translateZ(75px);
+        }
+        .face-top {
+          transform: rotateX(90deg) translateZ(75px);
+        }
+        .face-bottom {
+          transform: rotateX(-90deg) translateZ(75px);
+        }
         @keyframes spinCube {
-          from { transform: rotateX(0deg) rotateY(0deg); }
-          to { transform: rotateX(360deg) rotateY(360deg); }
+          from {
+            transform: rotateX(0deg) rotateY(0deg);
+          }
+          to {
+            transform: rotateX(360deg) rotateY(360deg);
+          }
         }
 
         /* Row and Card styles */
@@ -537,9 +585,6 @@ export default function Events() {
         }
         .overlay-content {
           z-index: 1;
-        }
-        .hero {
-          margin-bottom: 0.5rem;
         }
         .main {
           margin-top: 0.5rem;

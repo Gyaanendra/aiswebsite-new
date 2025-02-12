@@ -1,6 +1,7 @@
 "use client";
 import React, { useRef } from "react";
 import Card from "@/components/aboutus/Card";
+// Import the new component
 import { ReactLenis } from "@studio-freight/react-lenis";
 import gsap from "gsap";
 import ScrollTrigger from "gsap/ScrollTrigger";
@@ -8,6 +9,7 @@ import { useGSAP } from "@gsap/react";
 import { useMotionValue } from "framer-motion";
 import "../../screensCss/a.css";
 import Footer from "@/components/Footer";
+import TeamCards from "@/components/TeamCards"; 
 
 
 gsap.registerPlugin(ScrollTrigger);
@@ -25,6 +27,7 @@ const Page = () => {
     useMotionValue(0),
     useMotionValue(0),
   ];
+
   // Define three different wave shapes for the foreground
   const waveShape1 =
     "M0,200 C240,0 480,400 720,200 C960,0 1200,400 1440,200 L1440,400 L0,400 Z";
@@ -40,6 +43,74 @@ const Page = () => {
     "M0,220 C240,120 480,280 720,220 C960,120 1200,280 1440,220 L1440,400 L0,400 Z";
   const waveShapeBg3 =
     "M0,220 C240,320 480,120 720,220 C960,320 1200,120 1440,220 L1440,400 L0,400 Z";
+
+  // Technical teams with logos from your public folder and placeholder members
+  const technicalTeams = [
+    {
+      name: "AIS RL TEAM",
+      logo: "/RL.png",
+      members: ["RL Member 1", "RL Member 2", "RL Member 3", "RL Member 4"],
+    },
+    {
+      name: "AIS GEN AI TEAM",
+      logo: "/GENAI.png",
+      members: [
+        "Gen AI Member 1",
+        "Gen AI Member 2",
+        "Gen AI Member 3",
+        "Gen AI Member 4",
+      ],
+    },
+    {
+      name: "AIS NLP TEAM",
+      logo: "/NLP.png",
+      members: ["NLP Member 1", "NLP Member 2", "NLP Member 3", "NLP Member 4"],
+    },
+    {
+      name: "AIS CV TEAM",
+      logo: "/CV.png",
+      members: ["CV Member 1", "CV Member 2", "CV Member 3", "CV Member 4"],
+    },
+  ];
+
+  // Community outreach teams with placeholder logos and members (update paths if available)
+  const communityTeams = [
+    {
+      name: "AIS MULTIMEDIA TEAM",
+      logo: "/MULTIMEDIA.png",
+      members: [
+        "Multimedia Member 1",
+        "Multimedia Member 2",
+        "Multimedia Member 3",
+        "Multimedia Member 4",
+      ],
+    },
+    {
+      name: "AIS PR TEAM",
+      logo: "/PR.png",
+      members: ["PR Member 1", "PR Member 2", "PR Member 3", "PR Member 4"],
+    },
+    {
+      name: "AIS MANAGEMENT TEAM",
+      logo: "/MANAGEMENT.png",
+      members: [
+        "Management Member 1",
+        "Management Member 2",
+        "Management Member 3",
+        "Management Member 4",
+      ],
+    },
+    {
+      name: "AIS DESIGN TEAM",
+      logo: "/DESIGN.png",
+      members: [
+        "Design Member 1",
+        "Design Member 2",
+        "Design Member 3",
+        "Design Member 4",
+      ],
+    },
+  ];
 
   useGSAP(
     () => {
@@ -58,7 +129,7 @@ const Page = () => {
         const wavePathFg = document.querySelector(".wave-path-fg");
         const wavePathBg = document.querySelector(".wave-path-bg");
 
-        // Set initial states for both waves (using strokeDash settings plus the starting path)
+        // Set initial states for both waves
         gsap.set(wavePathFg, {
           strokeDasharray: 2000,
           strokeDashoffset: 2000,
@@ -80,7 +151,7 @@ const Page = () => {
           },
         });
 
-        // ----- Foreground wave animations -----
+        // Foreground wave animations
         waveTimeline
           .to(wavePathFg, { strokeDashoffset: 0, duration: 1, ease: "power2.out" }, 0)
           .to(
@@ -119,7 +190,7 @@ const Page = () => {
             0.9
           );
 
-        // ----- Background wave animations -----
+        // Background wave animations
         waveTimeline
           .to(wavePathBg, { strokeDashoffset: 0, duration: 1, ease: "power2.out" }, 0)
           .to(
@@ -188,7 +259,7 @@ const Page = () => {
           },
         });
 
-        // (Animations for card headers and groups below remain unchanged)
+        // Animations for card headers and groups remain unchanged...
         const firstHeader = containerEl.querySelector(
           ".first-cards .cards-header"
         );
@@ -641,6 +712,7 @@ const Page = () => {
   return (
     <ReactLenis root options={{ lerp: 0.1, smoothWheel: true }}>
       <div ref={container}>
+      
         <div
           className="holographic-overlay"
           style={{
@@ -720,7 +792,7 @@ const Page = () => {
             viewBox="0 0 1440 400"
             preserveAspectRatio="none"
           >
-            {/* Background wave (lower stroke weight, different starting shape) */}
+            {/* Background wave */}
             <path
               className="wave-path wave-path-bg"
               d={waveShapeBg1}
@@ -747,18 +819,15 @@ const Page = () => {
             TECHNICAL TEAMS
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:block gap-8 md:gap-4">
-            {[...Array(4)].map((_, index) => (
+            {technicalTeams.map((team, index) => (
               <Card
                 key={`first-${index}`}
                 id={`card-first-${index + 1}`}
                 frontSrc="/back.png"
                 frontAlt="Card Image"
-                backText={[
-                  "AIS RL TEAM",
-                  "AIS GEN AI TEAM",
-                  "AIS NLP TEAM",
-                  "AIS CV TEAM",
-                ][index]}
+                backText={team.name}
+                backLogo={team.logo}
+                members={team.members} // Pass the members array
                 className="card mb-8 md:mb-0"
               />
             ))}
@@ -768,21 +837,22 @@ const Page = () => {
           <h2 className="cards-header text-white text-2xl md:text-3xl text-center mb-8 pt-8 md:pt-0">
             COMMUNITY OUTREACH
           </h2>
-          {[...Array(4)].map((_, index) => (
+          {communityTeams.map((team, index) => (
             <Card
               key={`second-${index}`}
               id={`card-second-${index + 1}`}
               frontSrc="/back.png"
               frontAlt="Card Image"
-              backText={[
-                "AIS MULTIMEDIA TEAM",
-                "AIS PR TEAM",
-                "AIS MANAGEMENT TEAM",
-                "AIS DESIGN TEAM",
-              ][index]}
+              backText={team.name}
+              backLogo={team.logo}
+              members={team.members} // Pass the members array
               className="card"
             />
           ))}
+        </section>
+        {/* NEW COMPONENT INTEGRATION: TeamCards is inserted here */}
+        <section className="extra-team-info-section  ">
+          <TeamCards />
         </section>
         <section className="footer min-h-screen flex items-center justify-center bg-black">
           <Footer />
