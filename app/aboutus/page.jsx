@@ -753,11 +753,11 @@ const Page = () => {
                 id={`card-first-${index + 1}`}
                 frontSrc="/back.png"
                 frontAlt="Card Image"
-                backText={[
-                  "AIS RL TEAM",
-                  "AIS GEN AI TEAM",
-                  "AIS NLP TEAM",
-                  "AIS CV TEAM",
+                backSrc={[
+                  "/RL.png",
+                  "/GENAI.png",
+                  "/NLP.png",
+                  "/CV.png",
                 ][index]}
                 className="card mb-8 md:mb-0"
               />
@@ -774,11 +774,11 @@ const Page = () => {
               id={`card-second-${index + 1}`}
               frontSrc="/back.png"
               frontAlt="Card Image"
-              backText={[
-                "AIS MULTIMEDIA TEAM",
-                "AIS PR TEAM",
-                "AIS MANAGEMENT TEAM",
-                "AIS DESIGN TEAM",
+              backSrc={[
+                "/DESIGN.png",
+                "/MANAGEMENT.png",
+                "/PR.png",
+                "/MULTIMEDIA.png",
               ][index]}
               className="card"
             />
