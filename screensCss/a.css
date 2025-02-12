@@ -247,21 +247,3 @@ section {
 }
 
 /* --- Additional CSS for Members List Visibility --- */
-/* Force the members list inside the back of the card to be hidden by default (desktop) */
-.flip-card-back .members-list {
-  opacity: 0 !important;
-  transition: opacity 0.3s ease-in-out !important;
-}
-
-/* Force the members list to show when hovering over the card (desktop only) */
-.card:hover .flip-card-back .members-list {
-  opacity: 1 !important;
-}
-
-/* For Mobile: Always show members list */
-@media (max-width: 768px) {
-  .flip-card-back .members-list {
-    opacity: 1 !important;
-    transition: none !important;
-  }
-}

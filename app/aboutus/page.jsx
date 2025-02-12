@@ -8,6 +8,7 @@ import { useGSAP } from "@gsap/react";
 import { useMotionValue } from "framer-motion";
 import "../../screensCss/a.css";
 import Footer from "@/components/Footer";
+import TeamCards from "@/components/TeamCards";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -783,6 +784,9 @@ const Page = () => {
               className="card"
             />
           ))}
+        </section>
+        <section className="extra-team-info-section">
+          <TeamCards />
         </section>
         <section className="footer min-h-screen flex items-center justify-center bg-black">
           <Footer />
