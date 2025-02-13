@@ -1,7 +1,7 @@
 /*
-	jsrepo 1.35.1
-	Installed from https://reactbits.dev/tailwind/
-	12-2-2025
+  jsrepo 1.35.1
+  Installed from https://reactbits.dev/tailwind/
+  12-2-2025
 */
 "use client";
 import { useRef, useEffect } from "react";
@@ -38,7 +38,7 @@ export const LiquidChrome = ({
       }
     `;
 
-    // Fragment shader with the original vibrant color calculation.
+    // Fragment shader with slightly reduced glow and a subtler chrome-like Fresnel highlight.
     const fragmentShader = `
       precision highp float;
       uniform float uTime;
@@ -49,32 +49,41 @@ export const LiquidChrome = ({
       uniform float uFrequencyY;
       uniform vec2 uMouse;
       varying vec2 vUv;
-
+    
       // Render function for a given uv coordinate.
       vec4 renderImage(vec2 uvCoord) {
           // Convert uvCoord (in [0,1]) to a fragment coordinate.
           vec2 fragCoord = uvCoord * uResolution.xy;
           // Map fragCoord to a normalized space.
           vec2 uv = (2.0 * fragCoord - uResolution.xy) / min(uResolution.x, uResolution.y);
-
+    
           // Iterative cosine-based distortions.
           for (float i = 1.0; i < 10.0; i++){
               uv.x += uAmplitude / i * cos(i * uFrequencyX * uv.y + uTime + uMouse.x * 3.14159);
               uv.y += uAmplitude / i * cos(i * uFrequencyY * uv.x + uTime + uMouse.y * 3.14159);
           }
-
+    
           // Add a liquid ripple effect based on the mouse position.
           vec2 diff = (uvCoord - uMouse);
           float dist = length(diff);
           float falloff = exp(-dist * 20.0);
           float ripple = sin(10.0 * dist - uTime * 2.0) * 0.03;
           uv += (diff / (dist + 0.0001)) * ripple * falloff;
-
-          // Original vibrant color computation.
-          vec3 color = uBaseColor / abs(sin(uTime - uv.y - uv.x));
+    
+          // Compute glow intensity with slightly reduced intensity.
+          float intensity = abs(sin(uTime - uv.y - uv.x));
+          float glow = 1.0 / (intensity + 0.3); // increased denominator for less intensity
+          glow = pow(glow, 1.5); // lowered exponent for a subtler glow
+          vec3 baseGlow = uBaseColor * glow;
+    
+          // Fresnel effect for a reflective, chrome-like rim (subtler version).
+          vec2 fromCenter = uvCoord - vec2(0.5);
+          float fresnel = pow(1.0 - clamp(length(fromCenter) * 2.0, 0.0, 1.0), 2.0);
+          vec3 color = mix(baseGlow, vec3(1.0), fresnel * 0.3); // lower mixing factor
+    
           return vec4(color, 1.0);
       }
-
+    
       void main() {
           // 3x3 supersampling for anti-aliasing.
           vec4 col = vec4(0.0);
@@ -118,7 +127,7 @@ export const LiquidChrome = ({
       const scale = 1;
       renderer.setSize(
         container.offsetWidth * scale,
-        container.offsetHeight * scale,
+        container.offsetHeight * scale
       );
       const resUniform = program.uniforms.uResolution.value;
       resUniform[0] = gl.canvas.width;

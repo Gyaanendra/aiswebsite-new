@@ -818,6 +818,7 @@ const Page = () => {
                 frontAlt="Card Image"
                 backSrc={["/RL.png", "/GENAI.png", "/NLP.png", "/CV.png"][index]}
                 className="card mb-8 md:mb-0"
+           
               />
             ))}
           </div>
@@ -834,6 +835,7 @@ const Page = () => {
               frontAlt="Card Image"
               backSrc={["/DESIGN.png", "/MANAGEMENT.png", "/PR.png", "/MULTIMEDIA.png"][index]}
               className="card"
+           
             />
           ))}
         </section>
