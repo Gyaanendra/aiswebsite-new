@@ -83,8 +83,12 @@ const Page = () => {
         });
 
         // Animate Headers in First and Second Card Groups
-        const firstHeader = containerEl.querySelector(".first-cards .cards-header");
-        const secondHeader = containerEl.querySelector(".second-cards .cards-header");
+        const firstHeader = containerEl.querySelector(
+          ".first-cards .cards-header"
+        );
+        const secondHeader = containerEl.querySelector(
+          ".second-cards .cards-header"
+        );
 
         gsap.from(firstHeader, {
           opacity: 0,
@@ -330,8 +334,12 @@ const Page = () => {
           },
         });
 
-        const firstHeader = containerEl.querySelector(".first-cards .cards-header");
-        const secondHeader = containerEl.querySelector(".second-cards .cards-header");
+        const firstHeader = containerEl.querySelector(
+          ".first-cards .cards-header"
+        );
+        const secondHeader = containerEl.querySelector(
+          ".second-cards .cards-header"
+        );
 
         gsap.from(firstHeader, {
           opacity: 0,
@@ -505,11 +513,13 @@ const Page = () => {
                 </span>
               </h1>
               <p className="mt-10 text-xl text-white max-w-4xl">
-                The AI Specialization Club (AIS) at Bennett University is dedicated to
-                fostering a deep passion for Artificial Intelligence. The club engages in end-to-end project development, achieves victories in hackathons,
-                conducts informative workshops, upskills members through guidance from
-                senior student mentors as well as experienced faculty members. We actively
-                participate in open-source development as well.
+                The AI Specialization Club (AIS) at Bennett University is
+                dedicated to fostering a deep passion for Artificial
+                Intelligence. The club engages in end-to-end project
+                development, achieves victories in hackathons, conducts
+                informative workshops, upskills members through guidance from
+                senior student mentors as well as experienced faculty members.
+                We actively participate in open-source development as well.
               </p>
             </div>
             <div className="flex-1 md:pl-10 mt-10 md:mt-0 md:pt-20">
@@ -520,12 +530,14 @@ const Page = () => {
                 </span>
               </h2>
               <p className="mt-10 text-xl text-white max-w-4xl">
-                The Artificial Intelligence Society (AIS) at Bennett University is one of the most
-                research-focused and collaborative student communities on campus. Our mission is to
-                foster a deep understanding of AI and its applications by bringing together like-minded
-                individuals who are eager to publish research, learn, share knowledge, and work on
-                innovative projects. We believe in building together, mentoring juniors, and creating
-                an inclusive environment where everyone can grow.
+                The Artificial Intelligence Society (AIS) at Bennett University
+                is one of the most research-focused and collaborative student
+                communities on campus. Our mission is to foster a deep
+                understanding of AI and its applications by bringing together
+                like-minded individuals who are eager to publish research,
+                learn, share knowledge, and work on innovative projects. We
+                believe in building together, mentoring juniors, and creating an
+                inclusive environment where everyone can grow.
               </p>
             </div>
           </div>
@@ -573,12 +585,14 @@ const Page = () => {
                 id={`card-first-${index + 1}`}
                 frontSrc="/back.png"
                 frontAlt="Card Image"
-                backText={[
-                  "AIS RL TEAM",
-                  "AIS GEN AI TEAM",
-                  "AIS NLP TEAM",
-                  "AIS CV TEAM",
-                ][index]}
+                backText={
+                  [
+                    "AIS RL TEAM",
+                    "AIS GEN AI TEAM",
+                    "AIS NLP TEAM",
+                    "AIS CV TEAM",
+                  ][index]
+                }
                 className="card mb-8 md:mb-0"
               />
             ))}
@@ -594,12 +608,14 @@ const Page = () => {
               id={`card-second-${index + 1}`}
               frontSrc="/back.png"
               frontAlt="Card Image"
-              backText={[
-                "AIS MULTIMEDIA TEAM",
-                "AIS PR TEAM",
-                "AIS MANAGEMENT TEAM",
-                "AIS DESIGN TEAM",
-              ][index]}
+              backText={
+                [
+                  "AIS MULTIMEDIA TEAM",
+                  "AIS PR TEAM",
+                  "AIS MANAGEMENT TEAM",
+                  "AIS DESIGN TEAM",
+                ][index]
+              }
               className="card"
             />
           ))}

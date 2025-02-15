@@ -81,7 +81,7 @@ const LandingBanner = () => {
           gsap.to(containerRef.current, {
             opacity: 0,
             duration: 0.8,
-            onComplete: () => router.push("/aboutus")
+            onComplete: () => router.push("/aboutus"),
           });
         }
       },
@@ -93,11 +93,15 @@ const LandingBanner = () => {
     };
 
     window.addEventListener("mousemove", handleMouseMove);
-    
+
     return () => {
       st.kill();
       tl.kill();
-      gsap.killTweensOf([logoRef.current, textRef.current, containerRef.current]);
+      gsap.killTweensOf([
+        logoRef.current,
+        textRef.current,
+        containerRef.current,
+      ]);
       window.removeEventListener("mousemove", handleMouseMove);
     };
   }, [router]);
