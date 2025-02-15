@@ -1,35 +1,43 @@
-@import url("https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&display=swap");
 
+@import url('https://cdn.jsdelivr.net/npm/ailerons-typeface@1.0.0/stylesheet.css');
+
+/* Global Reset & Box Sizing */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
+/* Global HTML & Body Styles */
 html,
 body {
   width: 100%;
   height: 500vh;
-  font-family: "Instrument Serif";
-  background-color: black;
+  font-family: "Ailerons";
+  background-color: transparent;
 }
-/* rest of the CSS remains the same */
+
+/* Container & Image Defaults */
 .container {
   width: 100%;
   height: 100%;
 }
+
 img {
   width: 100%;
   height: 100%;
   object-fit: cover;
 }
+
+/* Section Styles */
 section {
   position: relative;
   width: 100%;
   height: 100%;
-  background-color: black;
+  background-color: transparent;
 }
 
+/* Card Global Styles (used in layout & animations) */
 .card {
   position: absolute;
   top: 50%;
@@ -39,6 +47,7 @@ section {
   height: 400px;
   perspective: 1000px;
 }
+
 .card p {
   position: absolute;
   top: 50%;
@@ -48,6 +57,8 @@ section {
   font-size: 20px;
   font-weight: 500;
 }
+
+/* Card Wrapper Floating Animation */
 .card-wrapper {
   position: absolute;
   top: 50%;
@@ -57,39 +68,52 @@ section {
   height: 100%;
   animation: floating 3s infinite ease-in-out;
 }
+
 #card-1 .card-wrapper {
   animation-delay: 0;
 }
+
 #card-2 .card-wrapper {
   animation-delay: 0.2s;
 }
+
 #card-3 .card-wrapper {
   animation-delay: 0.4s;
 }
+
 #card-4 .card-wrapper {
   animation-delay: 0.6s;
 }
+
+/* Flip Card Inner & Sides */
 .flip-card-inner {
   position: relative;
   width: 100%;
   height: 100%;
   text-align: center;
   transform-style: preserve-3d;
+  transition: transform 0.6s;
 }
+
 .flip-card-front,
 .flip-card-back {
   position: absolute;
   width: 100%;
   height: 100%;
   backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
   border-radius: 0.8em;
   overflow: hidden;
 }
+
+/* Flip Card Back */
 .flip-card-back {
   padding: 1em;
   background-color: white;
   transform: rotateY(180deg);
 }
+
+/* Floating Animation Keyframes */
 @keyframes floating {
   0% {
     transform: translate(-50%, -50%);
@@ -101,28 +125,33 @@ section {
     transform: translate(-50%, -50%);
   }
 }
+
+/* Cards Layout Container */
 .cards {
   position: relative;
   height: 100vh;
 }
 
-/* Assuming your Card component has a root element with class 'card' */
-.card {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-}
+/* Header & Logo */
 .header {
   position: fixed;
-  top: 50px; /* Reduced from 10px */
-  left: 50px; /* Reduced from 10px */
-  z-index: 1000; /* Ensure it's above other content */
-  color: #ffffff; /* White text color */
-  font-size: 34px; /* Reduced from 20px */
+  top: 50px; /* Adjusted for spacing */
+  left: 50px;
+  z-index: 1000;
+  color: #ffffff;
+  font-size: 34px;
   font-weight: bold;
   text-transform: uppercase;
-  letter-spacing: 0.5px; /* Reduced from 1px */
+  letter-spacing: 0.5px;
 }
+
+.logo {
+  width: 250px;
+  height: auto;
+  filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.5));
+}
+
+/* Responsive Adjustments */
 @media (max-width: 768px) {
   .card {
     position: relative !important;
@@ -164,120 +193,44 @@ section {
   .flip-card-back {
     backface-visibility: hidden;
   }
+
+  /* Logo adjustments for mobile */
+  .header .logo { 
+    width: 150px;
+    height: auto;
+    position: absolute;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1000;
+  }
 }
 
+/* Scrollbar Styling */
 ::-webkit-scrollbar {
   width: 8px;
 }
 
 ::-webkit-scrollbar-track {
-  @apply bg-zinc-900;
+  background: #1f2937;
+  border: none;
 }
 
 ::-webkit-scrollbar-thumb {
-  @apply bg-zinc-700 rounded-full;
+  background: #374151;
+  border-radius: 9999px;
+  border: none;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  @apply bg-zinc-600;
-}
-::-webkit-scrollbar-track {
-  @apply bg-zinc-900;
-  border: none; /* Add this line */
+  background: #4b5563;
 }
 
-::-webkit-scrollbar-thumb {
-  @apply bg-zinc-700 rounded-full;
-  border: none; /* Add this line */
-}
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-/* Add this to your global CSS file or a CSS module */
-.header {
-  position: fixed; /* Keeps the logo fixed at the top-left */
-  top: 20px; /* Adjust as needed */
-  left: 20px; /* Adjust as needed */
-  z-index: 1000; /* Ensures the logo stays above other elements */
-}
-
-.logo {
-  width: 250px; /* Adjust the size as needed */
-  height: auto; /* Maintain aspect ratio */
-}
-
-/* Global Styles */
-body {
-  @apply bg-transparent overflow-x-hidden;
-}
-
-.container {
-  @apply relative;
-}
-
-.logo {
-  filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.5));
-}
-
-/* Card Flip Styles */
-.flip-card {
-  perspective: 1000px;
-}
-
-.flip-card-inner {
-  transition: transform 0.6s;
-  transform-style: preserve-3d;
-}
-
-.flip-card-front,
-.flip-card-back {
-  backface-visibility: hidden;
-  -webkit-backface-visibility: hidden;
-}
-
-.flip-card-back {
-  transform: rotateY(180deg);
-}
+/* Wave Section (if applicable) */
 .wave-section {
   position: relative;
   overflow: hidden;
-  background: linear-gradient(to bottom, #000000 0%, #000000 100%);
-}
-
-.wave-path {
-  filter: drop-shadow(0 0 2px rgba(255, 255, 255, 0.3));
-}
-
-.secondary-wave {
-  filter: drop-shadow(0 0 4px rgba(255, 255, 255, 0.2));
-}
-
-.wave-shine {
-  animation: shine 3s infinite linear;
-}
-
-@keyframes shine {
-  0% { transform: translateX(-100%) rotate(-20deg); }
-  100% { transform: translateX(200%) rotate(-20deg); }
-}
-
-@media (max-width: 768px) {
-  .wave-section {
-    min-height: 30vh !important;
-  }
-  
-  .wave-path {
-    stroke-width: 4px !important;
-  }
-  
-  .secondary-wave {
-    stroke-width: 3px !important;
-  }
-}
-.wave-section {
+  background: transparent;
   display: none;
 }
 
@@ -289,22 +242,16 @@ body {
   .wave-section {
     display: block;
   }
-
   .mobile-wave-section {
     display: none;
   }
 }
-@media (max-width: 768px) {
-  /* Target only the logo */
-  .header .logo { 
-    width: 150px;
-    height: auto;
-    position: absolute; /* Change from fixed to absolute */
-    top: 10px; /* Reduced top spacing */
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 1000; /* Ensure it stays above other content */
-  }
+.liquid-chrome-bg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  pointer-events: none;
 }
-
-

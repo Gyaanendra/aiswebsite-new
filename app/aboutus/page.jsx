@@ -8,7 +8,8 @@ import { useGSAP } from "@gsap/react";
 import { useMotionValue } from "framer-motion";
 import "../../screensCss/a.css";
 import Footer from "@/components/Footer";
-import WaveAnimation from "@/components/WaveAnimation";
+import TeamCards from "@/components/TeamCards";
+import LiquidChrome from "@/components/LiquidChrome";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -26,23 +27,52 @@ const Page = () => {
     useMotionValue(0),
   ];
 
+  // Define three different wave shapes for the foreground
+  const waveShape1 =
+    "M0,200 C240,0 480,400 720,200 C960,0 1200,400 1440,200 L1440,400 L0,400 Z";
+  const waveShape2 =
+    "M0,200 C240,100 480,300 720,200 C960,100 1200,300 1440,200 L1440,400 L0,400 Z";
+  const waveShape3 =
+    "M0,200 C240,300 480,100 720,200 C960,300 1200,100 1440,200 L1440,400 L0,400 Z";
+
+  // Define three different wave shapes for the background (slightly offset vertically)
+  const waveShapeBg1 =
+    "M0,220 C240,20 480,380 720,220 C960,20 1200,380 1440,220 L1440,400 L0,400 Z";
+  const waveShapeBg2 =
+    "M0,220 C240,120 480,280 720,220 C960,120 1200,280 1440,220 L1440,400 L0,400 Z";
+  const waveShapeBg3 =
+    "M0,220 C240,320 480,120 720,220 C960,320 1200,120 1440,220 L1440,400 L0,400 Z";
+
   useGSAP(
     () => {
       const mm = gsap.matchMedia();
 
-      // Desktop Animations
+      // ---------------------------
+      // Desktop Animations (min-width: 769px)
+      // ---------------------------
       mm.add("(min-width: 769px)", () => {
         const containerEl = container.current;
         const overlayEl = overlayRef.current;
         const textEl = textRef.current;
-
-        // Get the SVG wave elements
-        const wavePath = document.querySelector(".wave-path");
         const waveSection = document.querySelector(".wave-section");
 
-        // (The inline initial state for textEl now includes translateY(20px), so we remove the gsap.set call.)
-        gsap.set(wavePath, { strokeDasharray: 2000, strokeDashoffset: 2000 });
+        // Select the two wave paths by class name:
+        const wavePathFg = document.querySelector(".wave-path-fg");
+        const wavePathBg = document.querySelector(".wave-path-bg");
 
+        // Set initial states for both waves (using strokeDash settings plus the starting path)
+        gsap.set(wavePathFg, {
+          strokeDasharray: 2000,
+          strokeDashoffset: 2000,
+          attr: { d: waveShape1 },
+        });
+        gsap.set(wavePathBg, {
+          strokeDasharray: 2000,
+          strokeDashoffset: 2000,
+          attr: { d: waveShapeBg1 },
+        });
+
+        // Create a scroll-triggered timeline for the advanced wave animations
         const waveTimeline = gsap.timeline({
           scrollTrigger: {
             trigger: waveSection,
@@ -52,9 +82,95 @@ const Page = () => {
           },
         });
 
+        // ----- Foreground wave animations -----
         waveTimeline
-          .to(wavePath, { strokeDashoffset: 0 }, 0)
-          .to(wavePath, { scaleY: 1, y: 0 }, 0)
+          .to(
+            wavePathFg,
+            { strokeDashoffset: 0, duration: 1, ease: "power2.out" },
+            0
+          )
+          .to(
+            wavePathFg,
+            { attr: { d: waveShape2 }, duration: 1, ease: "power1.inOut" },
+            0.3
+          )
+          .to(
+            wavePathFg,
+            { attr: { d: waveShape3 }, duration: 1, ease: "power1.inOut" },
+            0.6
+          )
+          .to(
+            wavePathFg,
+            { attr: { d: waveShape1 }, duration: 1, ease: "power1.inOut" },
+            0.9
+          )
+          .to(
+            wavePathFg,
+            { strokeWidth: 8, duration: 1, ease: "power1.inOut" },
+            0.3
+          )
+          .to(
+            wavePathFg,
+            { stroke: "#e8e8e8", duration: 1, ease: "power1.inOut" },
+            0.3
+          )
+          .to(
+            wavePathFg,
+            { strokeWidth: 4, duration: 1, ease: "power1.inOut" },
+            0.9
+          )
+          .to(
+            wavePathFg,
+            { stroke: "#f5f5f5", duration: 1, ease: "power1.inOut" },
+            0.9
+          );
+
+        // ----- Background wave animations -----
+        waveTimeline
+          .to(
+            wavePathBg,
+            { strokeDashoffset: 0, duration: 1, ease: "power2.out" },
+            0
+          )
+          .to(
+            wavePathBg,
+            { attr: { d: waveShapeBg2 }, duration: 1, ease: "power1.inOut" },
+            0.3
+          )
+          .to(
+            wavePathBg,
+            { attr: { d: waveShapeBg3 }, duration: 1, ease: "power1.inOut" },
+            0.6
+          )
+          .to(
+            wavePathBg,
+            { attr: { d: waveShapeBg1 }, duration: 1, ease: "power1.inOut" },
+            0.9
+          )
+          .to(
+            wavePathBg,
+            { strokeWidth: 4, duration: 1, ease: "power1.inOut" },
+            0.3
+          )
+          .to(
+            wavePathBg,
+            { stroke: "#d3d3d3", duration: 1, ease: "power1.inOut" },
+            0.3
+          )
+          .to(
+            wavePathBg,
+            { strokeWidth: 2, duration: 1, ease: "power1.inOut" },
+            0.9
+          )
+          .to(
+            wavePathBg,
+            { stroke: "#ffffff", duration: 1, ease: "power1.inOut" },
+            0.9
+          );
+
+        // Animate scroll-text in the wave section
+        gsap.set(textEl, { opacity: 0, y: 20 });
+        waveTimeline
           .to(textEl, { opacity: 1, y: 0, duration: 0.5 }, 0.2)
           .to(textEl, { opacity: 0, y: -40, duration: 0.5 }, 0.8);
 
@@ -89,6 +205,12 @@ const Page = () => {
         const secondHeader = containerEl.querySelector(
           ".second-cards .cards-header"
         );
+        const firstHeader = containerEl.querySelector(
+          ".first-cards .cards-header"
+        );
+        const secondHeader = containerEl.querySelector(
+          ".second-cards .cards-header"
+        );
 
         gsap.from(firstHeader, {
           opacity: 0,
@@ -114,7 +236,7 @@ const Page = () => {
           },
         });
 
-        // FIRST CARD GROUP ANIMATION
+        // FIRST CARD GROUP ANIMATION (Desktop)
         const firstGroup = containerEl.querySelector(".first-cards");
         const firstCards = firstGroup.querySelectorAll(".card");
 
@@ -172,6 +294,7 @@ const Page = () => {
               "<"
             );
 
+          // Flip animation for desktop cards remains unchanged
           const frontEl = card.querySelector(".flip-card-front");
           const backEl = card.querySelector(".flip-card-back");
           const contentEl = card.querySelector(".flip-card-inner");
@@ -187,7 +310,7 @@ const Page = () => {
           });
         });
 
-        // SECOND CARD GROUP ANIMATION (ADVANCED)
+        // SECOND CARD GROUP ANIMATION (Desktop - Advanced)
         const secondGroup = containerEl.querySelector(".second-cards");
         const secondCards = secondGroup.querySelectorAll(".card");
 
@@ -210,7 +333,7 @@ const Page = () => {
             rotation: 0,
             scale: 0.8,
             opacity: 0,
-            y: 50, // start slightly lower
+            y: 50,
           });
 
           gsap.to(card, {
@@ -272,6 +395,7 @@ const Page = () => {
               0.8
             );
 
+          // Flip animation for desktop second group
           const frontEl = card.querySelector(".flip-card-front");
           const backEl = card.querySelector(".flip-card-back");
           const contentEl = card.querySelector(".flip-card-inner");
@@ -292,12 +416,68 @@ const Page = () => {
         };
       });
 
-      // Mobile animations (sped up further)
+      // ---------------------------
+      // Mobile Animations (max-width: 768px)
+      // ---------------------------
       mm.add("(max-width: 768px)", () => {
         const containerEl = container.current;
         const overlayEl = overlayRef.current;
         const textEl = textRef.current;
         const waveSection = document.querySelector(".wave-section");
+
+        // For mobile, select the wave paths and set their starting d attribute
+        const wavePathFg = document.querySelector(".wave-path-fg");
+        const wavePathBg = document.querySelector(".wave-path-bg");
+        gsap.set(wavePathFg, { attr: { d: waveShape1 } });
+        gsap.set(wavePathBg, { attr: { d: waveShapeBg1 } });
+
+        // Animate the foreground wave morph on scroll (simpler version)
+        gsap.to(wavePathFg, {
+          attr: { d: waveShape2 },
+          duration: 0.5,
+          ease: "power1.inOut",
+          scrollTrigger: {
+            trigger: waveSection,
+            start: "top 80%",
+            end: "center center",
+            scrub: 0.4,
+          },
+        });
+        gsap.to(wavePathFg, {
+          attr: { d: waveShape1 },
+          duration: 0.5,
+          ease: "power1.inOut",
+          scrollTrigger: {
+            trigger: waveSection,
+            start: "center center",
+            end: "bottom center",
+            scrub: 0.4,
+          },
+        });
+
+        // Animate the background wave morph on scroll (simpler version)
+        gsap.to(wavePathBg, {
+          attr: { d: waveShapeBg2 },
+          duration: 0.5,
+          ease: "power1.inOut",
+          scrollTrigger: {
+            trigger: waveSection,
+            start: "top 80%",
+            end: "center center",
+            scrub: 0.4,
+          },
+        });
+        gsap.to(wavePathBg, {
+          attr: { d: waveShapeBg1 },
+          duration: 0.5,
+          ease: "power1.inOut",
+          scrollTrigger: {
+            trigger: waveSection,
+            start: "center center",
+            end: "bottom center",
+            scrub: 0.4,
+          },
+        });
 
         gsap.to(textEl, {
           opacity: 1,
@@ -365,7 +545,7 @@ const Page = () => {
           },
         });
 
-        // FIRST CARD GROUP ANIMATION (Mobile)
+        // FIRST CARD GROUP ANIMATION (Mobile) with Advanced Flip Animation
         const firstGroup = containerEl.querySelector(".first-cards");
         const firstCards = firstGroup.querySelectorAll(".card");
         firstCards.forEach((card, index) => {
@@ -386,17 +566,51 @@ const Page = () => {
           const frontEl = card.querySelector(".flip-card-front");
           const backEl = card.querySelector(".flip-card-back");
           const contentEl = card.querySelector(".flip-card-inner");
-          ScrollTrigger.create({
-            trigger: card,
-            start: "top center",
-            end: "bottom center",
-            onEnter: () => animateFlip(frontEl, backEl, contentEl, index),
-            onLeaveBack: () => resetFlip(frontEl, backEl, contentEl),
-            scrub: 0.4,
+
+          // Create an advanced flip timeline for mobile that uses scroll progress
+          const flipTimeline = gsap.timeline({
+            scrollTrigger: {
+              trigger: card,
+              start: "top center",
+              end: "bottom center",
+              scrub: 0.5,
+            },
           });
+          flipTimeline
+            .to(card, {
+              scale: 1.1,
+              boxShadow: "0px 15px 30px rgba(0, 0, 0, 0.5)",
+              duration: 0.3,
+              ease: "power3.out",
+            })
+            .to(
+              contentEl,
+              {
+                rotationY: 90,
+                duration: 0.3,
+                ease: "power3.inOut",
+              },
+              "-=0.2"
+            )
+            .set([frontEl, backEl], { zIndex: index % 2 === 0 ? 50 : -50 })
+            .to(contentEl, {
+              rotationY: 180,
+              duration: 0.3,
+              ease: "power3.inOut",
+            })
+            .to(
+              card,
+              {
+                scale: 1,
+                boxShadow: "0px 5px 15px rgba(0, 0, 0, 0.2)",
+                duration: 0.3,
+                ease: "power3.out",
+              },
+              "+=0.1"
+            );
         });
 
-        // SECOND CARD GROUP ANIMATION (Mobile) with additional, faster animation
+        // SECOND CARD GROUP ANIMATION (Mobile) with Advanced Flip Animation and Additional Rotation
         const secondGroup = containerEl.querySelector(".second-cards");
         const secondCards = secondGroup.querySelectorAll(".card");
         secondCards.forEach((card, index) => {
@@ -413,7 +627,7 @@ const Page = () => {
               toggleActions: "play none none none",
             },
           });
-
+          // Additional subtle rotation animation for second cards
           gsap.to(card, {
             rotation: 5,
             scale: 1.05,
@@ -430,14 +644,50 @@ const Page = () => {
           const frontEl = card.querySelector(".flip-card-front");
           const backEl = card.querySelector(".flip-card-back");
           const contentEl = card.querySelector(".flip-card-inner");
-          ScrollTrigger.create({
-            trigger: card,
-            start: "top center",
-            end: "bottom center",
-            onEnter: () => animateFlip(frontEl, backEl, contentEl, index),
-            onLeaveBack: () => resetFlip(frontEl, backEl, contentEl),
-            scrub: 0.4,
+
+          // Create an advanced flip timeline for the second cards on mobile
+          const flipTimeline = gsap.timeline({
+            scrollTrigger: {
+              trigger: card,
+              start: "top center",
+              end: "bottom center",
+              scrub: 0.5,
+            },
           });
+          flipTimeline
+            .to(card, {
+              scale: 1.1,
+              rotation: 5,
+              boxShadow: "0px 15px 30px rgba(0, 0, 0, 0.5)",
+              duration: 0.3,
+              ease: "power3.out",
+            })
+            .to(
+              contentEl,
+              {
+                rotationY: 90,
+                duration: 0.3,
+                ease: "power3.inOut",
+              },
+              "-=0.2"
+            )
+            .set([frontEl, backEl], { zIndex: index % 2 === 0 ? 50 : -50 })
+            .to(contentEl, {
+              rotationY: 180,
+              duration: 0.3,
+              ease: "power3.inOut",
+            })
+            .to(
+              card,
+              {
+                scale: 1,
+                rotation: 0,
+                boxShadow: "0px 5px 15px rgba(0, 0, 0, 0.2)",
+                duration: 0.3,
+                ease: "power3.out",
+              },
+              "+=0.1"
+            );
         });
 
         return () => {
@@ -450,7 +700,7 @@ const Page = () => {
     { scope: container }
   );
 
-  // Flip animation functions
+  // Desktop flip animation functions (used only on desktop in this example)
   const animateFlip = (front, back, content, index) => {
     gsap.to(content, {
       rotationY: 180,
@@ -478,7 +728,21 @@ const Page = () => {
 
   return (
     <ReactLenis root options={{ lerp: 0.1, smoothWheel: true }}>
-      <div ref={container}>
+      {/* LiquidChrome Background with Fixed Position and a Low z-index */}
+      <LiquidChrome
+        className="liquid-chrome-bg"
+        style={{
+          position: "fixed",
+          top: 0,
+          left: 0,
+          width: "100%",
+          height: "100%",
+          zIndex: -1,
+        }}
+      />
+
+      {/* Main page content */}
+      <div ref={container} style={{ position: "relative", zIndex: 1 }}>
         <div
           className="holographic-overlay"
           style={{
@@ -493,7 +757,7 @@ const Page = () => {
           }}
         />
         <header className="header">
-          <img src="/logo.png" alt="Company Logo" className="logo" />
+          <img src="/ais.png" alt="Company Logo" className="logo" />
         </header>
         <div
           ref={overlayRef}
@@ -550,7 +814,6 @@ const Page = () => {
               position: "absolute",
               top: "80%",
               left: "50%",
-              // Set the initial transform to match GSAP’s starting y offset
               transform: "translateX(-50%) translateY(20px)",
               zIndex: 10,
               opacity: 0,
@@ -563,11 +826,22 @@ const Page = () => {
             viewBox="0 0 1440 400"
             preserveAspectRatio="none"
           >
+            {/* Background wave (lower stroke weight, different starting shape) */}
             <path
-              className="wave-path"
-              d="M0,200 C240,0 480,400 720,200 C960,0 1200,400 1440,200 L1440,400 L0,400 Z"
+              className="wave-path wave-path-bg"
+              d={waveShapeBg1}
               fill="none"
-              stroke="#ffffff"
+              stroke="#666666"
+              strokeWidth="2"
+              strokeDasharray="2000"
+              strokeDashoffset="2000"
+            />
+            {/* Foreground wave */}
+            <path
+              className="wave-path wave-path-fg"
+              d={waveShape1}
+              fill="none"
+              stroke="#888888"
               strokeWidth="4"
               strokeDasharray="2000"
               strokeDashoffset="2000"
@@ -593,6 +867,9 @@ const Page = () => {
                     "AIS CV TEAM",
                   ][index]
                 }
+                backSrc={
+                  ["/RL.png", "/GENAI.png", "/NLP.png", "/CV.png"][index]
+                }
                 className="card mb-8 md:mb-0"
               />
             ))}
@@ -616,11 +893,22 @@ const Page = () => {
                   "AIS DESIGN TEAM",
                 ][index]
               }
+              backSrc={
+                [
+                  "/DESIGN.png",
+                  "/MANAGEMENT.png",
+                  "/PR.png",
+                  "/MULTIMEDIA.png",
+                ][index]
+              }
               className="card"
             />
           ))}
         </section>
-        <section className="footer min-h-screen flex items-center justify-center bg-dark">
+        <section className="extra-team-info-section">
+          <TeamCards />
+        </section>
+        <section className="footer min-h-screen flex items-center justify-center bg-black">
           <Footer />
         </section>
       </div>

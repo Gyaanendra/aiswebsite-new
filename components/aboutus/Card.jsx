@@ -1,6 +1,6 @@
 import React from "react";
 
-const Card = React.forwardRef(({ id, frontSrc, frontAlt, backText }, ref) => {
+const Card = React.forwardRef(({ id, frontSrc, frontAlt, backSrc }, ref) => {
   return (
     <div className="card" id={id} ref={ref}>
       <div className="card-wrapper">
@@ -9,7 +9,15 @@ const Card = React.forwardRef(({ id, frontSrc, frontAlt, backText }, ref) => {
             <img src={frontSrc} alt={frontAlt} />
           </div>
           <div className="flip-card-back">
-            <p>{backText}</p>
+            <img
+              src={backSrc}
+              alt="Card Logo"
+              style={{
+                width: "100%",
+                height: "100%",
+                objectFit: "cover",
+              }}
+            />
           </div>
         </div>
       </div>
