@@ -38,7 +38,7 @@ const ProjectDetail = () => {
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
       // Draw the grid with a wave effect
-      ctx.strokeStyle = "rgba(75, 85, 99, 0.3)";
+      ctx.strokeStyle = "rgba(255, 255, 255, 0.3)";
       ctx.lineWidth = 0.5;
       for (let i = 0; i < canvas.width; i += 30) {
         for (let j = 0; j < canvas.height; j += 30) {
@@ -75,31 +75,56 @@ const ProjectDetail = () => {
       <canvas ref={canvasRef} className="absolute inset-0 w-full h-full opacity-50" />
 
       {/* Foreground content */}
-      <div className="relative z-10 container mx-auto px-4 py-16 md:py-24">
-        <div className="grid md:grid-cols-2 gap-8 items-center">
-          <div className="space-y-8">
-            <h1 className="text-5xl md:text-7xl font-light text-white tracking-wide">
+      <div className="relative z-10 container mx-auto px-4 py-16 md:py-24 text-white">
+        <div className="grid md:grid-cols-2 gap-8 items-center h-full">
+          <div className="space-y-8 flex flex-col justify-center">
+            <h1 className="text-5xl md:text-7xl font-bold text-white tracking-wide">
               {project.title}
             </h1>
-            <div className="space-y-6 text-gray-300">
+            <div className="space-y-6">
               {project.description ? (
-                <p className="text-lg">{project.description}</p>
+                <p className="text-xl leading-relaxed">{project.description}</p>
               ) : (
-                <p className="text-lg">No description available.</p>
+                <p className="text-xl leading-relaxed">No description available.</p>
               )}
-              <p className="text-lg">Category: {project.tag}</p>
+              <div className="flex flex-wrap gap-2">
+                <h3 className="w-full text-white text-lg font-bold">Tech Used</h3>
+                {project.tags?.map((tag, index) => (
+                  <span 
+                    key={index}
+                    className="px-3 py-1 text-sm rounded-full bg-gray-800 text-white"
+                  >
+                    {tag}
+                  </span>
+                ))}
+              </div>
+              {project.contributors && (
+                <div className="flex flex-wrap gap-2">
+                  <span className="w-full text-white text-lg font-bold">Contributors</span>
+                  {project.contributors.map((contributor, index) => (
+                    <span
+                      key={index}
+                      className="px-3 py-1 text-sm rounded-full bg-gray-800 text-white"
+                    >
+                      {contributor}
+                    </span>
+                  ))}
+                </div>
+              )}
             </div>
             {/* Instead of using a button component, a styled link is provided */}
             {project.link && (
-              <a
-                href={project.link}
-                className="inline-block border border-white text-white py-2 px-4 hover:bg-white hover:text-black transition-colors"
-              >
-                Launch Project
-              </a>
+              <div className="flex gap-4">
+                <a
+                  href={project.link}
+                  className="inline-block border border-white text-white py-2 px-4 hover:bg-white hover:text-black transition-colors"
+                >
+                  Launch Project
+                </a>
+              </div>
             )}
           </div>
-          <div className="relative aspect-[16/9] rounded-lg overflow-hidden">
+          <div className="relative flex items-center justify-center aspect-[16/9] rounded-lg overflow-hidden">
             <img
               src={project.imagePath}
               alt={project.title}
@@ -107,6 +132,32 @@ const ProjectDetail = () => {
             />
           </div>
         </div>
+
+        {/* Modified GitHub Link section */}
+        {project.githubLink && (
+          <div className="mt-16 flex justify-center">
+            <a
+              href={project.githubLink}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 border border-gray-300 text-white py-2 px-4 rounded-lg hover:bg-gray-800 transition-colors"
+            >
+              <svg
+                className="w-5 h-5"
+                aria-hidden="true"
+                fill="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  fillRule="evenodd"
+                  d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"
+                  clipRule="evenodd"
+                />
+              </svg>
+              View on GitHub
+            </a>
+          </div>
+        )}
       </div>
     </div>
   );
