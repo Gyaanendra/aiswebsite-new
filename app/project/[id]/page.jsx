@@ -75,24 +75,30 @@ const ProjectDetail = () => {
       <canvas ref={canvasRef} className="absolute inset-0 w-full h-full opacity-50" />
 
       {/* Foreground content */}
-      <div className="relative z-10 container mx-auto px-4 py-16 md:py-24 text-white">
-        <div className="grid md:grid-cols-2 gap-8 items-center h-full">
+      {/* Added mt-24 to create extra top gap for the title */}
+      <div className="relative z-10 container mx-auto px-4 py-16 md:py-24 mt-24 text-white">
+        {/* Use grid-cols-1 for mobile and grid-cols-2 for medium screens and up */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
           <div className="space-y-8 flex flex-col justify-center">
-            <h1 className="text-5xl md:text-7xl font-bold text-white tracking-wide">
+            <h1 className="text-4xl sm:text-5xl md:text-7xl font-bold tracking-wide">
               {project.title}
             </h1>
             <div className="space-y-6">
               {project.description ? (
-                <p className="text-xl leading-relaxed">{project.description}</p>
+                <p className="text-base sm:text-lg md:text-xl leading-relaxed">
+                  {project.description}
+                </p>
               ) : (
-                <p className="text-xl leading-relaxed">No description available.</p>
+                <p className="text-base sm:text-lg md:text-xl leading-relaxed">
+                  No description available.
+                </p>
               )}
               <div className="flex flex-wrap gap-2">
-                <h3 className="w-full text-white text-lg font-bold">Tech Used</h3>
+                <h3 className="w-full text-lg font-bold">Tech Used</h3>
                 {project.tags?.map((tag, index) => (
                   <span 
                     key={index}
-                    className="px-3 py-1 text-sm rounded-full bg-gray-800 text-white"
+                    className="px-3 py-1 text-sm rounded-full bg-gray-800"
                   >
                     {tag}
                   </span>
@@ -100,11 +106,11 @@ const ProjectDetail = () => {
               </div>
               {project.contributors && (
                 <div className="flex flex-wrap gap-2">
-                  <span className="w-full text-white text-lg font-bold">Contributors</span>
+                  <span className="w-full text-lg font-bold">Contributors</span>
                   {project.contributors.map((contributor, index) => (
                     <span
                       key={index}
-                      className="px-3 py-1 text-sm rounded-full bg-gray-800 text-white"
+                      className="px-3 py-1 text-sm rounded-full bg-gray-800"
                     >
                       {contributor}
                     </span>
@@ -112,7 +118,7 @@ const ProjectDetail = () => {
                 </div>
               )}
             </div>
-            {/* Instead of using a button component, a styled link is provided */}
+            {/* Styled link instead of a button */}
             {project.link && (
               <div className="flex gap-4">
                 <a
@@ -124,16 +130,19 @@ const ProjectDetail = () => {
               </div>
             )}
           </div>
-          <div className="relative flex items-center justify-center aspect-[16/9] rounded-lg overflow-hidden">
-            <img
-              src={project.imagePath}
-              alt={project.title}
-              className="object-cover w-full h-full"
-            />
+          <div className="relative flex items-center justify-center w-full rounded-lg overflow-hidden">
+            {/* The aspect-video class ensures a 16:9 ratio while being responsive */}
+            <div className="w-full aspect-video">
+              <img
+                src={project.imagePath}
+                alt={project.title}
+                className="object-cover w-full h-full"
+              />
+            </div>
           </div>
         </div>
 
-        {/* Modified GitHub Link section */}
+        {/* GitHub Link Section */}
         {project.githubLink && (
           <div className="mt-16 flex justify-center">
             <a

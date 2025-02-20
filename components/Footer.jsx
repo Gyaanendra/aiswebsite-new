@@ -4,7 +4,7 @@ import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/dist/ScrollTrigger';
 import Lenis from '@studio-freight/lenis';
 import { Github, Instagram, Linkedin, ArrowUp } from 'lucide-react';
-import Image from "next/image";
+import Image from 'next/image';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -20,6 +20,14 @@ const Footer = () => {
       textRefs.current.push(el);
     }
   }, []);
+
+  // Sample team member data with working GitHub links.
+  const teamMembers = [
+    { name: 'Afjal', image: '/afjal.jpg', github: 'https://github.com/INSANE0777' },
+    { name: 'Gyanendra', image: '/gyanendra.png', github: 'https://github.com/Gyaanendra' },
+    { name: 'Anvesh', image: '/anvesh.png', github: 'https://github.com/mr-anvesh' },
+    { name: 'Arisha', image: '/arisha.png', github: 'https://github.com/arisha-git' },
+  ];
 
   useEffect(() => {
     // Determine if we're on a mobile screen.
@@ -37,8 +45,10 @@ const Footer = () => {
     };
     requestAnimationFrame(scrollFn);
 
+    // Update scroll up button visibility based solely on scrollY.
     const handleScroll = () => {
-      setShowScrollTop(window.scrollY > 300);
+      const scrollY = window.scrollY;
+      setShowScrollTop(scrollY > 300);
     };
     window.addEventListener('scroll', handleScroll);
 
@@ -57,7 +67,7 @@ const Footer = () => {
         gsap.to(logoRef.current, {
           transform: `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`,
           duration: 0.5,
-          ease: 'power2.out'
+          ease: 'power2.out',
         });
       }
     };
@@ -67,7 +77,7 @@ const Footer = () => {
         gsap.to(logoRef.current, {
           transform: 'perspective(1000px) rotateX(0) rotateY(0)',
           duration: 0.5,
-          ease: 'power2.out'
+          ease: 'power2.out',
         });
       }
     };
@@ -182,7 +192,7 @@ const Footer = () => {
                 Greater Noida, India
               </p>
 
-              {/* Social Media Links (Static, without animation) */}
+              {/* Social Media Links */}
               <div className="flex flex-col md:flex-row md:items-center gap-4">
                 {[
                   {
@@ -205,6 +215,8 @@ const Footer = () => {
                     key={label}
                     ref={addToRefs}
                     href={href}
+                    target="_blank"
+                    rel="noopener noreferrer"
                     className="flex items-center space-x-2 text-gray-400 hover:text-white transition-all group relative"
                   >
                     <div className="relative">
@@ -229,32 +241,56 @@ const Footer = () => {
             </div>
           </div>
         </div>
+
         <div className="mt-12 text-center space-y-2 relative">
           <p ref={addToRefs} className="text-gray-400">
             © 2025 AI Society, Specialization Club of Bennett University Under SCSET BU
           </p>
-          <p
-            ref={addToRefs}
-            className="text-white hover:text-white transition-colors group cursor-pointer relative z-10"
-          >
-            Built by RL Team & Designed By Garvita.
-            <span className="block h-0.5 bg-white transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300" />
-          </p>
+
+          {/* Team Cards */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 mt-6">
+            {teamMembers.map((member, index) => (
+              <div
+                key={index}
+                ref={addToRefs}
+                className="flex flex-col items-center p-4 bg-gray-800 rounded-lg shadow-lg transform hover:-translate-y-1 transition-transform duration-300"
+              >
+                <div className="relative w-24 h-24 mb-4">
+                  <Image
+                    src={member.image}
+                    alt={member.name}
+                    layout="fill"
+                    objectFit="cover"
+                    className="rounded-full"
+                  />
+                </div>
+                <h3 className="text-lg font-bold text-white">{member.name}</h3>
+                <a
+                  href={member.github}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center space-x-1 mt-2"
+                >
+                  <Github className="w-4 h-4 text-gray-400" />
+                  <span className="text-gray-400 text-sm">Github</span>
+                </a>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
 
       {/* Scroll to Top Button */}
       <button
-  onClick={scrollToTop}
-  className={`fixed z-50 bottom-4 right-4 md:bottom-8 md:right-8 p-3 bg-gray-800 rounded-full shadow-lg hover:bg-gray-700 transition-all transform group ${
-    showScrollTop ? 'translate-y-0 opacity-100' : 'translate-y-16 opacity-0'
-  }`}
-  aria-label="Scroll to top"
->
-  <ArrowUp className="w-5 h-5 group-hover:-translate-y-1 transition-transform duration-300" />
-  <span className="absolute inset-0 rounded-full bg-white/10 scale-0 group-hover:scale-150 transition-transform duration-500" />
-</button>
-
+        onClick={scrollToTop}
+        className={`fixed z-50 bottom-4 right-4 md:bottom-8 md:right-8 p-3 bg-gray-800 rounded-full shadow-lg hover:bg-gray-700 transition-all transform group ${
+          showScrollTop ? 'translate-y-0 opacity-100' : 'translate-y-16 opacity-0'
+        }`}
+        aria-label="Scroll to top"
+      >
+        <ArrowUp className="w-5 h-5 group-hover:-translate-y-1 transition-transform duration-300" />
+        <span className="absolute inset-0 rounded-full bg-white/10 scale-0 group-hover:scale-150 transition-transform duration-500" />
+      </button>
     </footer>
   );
 };
