@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import Image from "next/image";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -60,26 +60,99 @@ const rightImages = [
 
 // Desktop cube images (used when NOT on mobile)
 const leftCubeImages = [
-  { src: "/cube-left-front.png", alt: "Left Cube Front" },
-  { src: "/cube-left-back.png", alt: "Left Cube Back" },
-  { src: "/cube-left-right.png", alt: "Left Cube Right" },
-  { src: "/cube-left-left.png", alt: "Left Cube Left" },
-  { src: "/cube-left-top.png", alt: "Left Cube Top" },
-  { src: "/cube-left-bottom.png", alt: "Left Cube Bottom" }
+  { src: "/RL.png", alt: "Left Cube Front" },
+  { src: "/GENAI.png", alt: "Left Cube Back" },
+  { src: "/NLP.png", alt: "Left Cube Right" },
+  { src: "/CV.png", alt: "Left Cube Left" },
+  { src: "/DESIGN.png", alt: "Left Cube Top" },
+  { src: "/MULTIMEDIA.png", alt: "Left Cube Bottom" }
 ];
 
 const rightCubeImages = [
-  { src: "/cube-right-front.png", alt: "Right Cube Front" },
-  { src: "/cube-right-back.png", alt: "Right Cube Back" },
-  { src: "/cube-right-right.png", alt: "Right Cube Right" },
-  { src: "/cube-right-left.png", alt: "Right Cube Left" },
-  { src: "/cube-right-top.png", alt: "Right Cube Top" },
-  { src: "/cube-right-bottom.png", alt: "Right Cube Bottom" }
+  { src: "/MANAGEMENT.png", alt: "Right Cube Front" },
+  { src: "/PR.png", alt: "Right Cube Back" },
+  { src: "/DESIGN.png", alt: "Right Cube Right" },
+  { src: "/MULTIMEDIA.png", alt: "Right Cube Left" },
+  { src: "/GENAI.png", alt: "Right Cube Top" },
+  { src: "/NLP.png", alt: "Right Cube Bottom" }
 ];
 
+//
+// Scroll Progress Bar Component
+//
+const ScrollProgress = () => {
+  const [progress, setProgress] = useState(0);
+  const [visible, setVisible] = useState(false);
+  const timeoutRef = useRef(null);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      // Calculate scroll progress percentage
+      const scrollTop =
+        window.pageYOffset || document.documentElement.scrollTop;
+      const docHeight =
+        document.documentElement.scrollHeight -
+        document.documentElement.clientHeight;
+      const scrolled = (scrollTop / docHeight) * 100;
+      setProgress(scrolled);
+
+      // Show the progress bar when scrolling
+      setVisible(true);
+      if (timeoutRef.current) clearTimeout(timeoutRef.current);
+      timeoutRef.current = setTimeout(() => {
+        setVisible(false);
+      }, 500);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => {
+      if (timeoutRef.current) clearTimeout(timeoutRef.current);
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
+  return (
+    <div
+      style={{
+        position: "fixed",
+        right: "10px",
+        top: "50%",
+        transform: "translateY(-50%)",
+        width: "2.5px", // Set the width to 2.5px
+        height: "100px",
+        backgroundColor: "rgba(255, 255, 255, 0.2)",
+        borderRadius: "1px",
+        zIndex: 9999,
+        opacity: visible ? 1 : 0,
+        transition: "opacity 0.3s ease-in-out",
+      }}
+    >
+      <div
+        style={{
+          width: "100%",
+          height: `${progress}%`,
+          backgroundColor: "white",
+          borderRadius: "1px",
+        }}
+      />
+    </div>
+  );
+};
+
+//
+// Events Page Component
+//
 export default function Events() {
   // State to check if we are on mobile
   const [isMobile, setIsMobile] = useState(false);
+
+  // Helper to split text into animated letter spans
+  const renderAnimatedText = (text) =>
+    text.split("").map((char, index) => (
+      <span key={index} className="char">
+        {char}
+      </span>
+    ));
 
   useEffect(() => {
     // Set initial mobile state and update on resize
@@ -91,33 +164,43 @@ export default function Events() {
     const mm = gsap.matchMedia();
 
     // ----------------------------
-    // Hero Text Animations
+    // Advanced Hero Text Entrance Animations
     // ----------------------------
-    gsap.from(".hero-title", {
+    gsap.from(".hero-title .char", {
       opacity: 0,
-      scale: 0.8,
-      duration: 1,
-      ease: "power1.out",
+      y: 50,
+      duration: 0.8,
+      ease: "back.out(1.7)",
+      stagger: 0.05,
       delay: 0.2,
     });
-    gsap.from(".hero-subtitle", {
+    gsap.from(".hero-subtitle .char", {
       opacity: 0,
-      scale: 0.8,
-      duration: 1,
-      ease: "power1.out",
+      y: 50,
+      duration: 0.8,
+      ease: "back.out(1.7)",
+      stagger: 0.05,
       delay: 0.4,
     });
-    gsap.to(".hero-title", {
-      x: "-50%",
-      duration: 10,
-      ease: "linear",
+
+    // ----------------------------
+    // Continuous, Subtle Ongoing Animations on Each Letter
+    // ----------------------------
+    gsap.to(".hero-title .char", {
+      rotation: 2,
+      duration: 1,
+      ease: "sine.inOut",
       repeat: -1,
+      yoyo: true,
+      delay: 1.5,
     });
-    gsap.to(".hero-subtitle", {
-      x: "50%",
-      duration: 10,
-      ease: "linear",
+    gsap.to(".hero-subtitle .char", {
+      rotation: -2,
+      duration: 1,
+      ease: "sine.inOut",
       repeat: -1,
+      yoyo: true,
+      delay: 1.5,
     });
 
     // ----------------------------
@@ -255,9 +338,7 @@ export default function Events() {
       scrollTrigger: scrollTriggerSettings,
     });
 
-    // ----------------------------
     // Fade Out 3D Cubes on Scroll
-    // ----------------------------
     gsap.to(".threeD-container", {
       opacity: 0,
       duration: 0.5,
@@ -270,9 +351,7 @@ export default function Events() {
       },
     });
 
-    // ----------------------------
     // Interactive 3D Cube Mouse Parallax
-    // ----------------------------
     const leftCubeWrapper = document.querySelector(".left-cube .cube-wrapper");
     const rightCubeWrapper = document.querySelector(".right-cube .cube-wrapper");
     const handleMouseMove = (e) => {
@@ -333,6 +412,9 @@ export default function Events() {
         <LiquidChrome />
       </div>
 
+      {/* Scroll Progress Bar */}
+      <ScrollProgress />
+
       {/* All other content */}
       <div className="content">
         <header className="header">
@@ -377,11 +459,11 @@ export default function Events() {
             </div>
           </div>
           <div className="hero-text">
-            <h1 className="hero-title" style={{ fontSize: "4rem", whiteSpace: "nowrap" }}>
-              Events
+            <h1 className="hero-title" style={{ fontSize: "7rem", whiteSpace: "nowrap" }}>
+              {renderAnimatedText("Events")}
             </h1>
-            <h2 className="hero-subtitle" style={{ fontSize: "2.5rem", whiteSpace: "nowrap" }}>
-              Let's dive in
+            <h2 className="hero-subtitle" style={{ fontSize: "3.5rem", whiteSpace: "nowrap" }}>
+              {renderAnimatedText("Let's dive in")}
             </h2>
           </div>
         </section>
@@ -439,7 +521,6 @@ export default function Events() {
         </section>
       </div>
 
-      {/* Inline CSS */}
       <style jsx>{`
         /* LiquidChrome Background Styles */
         .liquid-chrome-bg {
@@ -464,6 +545,40 @@ export default function Events() {
           background: transparent;
         }
 
+        /* White/Grey Metallic Gradient Text for Hero */
+        .hero-title,
+        .hero-subtitle {
+          background: linear-gradient(
+            270deg,
+            #ffffff,
+            #e6e6e6,
+            #cccccc,
+            #b3b3b3,
+            #999999
+          );
+          background-size: 400% 400%;
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          animation: gradientShift 8s ease infinite;
+        }
+
+        @keyframes gradientShift {
+          0% {
+            background-position: 0% 50%;
+          }
+          50% {
+            background-position: 100% 50%;
+          }
+          100% {
+            background-position: 0% 50%;
+          }
+        }
+
+        /* Advanced Letter Styling */
+        .char {
+          display: inline-block;
+        }
+
         /* 3D Cube Styles */
         .threeD-container {
           position: absolute;
@@ -485,12 +600,12 @@ export default function Events() {
         /* Mobile positions: one cube on top and one on bottom */
         @media (max-width: 767px) {
           .top-cube {
-            top: 5%;
+            top: 20%;
             left: 50%;
             transform: translateX(-50%);
           }
           .bottom-cube {
-            bottom: 5%;
+            bottom: 10%;
             left: 50%;
             transform: translateX(-50%);
           }
@@ -606,6 +721,31 @@ export default function Events() {
           .card {
             width: 100%;
             margin-bottom: 1rem;
+          }
+        }
+
+        .middle-text {
+          font-size: 3rem;
+          text-align: center;
+          color: #fff;
+          text-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+          animation: glow 4s ease-in-out infinite alternate;
+        }
+
+        @keyframes glow {
+          from {
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+          }
+          to {
+            text-shadow: 0 0 20px rgba(255, 255, 255, 0.8),
+                         0 0 30px rgba(220, 220, 220, 0.8),
+                         0 0 40px rgba(200, 200, 200, 0.8);
+          }
+        }
+
+        @media (max-width: 768px) {
+          .middle-text {
+            font-size: 2.5rem;
           }
         }
       `}</style>

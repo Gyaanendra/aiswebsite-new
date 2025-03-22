@@ -1,5 +1,5 @@
 "use client";
-import React, { useRef } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import Card from "@/components/aboutus/Card";
 import { ReactLenis } from "@studio-freight/react-lenis";
 import gsap from "gsap";
@@ -13,6 +13,70 @@ import LiquidChrome from "@/components/LiquidChrome";
 
 gsap.registerPlugin(ScrollTrigger);
 
+// -------------------------
+// Scroll Progress Component
+// -------------------------
+const ScrollProgress = () => {
+  const [progress, setProgress] = useState(0);
+  const [visible, setVisible] = useState(false);
+  const timeoutRef = useRef(null);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      // Calculate scroll progress as a percentage of the document
+      const scrollTop =
+        window.pageYOffset || document.documentElement.scrollTop;
+      const docHeight =
+        document.documentElement.scrollHeight -
+        document.documentElement.clientHeight;
+      const scrolled = (scrollTop / docHeight) * 100;
+      setProgress(scrolled);
+
+      // Show the progress bar when scrolling
+      setVisible(true);
+
+      // Clear previous timeout and hide the bar after 500ms of inactivity
+      if (timeoutRef.current) clearTimeout(timeoutRef.current);
+      timeoutRef.current = setTimeout(() => {
+        setVisible(false);
+      }, 500);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => {
+      if (timeoutRef.current) clearTimeout(timeoutRef.current);
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
+  return (
+    <div
+      style={{
+        position: "fixed",
+        right: "10px",
+        top: "50%",
+        transform: "translateY(-50%)",
+        width: "2.5px", // Fixed narrow width
+        height: "100px", // Fixed small height
+        backgroundColor: "rgba(255, 255, 255, 0.2)",
+        borderRadius: "1px",
+        zIndex: 9999,
+        opacity: visible ? 1 : 0,
+        transition: "opacity 0.3s ease-in-out",
+      }}
+    >
+      <div
+        style={{
+          width: "100%",
+          height: `${progress}%`, // Fills the container based on scroll progress
+          backgroundColor: "white",
+          borderRadius: "1px",
+        }}
+      />
+    </div>
+  );
+};
+
 const Page = () => {
   const container = useRef(null);
   const overlayRef = useRef(null);
@@ -25,6 +89,39 @@ const Page = () => {
     useMotionValue(0),
     useMotionValue(0),
     useMotionValue(0),
+  ];
+
+  // Arrays of 4 unique member names for each card
+  const technicalTeamMembers = [
+    ["Madhav Gupta", "Sanya Wadhawan", "Afjal Hussein", "Gyanendra Prakash"],
+    ["Mayank Kumar", "Sukant Aryan", "Aniya Tyagi"],
+    ["Archit Ojha", "Anvesh Mishra", "Palak Virk"],
+    ["Dhruv Kumar", "Pragyan Pant", "Arisha Ali"],
+  ];
+  const communityTeamMembers = [
+    [
+      "Anshika Agrahari",
+      "Shruti Pandey",
+      "Raghav Karnatak",
+      "Kaatyayani",
+      "Samriddhi Sharma",
+    ],
+    [
+      "Akshat Rathi",
+      "Ananya Jha",
+      "Vaibhav Gupta",
+      "Rajyavardhan Singh Rathore",
+    ],
+    [
+      "Navya Loshali",
+      "Pari Sharma",
+      "Rishit Khandewal",
+      "Ritwick Kuchhal",
+      "Ravi Rajput",
+      "Prasiddhi Rawat",
+      "Rehan Ahmad",
+    ],
+    ["Hemang Tripathi", "Riddhi Gandhi", "Utkarsh Gupta", "Subhangi Singh"],
   ];
 
   // Define three different wave shapes for the foreground
@@ -198,7 +295,6 @@ const Page = () => {
           },
         });
 
-        // Animate Headers in First and Second Card Groups
         const firstHeader = containerEl.querySelector(
           ".first-cards .cards-header"
         );
@@ -735,6 +831,9 @@ const Page = () => {
         }}
       />
 
+      {/* Scroll Progress Bar */}
+      <ScrollProgress />
+
       {/* Main page content */}
       <div ref={container} style={{ position: "relative", zIndex: 1 }}>
         <div
@@ -761,7 +860,7 @@ const Page = () => {
               "linear-gradient(180deg, rgba(10,10,10,0.8) 0%, rgba(10,10,10,0) 100%)",
           }}
         />
-        <section className="hero min-h-screen flex flex-col items-center justify-center px-4 pt-24">
+        <section className="hero min-h-screen flex flex-col items-center justify-center px-4 pt-24 md:pt-0">
           <div className="flex flex-col md:flex-row items-start justify-center w-full max-w-6xl mx-auto">
             <div className="flex-1 md:pr-10">
               <h1 className="text-4xl md:text-7xl font-bold leading-tight text-white text-left pt-20 md:pt-0 relative group">
@@ -842,6 +941,9 @@ const Page = () => {
             />
           </svg>
         </section>
+        <section className="extra-team-info-section">
+          <TeamCards />
+        </section>
         <section className="first-cards cards-group relative min-h-screen px-4 md:px-0">
           <h2 className="cards-header text-white text-2xl md:text-3xl text-center mb-8 pt-8 md:pt-0">
             TECHNICAL TEAMS
@@ -853,18 +955,11 @@ const Page = () => {
                 id={`card-first-${index + 1}`}
                 frontSrc="/back.png"
                 frontAlt="Card Image"
-                backText={
-                  [
-                    "AIS RL TEAM",
-                    "AIS GEN AI TEAM",
-                    "AIS NLP TEAM",
-                    "AIS CV TEAM",
-                  ][index]
-                }
                 backSrc={
                   ["/RL.png", "/GENAI.png", "/NLP.png", "/CV.png"][index]
                 }
                 className="card mb-8 md:mb-0"
+                memberNames={technicalTeamMembers[index]} // Pass array of 4 member names
               />
             ))}
           </div>
@@ -879,14 +974,6 @@ const Page = () => {
               id={`card-second-${index + 1}`}
               frontSrc="/back.png"
               frontAlt="Card Image"
-              backText={
-                [
-                  "AIS MULTIMEDIA TEAM",
-                  "AIS PR TEAM",
-                  "AIS MANAGEMENT TEAM",
-                  "AIS DESIGN TEAM",
-                ][index]
-              }
               backSrc={
                 [
                   "/DESIGN.png",
@@ -896,12 +983,11 @@ const Page = () => {
                 ][index]
               }
               className="card"
+              memberNames={communityTeamMembers[index]} // Pass array of 4 member names
             />
           ))}
         </section>
-        <section className="extra-team-info-section">
-          <TeamCards />
-        </section>
+
         <section className="footer min-h-screen flex items-center justify-center bg-black">
           <Footer />
         </section>

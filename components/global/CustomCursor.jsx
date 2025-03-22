@@ -32,54 +32,64 @@ const CustomCursor = () => {
 
   return (
     <>
-      <div
-        className={`fixed top-0 left-0 pointer-events-none z-50 transition-transform duration-100 ease-out ${
-          isHovering ? "scale-150" : "scale-100"
-        }`}
-        style={{
-          transform: `translate(${position.x}px, ${position.y}px)`,
-        }}
-      >
-        {/* Main cursor image */}
-        <Image
-          src="/c.png"
-          width={64}
-          height={64}
-          className={`transition-all duration-300 ${
-            isHovering ? "opacity-0" : "opacity-100"
+      <div className="custom-cursor">
+        <div
+          className={`fixed top-0 left-0 pointer-events-none z-50 transition-transform duration-100 ease-out ${
+            isHovering ? "scale-150" : "scale-100"
           }`}
-          alt="Cursor"
-          priority
           style={{
-            transform: "translate(-50%, -50%)",
-            width: "4rem",
-            height: "4rem",
+            transform: `translate(${position.x}px, ${position.y}px)`,
           }}
-        />
-      </div>
-      <div
-        className="fixed top-0 left-0 pointer-events-none z-50 transition-all duration-300 ease-out"
-        style={{
-          transform: `translate(${position.x}px, ${position.y}px)`,
-        }}
-      >
-        {/* Hover state image */}
-        <Image
-          src="/c.png"
-          width={32}
-          height={32}
-          className={`transition-all duration-200 ${
-            isHovering ? "opacity-100" : "opacity-0"
-          }`}
-          alt="Hover Cursor"
-          priority
+        >
+          {/* Main cursor image */}
+          <Image
+            src="/c.png"
+            width={64}
+            height={64}
+            className={`transition-all duration-300 ${
+              isHovering ? "opacity-0" : "opacity-100"
+            }`}
+            alt="Cursor"
+            priority
+            style={{
+              transform: "translate(-50%, -50%)",
+              width: "4rem",
+              height: "4rem",
+            }}
+          />
+        </div>
+        <div
+          className="fixed top-0 left-0 pointer-events-none z-50 transition-all duration-300 ease-out"
           style={{
-            transform: "translate(-50%, -50%)",
-            width: "2rem",
-            height: "2rem",
+            transform: `translate(${position.x}px, ${position.y}px)`,
           }}
-        />
+        >
+          {/* Hover state image */}
+          <Image
+            src="/c.png"
+            width={32}
+            height={32}
+            className={`transition-all duration-200 ${
+              isHovering ? "opacity-100" : "opacity-0"
+            }`}
+            alt="Hover Cursor"
+            priority
+            style={{
+              transform: "translate(-50%, -50%)",
+              width: "2rem",
+              height: "2rem",
+            }}
+          />
+        </div>
       </div>
+
+      <style jsx global>{`
+        @media (pointer: coarse) {
+          .custom-cursor {
+            display: none !important;
+          }
+        }
+      `}</style>
     </>
   );
 };
