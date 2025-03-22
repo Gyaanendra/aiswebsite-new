@@ -12,7 +12,6 @@ const LandingBanner = () => {
   const containerRef = useRef(null);
   const backgroundRef = useRef(null);
   const router = useRouter();
-  const hasRedirectedRef = useRef(false);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [backgroundStyle, setBackgroundStyle] = useState("black");
 
@@ -51,13 +50,14 @@ const LandingBanner = () => {
       }
     );
 
-    // Scroll-triggered animation
+    // Scroll-triggered animation (without redirection and with fixed end point)
     const st = ScrollTrigger.create({
       trigger: containerRef.current,
       start: "top top",
-      end: "bottom+=100% top",
+      end: "bottom top", // Changed from "bottom+=100% top" to "bottom top"
       scrub: 1,
       pin: true,
+      pinSpacing: false, // This prevents the extra space after scrolling
       onUpdate: (self) => {
         const progress = self.progress;
 
@@ -74,16 +74,6 @@ const LandingBanner = () => {
           y: -80 * progress,
           ease: "power2.out",
         });
-
-        if (progress > 0.75 && !hasRedirectedRef.current) {
-          hasRedirectedRef.current = true;
-          // Smooth transition before redirect
-          gsap.to(containerRef.current, {
-            opacity: 0,
-            duration: 0.8,
-            onComplete: () => router.push("/aboutus"),
-          });
-        }
       },
     });
 
@@ -123,45 +113,53 @@ const LandingBanner = () => {
   }, [mousePosition]);
 
   return (
-    <motion.div
-      ref={containerRef}
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      className="min-h-screen flex flex-col justify-center items-center bg-black relative"
-      style={{ perspective: 1000 }}
-    >
-      <div ref={logoRef} className="mb-6 relative w-48 h-48">
-        <Image
-          src="/bais.png"
-          alt="BAIS Logo"
-          fill
-          className="object-contain"
-          priority
-        />
-      </div>
-
-      <div ref={textRef} className="transform-style-preserve-3d">
-        <div className="text-4xl font-bold text-white text-center">
-          Artificial Intelligence Society
+    <>
+      <motion.div
+        ref={containerRef}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        className="min-h-screen flex flex-col justify-center items-center bg-black relative overflow-hidden"
+        style={{ perspective: 1000 }}
+      >
+        <div ref={logoRef} className="mb-6 relative w-48 h-48">
+          <Image
+            src="/bais.png"
+            alt="BAIS Logo"
+            fill
+            className="object-contain"
+            priority
+          />
         </div>
-      </div>
 
-      <div
-        ref={backgroundRef}
-        className="absolute top-0 left-0 w-full h-full"
-        style={{
-          zIndex: -1,
-          background: backgroundStyle,
-          transition: "background 0.1s ease",
-        }}
-      ></div>
+        <div ref={textRef} className="transform-style-preserve-3d">
+          <div className="text-4xl font-bold text-white text-center">
+            Artificial Intelligence Society
+          </div>
+        </div>
 
-      <style jsx global>{`
-        .transform-style-preserve-3d {
-          transform-style: preserve-3d;
-        }
-      `}</style>
-    </motion.div>
+        <div
+          ref={backgroundRef}
+          className="absolute top-0 left-0 w-full h-full"
+          style={{
+            zIndex: -1,
+            background: backgroundStyle,
+            transition: "background 0.1s ease",
+          }}
+        ></div>
+
+        <style jsx global>{`
+          .transform-style-preserve-3d {
+            transform-style: preserve-3d;
+          }
+
+          body {
+            overflow-x: hidden;
+            margin: 0;
+            padding: 0;
+          }
+        `}</style>
+      </motion.div>
+    </>
   );
 };
 

@@ -205,12 +205,6 @@ const Page = () => {
         const secondHeader = containerEl.querySelector(
           ".second-cards .cards-header"
         );
-        const firstHeader = containerEl.querySelector(
-          ".first-cards .cards-header"
-        );
-        const secondHeader = containerEl.querySelector(
-          ".second-cards .cards-header"
-        );
 
         gsap.from(firstHeader, {
           opacity: 0,

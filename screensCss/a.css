@@ -1,5 +1,4 @@
-
-@import url('https://cdn.jsdelivr.net/npm/ailerons-typeface@1.0.0/stylesheet.css');
+@import url("https://cdn.jsdelivr.net/npm/ailerons-typeface@1.0.0/stylesheet.css");
 
 /* Global Reset & Box Sizing */
 * {
@@ -195,7 +194,7 @@ section {
   }
 
   /* Logo adjustments for mobile */
-  .header .logo { 
+  .header .logo {
     width: 150px;
     height: auto;
     position: absolute;
@@ -254,4 +253,17 @@ section {
   height: 100%;
   z-index: -1;
   pointer-events: none;
+}
+
+/* screensCss/a.css */
+.transform-style-preserve-3d {
+  transform-style: preserve-3d;
+}
+
+.card {
+  backface-visibility: hidden;
+}
+
+.loading-spinner {
+  perspective: 1000px;
 }

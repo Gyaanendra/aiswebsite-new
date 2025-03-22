@@ -16,4 +16,7 @@ export default {
     },
   },
   plugins: [],
+  corePlugins: {
+    transform: true,
+  },
 } satisfies Config;
