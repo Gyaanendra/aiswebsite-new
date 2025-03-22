@@ -1,6 +1,6 @@
 import LandingBanner from "@/components/home/LandingAnimation";
 // Import the new component
-import Aboutus from "@/screens/aboutus";
+import About from "@/components/aboutus/a";
 import ParticlesComponent from "@/components/Particles";
 export default function Home() {
   return (
@@ -9,6 +9,7 @@ export default function Home() {
 
       <LandingBanner />
       <ParticlesComponent id="particles-1" />
+      <About />
     </main>
   );
 }

@@ -77,7 +77,7 @@ const ScrollProgress = () => {
   );
 };
 
-const Page = () => {
+const About = () => {
   const container = useRef(null);
   const overlayRef = useRef(null);
   const textRef = useRef(null);
@@ -996,4 +996,4 @@ const Page = () => {
   );
 };
 
-export default Page;
+export default About;

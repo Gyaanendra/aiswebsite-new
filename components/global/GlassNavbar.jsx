@@ -1,44 +1,47 @@
-"use client"
-import { useEffect, useState, useRef } from "react"
-import { gsap } from "gsap"
+"use client";
+import { useEffect, useState, useRef } from "react";
+import { gsap } from "gsap";
+import { usePathname, useRouter } from "next/navigation";
+import { animatePageOut } from "@/utils/animations";
 
 const GlassNavbar = () => {
-  const [isMobile, setIsMobile] = useState(false)
-  const [menuOpen, setMenuOpen] = useState(false)
-  const underlineRefs = useRef([])
-  const mobileMenuOverlayRef = useRef(null)
+  const [isMobile, setIsMobile] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const underlineRefs = useRef([]);
+  const mobileMenuOverlayRef = useRef(null);
+  const router = useRouter();
+  const pathname = usePathname();
 
   const navItems = [
     { name: "Home", href: "/home" },
-    { name: "About", href: "/aboutus" },
     { name: "Projects", href: "/project" },
     { name: "Events", href: "/events" },
     { name: "Contact Us", href: "/contact" },
-  ]
+  ];
 
   // Check screen size on mount and update on resize.
   useEffect(() => {
     const checkScreenSize = () => {
-      setIsMobile(window.innerWidth <= 768)
-    }
-    checkScreenSize()
-    window.addEventListener("resize", checkScreenSize)
-    return () => window.removeEventListener("resize", checkScreenSize)
-  }, [])
+      setIsMobile(window.innerWidth <= 768);
+    };
+    checkScreenSize();
+    window.addEventListener("resize", checkScreenSize);
+    return () => window.removeEventListener("resize", checkScreenSize);
+  }, []);
 
   // Animate the mobile overlay menu with GSAP when menuOpen changes.
   useEffect(() => {
     if (isMobile && mobileMenuOverlayRef.current) {
       if (menuOpen) {
         // Ensure the overlay is visible before animating.
-        mobileMenuOverlayRef.current.style.display = "flex"
+        mobileMenuOverlayRef.current.style.display = "flex";
         gsap.fromTo(
           mobileMenuOverlayRef.current,
           { y: "-100%" },
           { y: "0%", duration: 0.6, ease: "power2.out" }
-        )
+        );
         // Animate each nav link with a stagger.
-        const navLinks = mobileMenuOverlayRef.current.querySelectorAll("nav a")
+        const navLinks = mobileMenuOverlayRef.current.querySelectorAll("nav a");
         gsap.fromTo(
           navLinks,
           { opacity: 0, x: -50 },
@@ -50,7 +53,7 @@ const GlassNavbar = () => {
             stagger: 0.1,
             delay: 0.3,
           }
-        )
+        );
       } else {
         gsap.to(mobileMenuOverlayRef.current, {
           y: "-100%",
@@ -58,12 +61,22 @@ const GlassNavbar = () => {
           ease: "power2.in",
           onComplete: () => {
             if (mobileMenuOverlayRef.current)
-              mobileMenuOverlayRef.current.style.display = "none"
+              mobileMenuOverlayRef.current.style.display = "none";
           },
-        })
+        });
       }
     }
-  }, [menuOpen, isMobile])
+  }, [menuOpen, isMobile]);
+
+  // Handle transition link click
+  const handleTransitionClick = (href) => {
+    if (pathname !== href) {
+      if (isMobile) {
+        setMenuOpen(false);
+      }
+      animatePageOut(href, router);
+    }
+  };
 
   return (
     <>
@@ -116,7 +129,7 @@ const GlassNavbar = () => {
                 fontSize: "1.5rem",
                 textShadow: "0px 0px 4px rgba(0, 0, 0, 0.5)",
                 transform: "none", // override global styles
-                opacity: 1,        // override global styles
+                opacity: 1, // override global styles
               }}
             >
               ⋮
@@ -135,7 +148,7 @@ const GlassNavbar = () => {
             {navItems.map((item, index) => (
               <a
                 key={index}
-                href={item.href}
+                onClick={() => handleTransitionClick(item.href)}
                 style={{
                   color: "#FFFFFF",
                   textDecoration: "none",
@@ -150,24 +163,24 @@ const GlassNavbar = () => {
                     y: -3,
                     duration: 0.3,
                     ease: "power2.out",
-                  })
+                  });
                   gsap.to(underlineRefs.current[index], {
                     scaleX: 1,
                     duration: 0.3,
                     ease: "power2.out",
-                  })
+                  });
                 }}
                 onMouseLeave={(e) => {
                   gsap.to(e.currentTarget, {
                     y: 0,
                     duration: 0.3,
                     ease: "power2.out",
-                  })
+                  });
                   gsap.to(underlineRefs.current[index], {
                     scaleX: 0,
                     duration: 0.3,
                     ease: "power2.out",
-                  })
+                  });
                 }}
               >
                 {item.name}
@@ -244,7 +257,7 @@ const GlassNavbar = () => {
                 height: "40px",
                 borderRadius: "50%",
                 transform: "none", // override global styles
-                opacity: 1,        // override global styles
+                opacity: 1, // override global styles
               }}
             >
               ✕
@@ -271,12 +284,13 @@ const GlassNavbar = () => {
               {navItems.map((item, index) => (
                 <a
                   key={index}
-                  href={item.href}
+                  onClick={() => handleTransitionClick(item.href)}
                   style={{
                     color: "#000000",
                     textDecoration: "none",
                     fontSize: "1.2rem",
                     fontWeight: "500",
+                    cursor: "pointer",
                   }}
                 >
                   {item.name}
@@ -368,12 +382,11 @@ const GlassNavbar = () => {
               LET'S TALK
               <span>💬</span>
             </a>
-          
           </div>
         </div>
       )}
     </>
-  )
-}
+  );
+};
 
-export default GlassNavbar
+export default GlassNavbar;
