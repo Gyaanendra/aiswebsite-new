@@ -50,22 +50,22 @@ const LandingBanner = () => {
       }
     );
 
-    // Scroll-triggered animation (without redirection and with fixed end point)
+    // Scroll-triggered animation with faster fade-out for the logo
     const st = ScrollTrigger.create({
       trigger: containerRef.current,
       start: "top top",
-      end: "bottom top", // Changed from "bottom+=100% top" to "bottom top"
+      end: "bottom top",
       scrub: 1,
       pin: true,
-      pinSpacing: false, // This prevents the extra space after scrolling
+      pinSpacing: false,
       onUpdate: (self) => {
         const progress = self.progress;
-
         gsap.to(logoRef.current, {
           scale: 1 + progress * 8,
           rotationY: 720 * progress,
           z: progress * 1000,
-          opacity: 1 - progress * 0.9,
+          // Increase fade-out speed by multiplying progress by 2 instead of 0.9
+          opacity: 1 - progress * 2,
           ease: "power2.out",
         });
 
@@ -106,9 +106,7 @@ const LandingBanner = () => {
     const yRatio = y / height;
 
     setBackgroundStyle(
-      `radial-gradient(circle at ${xRatio * 100}% ${
-        yRatio * 100
-      }%, rgb(108, 106, 106), #000000, #000000 50%)`
+      `radial-gradient(circle at ${xRatio * 100}% ${yRatio * 100}%, rgb(108, 106, 106), #000000, #000000 50%)`
     );
   }, [mousePosition]);
 
