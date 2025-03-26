@@ -1,16 +1,12 @@
 "use client";
 import { useEffect, useState, useRef } from "react";
 import { gsap } from "gsap";
-import { usePathname, useRouter } from "next/navigation";
-import { animatePageOut } from "@/utils/animations";
 
 const GlassNavbar = () => {
   const [isMobile, setIsMobile] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const underlineRefs = useRef([]);
   const mobileMenuOverlayRef = useRef(null);
-  const router = useRouter();
-  const pathname = usePathname();
 
   const navItems = [
     { name: "Home", href: "/home" },
@@ -67,16 +63,6 @@ const GlassNavbar = () => {
       }
     }
   }, [menuOpen, isMobile]);
-
-  // Handle transition link click
-  const handleTransitionClick = (href) => {
-    if (pathname !== href) {
-      if (isMobile) {
-        setMenuOpen(false);
-      }
-      animatePageOut(href, router);
-    }
-  };
 
   return (
     <>
@@ -148,7 +134,7 @@ const GlassNavbar = () => {
             {navItems.map((item, index) => (
               <a
                 key={index}
-                onClick={() => handleTransitionClick(item.href)}
+                href={item.href}
                 style={{
                   color: "#FFFFFF",
                   textDecoration: "none",
@@ -284,13 +270,12 @@ const GlassNavbar = () => {
               {navItems.map((item, index) => (
                 <a
                   key={index}
-                  onClick={() => handleTransitionClick(item.href)}
+                  href={item.href}
                   style={{
                     color: "#000000",
                     textDecoration: "none",
                     fontSize: "1.2rem",
                     fontWeight: "500",
-                    cursor: "pointer",
                   }}
                 >
                   {item.name}
