@@ -214,7 +214,6 @@ export default function ProjectsSection() {
   return (
     <SmoothScrollWrapper>
       <LiquidChrome className="liquid-chrome-bg" />
-      {/* Scroll Progress Bar */}
       <ScrollProgress />
       <header className="header">
         <div className="logo-container">
@@ -274,46 +273,74 @@ export default function ProjectsSection() {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        {/* Enhanced Projects Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {projects.map((project, i) => (
             <div
               key={project.title}
               ref={(el) => el && (projectRefs.current[i] = el)}
-              className="group relative overflow-hidden rounded-lg transition-all duration-700 ease-out"
+              className="group relative overflow-hidden rounded-xl border border-white/10 transition-all duration-500"
               onMouseMove={(e) => handleMouseMove(e, projectRefs.current[i])}
               onMouseLeave={() => handleMouseLeave(projectRefs.current[i])}
               style={{ transformStyle: 'preserve-3d' }}
             >
-              <Link href={`/project/${i + 1}`}>
-                <div className="relative h-[500px]">
+              <Link href={`/project/${i + 1}`} className="block h-full">
+                {/* Image with parallax effect only */}
+                <div className="relative aspect-video overflow-hidden">
                   <Image 
                     src={project.imagePath}
                     alt={project.title}
                     fill
-                    sizes="(max-width: 400px) 100vw, 50vw"
-                    className="object-cover transform transition-transform duration-700 ease-out group-hover:scale-105"
-                    priority={i < 2}
-                    style={{ transformStyle: 'preserve-3d' }}
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                    className="object-cover transition-transform duration-700 group-hover:scale-105"
+                    onMouseMove={(e) => {
+                      const rect = e.currentTarget.parentElement.getBoundingClientRect();
+                      const x = e.clientX - rect.left;
+                      const y = e.clientY - rect.top;
+                      const xPercent = (x / rect.width - 0.5) * 2;
+                      const yPercent = (y / rect.height - 0.5) * 2;
+                      
+                      gsap.to(e.currentTarget, {
+                        x: xPercent * 15,
+                        y: yPercent * 15,
+                        duration: 0.5,
+                        ease: "power2.out"
+                      });
+                    }}
+                    onMouseLeave={(e) => {
+                      gsap.to(e.currentTarget, {
+                        x: 0,
+                        y: 0,
+                        duration: 0.5,
+                        ease: "power2.out"
+                      });
+                    }}
+                    priority={i < 3}
                   />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                </div>
+                
+                <div className="p-6 bg-white/5 backdrop-blur-sm">
+                  <div className="flex justify-between items-start">
+                    <h3 className="text-2xl font-bold mb-2">{project.title}</h3>
+                    <span className="text-xl opacity-0 group-hover:opacity-100 transition-opacity">→</span>
+                  </div>
+                  <p className="text-white font-medium mb-4 line-clamp-2">{project.description || project.tag}</p>
+                  <div className="flex flex-wrap gap-2">
+                    {project.tags?.slice(0, 3).map((tag, index) => (
+                      <span key={index} className="px-2 py-1 text-xs rounded-full bg-white/10">
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
                 </div>
               </Link>
-              {/* Title and tag placed outside of the image */}
-              <div className="mt-4 p-4">
-                <h3 className="text-2xl md:text-3xl font-bold flex items-center transition-all duration-300">
-                  <span className="transition-all duration-300 group-hover:translate-x-2">
-                    {project.title}
-                  </span>
-                  <span className="ml-2 inline-block transition-all duration-300 transform opacity-0 translate-x-2 group-hover:opacity-100 group-hover:translate-x-0">
-                    →
-                  </span>
-                </h3>
-                <p className="text-lg md:text-xl font-light">{project.tag}</p>
-              </div>
             </div>
           ))}
         </div>
       </section>
-      <section className="footer min-h-screen flex items-center justify-center">
+
+      <section className="footer min-h-screen flex items-center justify-center  bg-inherit">
         <Footer />
       </section>
     </SmoothScrollWrapper>

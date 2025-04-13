@@ -51,6 +51,7 @@
   top: 35%;
   left: 50%;
   transform: translate(-50%, -50%);
+  border-radius: 8px; /* Added rounded borders */
 }
 
 /* Member names styling on the back face */
@@ -62,7 +63,7 @@
   color: #000;       /* Ensure contrast */
   font-size: 14px;   /* Smaller font size (was 16px) */
   z-index: 10;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+
   background: rgba(255, 255, 255, 0.8);
   padding: 10px 8px;
   border-radius: 4px;

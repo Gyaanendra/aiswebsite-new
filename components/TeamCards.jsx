@@ -1,14 +1,18 @@
 import React from 'react';
 import { Brain, Users, Camera, MessageSquare, Share2, Palette, Calendar, Radio } from 'lucide-react';
 
-function Card({ title, icon: Icon, color, delay }) {
+function Card({ title, icon: Icon, delay }) {
   return (
     <div 
-      className={`p-4 rounded-lg shadow-lg ${color} text-white transform transition-all duration-500 hover:scale-105`}
+      className={`p-4 rounded-lg backdrop-blur-md bg-white/5 text-white transform transition-all duration-500 hover:scale-105 hover:bg-white/10`}
       style={{ 
         animation: `fadeInUp 0.6s ease-out forwards`,
         animationDelay: `${delay}s`,
         opacity: 0,
+        border: '1px solid rgba(255, 255, 255, 0.15)',
+        backdropFilter: 'blur(10px)',
+        WebkitBackdropFilter: 'blur(10px)',
+        boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.1)'
       }}
     >
       <div className="flex items-center space-x-2">
@@ -54,14 +58,22 @@ function TeamCards() {
 
         {/* Executives */}
         <div 
-          className="bg-white p-6 rounded-xl shadow-lg"
-          style={{ animation: 'fadeInUp 0.6s ease-out forwards', animationDelay: '0.3s', opacity: 0 }}
+          className="backdrop-blur-md bg-white/5 p-6 rounded-xl"
+          style={{ 
+            animation: 'fadeInUp 0.6s ease-out forwards', 
+            animationDelay: '0.3s', 
+            opacity: 0,
+            border: '1px solid rgba(255, 255, 255, 0.15)',
+            backdropFilter: 'blur(10px)',
+            WebkitBackdropFilter: 'blur(10px)',
+            boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.1)'
+          }}
         >
-          <h2 className="text-xl font-bold text-center mb-4">Executives</h2>
+          <h2 className="text-xl font-bold text-center mb-4 text-white">Executives</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-            <Card title="President" icon={Users} color="bg-gray-500" delay={0.4} />
-            <Card title="Vice-President" icon={Users} color="bg-gray-500" delay={0.5} />
-            <Card title="General Secretary" icon={Users} color="bg-gray-500" delay={0.6} />
+            <Card title="President" icon={Users} delay={0.4} />
+            <Card title="Vice-President" icon={Users} delay={0.5} />
+            <Card title="General Secretary" icon={Users} delay={0.6} />
           </div>
         </div>
 
@@ -69,38 +81,62 @@ function TeamCards() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {/* Technical Departments */}
           <div 
-            className="bg-white p-6 rounded-xl shadow-lg"
-            style={{ animation: 'fadeInUp 0.6s ease-out forwards', animationDelay: '0.7s', opacity: 0 }}
+            className="backdrop-blur-md bg-white/5 p-6 rounded-xl"
+            style={{ 
+              animation: 'fadeInUp 0.6s ease-out forwards', 
+              animationDelay: '0.7s', 
+              opacity: 0,
+              border: '1px solid rgba(255, 255, 255, 0.15)',
+              backdropFilter: 'blur(10px)',
+              WebkitBackdropFilter: 'blur(10px)',
+              boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.1)'
+            }}
           >
-            <h2 className="text-xl font-bold mb-4">Technical Departments</h2>
+            <h2 className="text-xl font-bold mb-4 text-white">Technical Departments</h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <Card title="Natural Language Processing" icon={MessageSquare} color="bg-green-500" delay={0.8} />
-              <Card title="Reinforcement Learning" icon={Brain} color="bg-red-500" delay={0.9} />
-              <Card title="Computer Vision" icon={Camera} color="bg-blue-500" delay={1.0} />
-              <Card title="Generative AI" icon={Brain} color="bg-yellow-500" delay={1.1} />
+              <Card title="Natural Language Processing" icon={MessageSquare} delay={0.8} />
+              <Card title="Reinforcement Learning" icon={Brain} delay={0.9} />
+              <Card title="Computer Vision" icon={Camera} delay={1.0} />
+              <Card title="Generative AI" icon={Brain} delay={1.1} />
             </div>
           </div>
-
+          
           {/* Non-Technical Departments */}
           <div 
-            className="bg-white p-6 rounded-xl shadow-lg"
-            style={{ animation: 'fadeInUp 0.6s ease-out forwards', animationDelay: '1.3s', opacity: 0 }}
+            className="backdrop-blur-md bg-white/5 p-6 rounded-xl"
+            style={{ 
+              animation: 'fadeInUp 0.6s ease-out forwards', 
+              animationDelay: '1.3s', 
+              opacity: 0,
+              border: '1px solid rgba(255, 255, 255, 0.15)',
+              backdropFilter: 'blur(10px)',
+              WebkitBackdropFilter: 'blur(10px)',
+              boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.1)'
+            }}
           >
-            <h2 className="text-xl font-bold mb-4">Non-Technical Departments</h2>
+            <h2 className="text-xl font-bold mb-4 text-white">Non-Technical Departments</h2>
             <div className="space-y-3">
-              <Card title="Social Media Managers" icon={Share2} color="bg-purple-500" delay={1.4} />
-              <Card title="Designers" icon={Palette} color="bg-purple-500" delay={1.5} />
-              <Card title="Event Managers" icon={Calendar} color="bg-purple-500" delay={1.6} />
-              <Card title="Video Editors // Photographers" icon={Camera} color="bg-purple-500" delay={1.7} />
-              <Card title="Public Speakers // Sponsorship Outreach" icon={Radio} color="bg-purple-500" delay={1.8} />
+              <Card title="Social Media Managers" icon={Share2} delay={1.4} />
+              <Card title="Designers" icon={Palette} delay={1.5} />
+              <Card title="Event Managers" icon={Calendar} delay={1.6} />
+              <Card title="Video Editors // Photographers" icon={Camera} delay={1.7} />
+              <Card title="Public Speakers // Sponsorship Outreach" icon={Radio} delay={1.8} />
             </div>
           </div>
         </div>
 
         {/* Mentors */}
         <div 
-          className="bg-gray-600 p-6 rounded-xl shadow-lg"
-          style={{ animation: 'fadeInUp 0.6s ease-out forwards', animationDelay: '2.0s', opacity: 0 }}
+          className="backdrop-blur-md bg-white/5 p-6 rounded-xl"
+          style={{ 
+            animation: 'fadeInUp 0.6s ease-out forwards', 
+            animationDelay: '2.0s', 
+            opacity: 0,
+            border: '1px solid rgba(255, 255, 255, 0.15)',
+            backdropFilter: 'blur(10px)',
+            WebkitBackdropFilter: 'blur(10px)',
+            boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.1)'
+          }}
         >
           <h2 className="text-xl font-bold text-center text-white">
             Mentors (3rd/ 4th Year Students)

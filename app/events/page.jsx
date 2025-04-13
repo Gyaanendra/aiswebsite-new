@@ -8,27 +8,28 @@ import { ReactLenis } from "lenis/react";
 import "../../screensCss/b.css";
 import Footer from "@/components/Footer";
 import LiquidChrome from "@/components/LiquidChrome";
+import InteractiveBentoGallery from "@/components/interactive-bento-gallery";
 
 // Card arrays for the main event cards
 const leftImages = [
   { 
     src: "/AI 101.png", 
     alt: "AI 101", 
-    overlayTitle: "AI 101", 
+    
     overlayText:
       "An immersive kickoff event where freshers engaged in foundational AI concepts, hands-on coding sessions, and insightful talks, setting the stage for innovation and learning."
   },
   { 
     src: "/TECH ARENA.png", 
     alt: "TechArena 2025", 
-    overlayTitle: "TechArena 2025", 
+     
     overlayText:
       "AIS proudly participated in TechArena 2025, presenting innovative projects and connecting with a vibrant community of tech enthusiasts and industry experts."
   },
   { 
     src: "/Workshop.png", 
     alt: "Workshop", 
-    overlayTitle: "Workshop", 
+  
     overlayText:
       "A deep dive into the fusion of XR and Generative AI, providing students with hands-on experience and practical insights into emerging technologies."
   }
@@ -38,21 +39,21 @@ const rightImages = [
   { 
     src: "/AI HUNT 2.0.png", 
     alt: "AI Hunt 2.0", 
-    overlayTitle: "AI Hunt 2.0", 
+   
     overlayText:
       "AI Hunt 2.0 was an exciting 48‑hour online cryptic treasure hunt, featuring a Gen AI workshop, an info session, and dynamic problem‑solving challenges that pushed the boundaries of AI exploration."
   },
   { 
     src: "/Project Showcase.png", 
     alt: "Project Showcase", 
-    overlayTitle: "Project Showcase", 
+   
     overlayText:
       "AIS shone at the Project Showcase, presenting over 10 groundbreaking projects, the most by any student body, that redefined innovation and creativity!"
   },
   { 
     src: "/Club Carnival.png", 
     alt: "Club Carnival", 
-    overlayTitle: "Club Carnival", 
+ 
     overlayText:
       "Freshers Orientation and Club Carnival for the new batch of students. Included a variety of fun demos, games, and fun events."
   }
@@ -468,7 +469,7 @@ export default function Events() {
           </div>
         </section>
 
-        {/* Main content */}
+      
         <section className="main">
           <div className="main-content">
             <h1 className="middle-text">Artificial Intelligence Society</h1>
@@ -485,11 +486,8 @@ export default function Events() {
                     height={300}
                     priority
                   />
-                  <div className="overlay">
-                    <div className="overlay-content">
-                      <h3>{leftImages[i].overlayTitle}</h3>
-                      <p>{leftImages[i].overlayText}</p>
-                    </div>
+                  <div className="card-title">
+                    <h3>{leftImages[i].overlayTitle}</h3>
                   </div>
                 </div>
               </div>
@@ -503,16 +501,24 @@ export default function Events() {
                     height={300}
                     priority
                   />
-                  <div className="overlay">
-                    <div className="overlay-content">
-                      <h3>{rightImages[i].overlayTitle}</h3>
-                      <p>{rightImages[i].overlayText}</p>
-                    </div>
+                  <div className="card-title">
+                    <h3>{rightImages[i].overlayTitle}</h3>
                   </div>
                 </div>
               </div>
             </div>
           ))}
+        </section>
+
+        {/* Interactive Bento Gallery Section */}
+        <section className="bento-gallery-section py-16">
+          <div className="container mx-auto">
+            <InteractiveBentoGallery
+              mediaItems={galleryMediaItems}
+              title="Explore All Our Events"
+              description="Drag and interact with our collection of events and activities. Click on any event to see full details."
+            />
+          </div>
         </section>
 
         {/* Footer section – note: background set to transparent */}
@@ -679,27 +685,19 @@ export default function Events() {
           width: 100%;
           height: auto;
         }
-        .overlay {
+        .card-title {
           position: absolute;
-          top: 0;
+          bottom: 0;
           left: 0;
           width: 100%;
-          height: 100%;
-          background: rgba(0, 0, 0, 0.6);
-          opacity: 0;
-          transition: opacity 0.3s ease;
-          display: flex;
-          flex-direction: column;
-          justify-content: center;
-          align-items: center;
+          background: rgba(0, 0, 0, 0.7);
+          color: white;
+          padding: 0.5rem 1rem;
           text-align: center;
-          padding: 1rem;
         }
-        .hover-container:hover .overlay {
-          opacity: 1;
-        }
-        .overlay-content {
-          z-index: 1;
+        .card-title h3 {
+          margin: 0;
+          font-size: 1.2rem;
         }
         .main {
           margin-top: 0.5rem;
@@ -752,3 +750,55 @@ export default function Events() {
     </ReactLenis>
   );
 }
+
+// Create media items for the InteractiveBentoGallery component
+const galleryMediaItems = [
+  {
+    id: 1,
+    type: "image",
+    title: "AI 101",
+    desc: "An immersive kickoff event where freshers engaged in foundational AI concepts, hands-on coding sessions, and insightful talks, setting the stage for innovation and learning.",
+    url: "/AI 101.png",
+    span: "md:col-span-1 md:row-span-3 sm:col-span-1 sm:row-span-2",
+  },
+  {
+    id: 2,
+    type: "image",
+    title: "AI Hunt 2.0",
+    desc: "AI Hunt 2.0 was an exciting 48‑hour online cryptic treasure hunt, featuring a Gen AI workshop, an info session, and dynamic problem‑solving challenges that pushed the boundaries of AI exploration.",
+    url: "/AI HUNT 2.0.png",
+    span: "md:col-span-2 md:row-span-2 col-span-1 sm:col-span-2 sm:row-span-2",
+  },
+  {
+    id: 3,
+    type: "image",
+    title: "TechArena 2025",
+    desc: "AIS proudly participated in TechArena 2025, presenting innovative projects and connecting with a vibrant community of tech enthusiasts and industry experts.",
+    url: "/TECH ARENA.png",
+    span: "md:col-span-1 md:row-span-3 sm:col-span-2 sm:row-span-2",
+  },
+  {
+    id: 4,
+    type: "image",
+    title: "Project Showcase",
+    desc: "AIS shone at the Project Showcase, presenting over 10 groundbreaking projects, the most by any student body, that redefined innovation and creativity!",
+    url: "/Project Showcase.png",
+    span: "md:col-span-2 md:row-span-2 sm:col-span-1 sm:row-span-2",
+  },
+  {
+    id: 5,
+    type: "image",
+    title: "Workshop",
+    desc: "A deep dive into the fusion of XR and Generative AI, providing students with hands-on experience and practical insights into emerging technologies.",
+    url: "/Workshop.png",
+    span: "md:col-span-1 md:row-span-3 sm:col-span-1 sm:row-span-2",
+  },
+  {
+    id: 6,
+    type: "image",
+    title: "Club Carnival",
+    desc: "Freshers Orientation and Club Carnival for the new batch of students. Included a variety of fun demos, games, and fun events.",
+    url: "/Club Carnival.png",
+    span: "md:col-span-2 md:row-span-2 sm:col-span-1 sm:row-span-2",
+  }
+];

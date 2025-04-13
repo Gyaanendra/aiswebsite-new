@@ -29,6 +29,13 @@ const Footer = () => {
     { name: 'Arisha', image: '/arisha.png', github: 'https://github.com/arisha-git' },
   ];
 
+  // Leadership team data
+  const leadershipTeam = [
+    { name: 'Mann Acharya', role: 'Mentor /Ex-Chairperson', image: '/mann.png' },
+    { name: 'Samaksh Tyagi', role: 'President', image: '/samaksh.jpg' },
+    { name: 'Aviral Jain', role: 'Vice President', image: '/aviral.png' },
+  ];
+
   useEffect(() => {
     // Determine if we're on a mobile screen.
     const isMobileScreen = window.innerWidth < 768;
@@ -101,7 +108,8 @@ const Footer = () => {
         {
           opacity: 1,
           y: 0,
-          duration: 1,
+          duration: 0.5, // Reduced from 1 to 0.5 seconds
+          ease: "power2.out", // Changed from default to power2.out for snappier animation
           scrollTrigger: {
             trigger: footerRef.current,
             start: 'top 80%',
@@ -118,8 +126,9 @@ const Footer = () => {
           {
             opacity: 1,
             y: 0,
-            duration: 0.5,
-            delay: index * 0.2,
+            duration: 0.3, // Reduced from 0.5 to 0.3 seconds
+            delay: index * 0.1, // Reduced delay between elements
+            ease: "power2.out",
             scrollTrigger: {
               trigger: el,
               start: 'top 80%',
@@ -158,7 +167,6 @@ const Footer = () => {
               ref={logoRef}
               className="flex items-center space-x-4 transform-gpu transition-transform duration-300 cursor-pointer p-4"
             >
-              {/* Enhanced AI Society Logo with 3D effect */}
               <div className="relative group">
                 <Image
                   src="/bais.png"
@@ -170,10 +178,10 @@ const Footer = () => {
                 <div className="absolute inset-0 bg-white/5 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
               </div>
               <div>
-                <h2 ref={addToRefs} className="text-2xl font-bold">
+                <h2 ref={addToRefs} className="text-2xl font-bold text-white">
                   Artificial Intelligence Society
                 </h2>
-                <p ref={addToRefs} className="text-gray-300">
+                <p ref={addToRefs} className="text-white font-medium">
                   Training Minds, One Epoch at a Time
                 </p>
               </div>
@@ -182,11 +190,11 @@ const Footer = () => {
 
           {/* Right Section */}
           <div className="space-y-6 md:pl-8 md:border-l md:border-gray-800">
-            <h2 ref={addToRefs} className="text-2xl font-bold">
+            <h2 ref={addToRefs} className="text-2xl font-bold text-white">
               Contact Us
             </h2>
             <div className="space-y-4">
-              <p ref={addToRefs} className="text-gray-300">
+              <p ref={addToRefs} className="text-white font-medium">
                 Bennett University
                 <br />
                 Greater Noida, India
@@ -217,7 +225,7 @@ const Footer = () => {
                     href={href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center space-x-2 text-gray-400 hover:text-white transition-all group relative"
+                    className="flex items-center space-x-2 text-white font-medium hover:text-white transition-all group relative"
                   >
                     <div className="relative">
                       <Icon className="w-5 h-5 transition-transform duration-300" />
@@ -228,11 +236,11 @@ const Footer = () => {
               </div>
 
               {/* Contact Email */}
-              <p ref={addToRefs} className="text-gray-300">
+              <p ref={addToRefs} className="text-white font-medium">
                 General enquiries:{' '}
                 <a
                   href="mailto:ais@bennett.edu.in"
-                  className="text-gray-400 hover:text-white transition-all hover:underline relative group"
+                  className="text-white font-medium hover:text-white transition-all hover:underline relative group"
                 >
                   <span className="relative z-10">ais@bennett.edu.in</span>
                   <span className="absolute inset-x-0 bottom-0 h-0.5 bg-white transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-300" />
@@ -243,54 +251,72 @@ const Footer = () => {
         </div>
 
         <div className="mt-12 text-center space-y-2 relative">
-          <p ref={addToRefs} className="text-gray-400">
+          <p ref={addToRefs} className="text-white font-medium">
             © 2025 AI Society, Specialization Club of Bennett University Under SCSET BU
           </p>
 
-          {/* Team Cards */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 mt-6">
-            {teamMembers.map((member, index) => (
+          {/* Leadership Team Cards */}
+          <h3 ref={addToRefs} className="text-xl font-bold mt-8 mb-4 text-white">
+            Our Leadership
+          </h3>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mt-6">
+            {leadershipTeam.map((leader, index) => (
               <div
                 key={index}
                 ref={addToRefs}
-                className="flex flex-col items-center p-4 bg-gray-800 rounded-lg shadow-lg transform hover:-translate-y-1 transition-transform duration-300"
+                className="flex flex-col items-center p-4 bg-white/5 backdrop-blur-xl rounded-lg shadow-lg transform hover:-translate-y-1 transition-all duration-300 relative overflow-hidden group border border-white/10"
               >
-                <div className="relative w-24 h-24 mb-4">
+                <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-white/10 backdrop-blur-sm"></div>
+                <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-white/5"></div>
+
+                <div className="relative w-24 h-24 mb-4 z-10">
                   <Image
-                    src={member.image}
-                    alt={member.name}
+                    src={leader.image}
+                    alt={leader.name}
                     layout="fill"
                     objectFit="cover"
-                    className="rounded-full"
+                    className="rounded-full border-2 border-white/20"
                   />
                 </div>
-                <h3 className="text-lg font-bold text-white">{member.name}</h3>
-                <a
-                  href={member.github}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center space-x-1 mt-2"
-                >
-                  <Github className="w-4 h-4 text-gray-400" />
-                  <span className="text-gray-400 text-sm">Github</span>
-                </a>
+                <h3 className="text-lg font-bold text-white z-10">{leader.name}</h3>
+                <p className="text-white font-medium mt-1 z-10">{leader.role}</p>
               </div>
             ))}
           </div>
+          
+          {/* Developers Credits */}
+          <div className="mt-12 pt-6 border-t border-gray-800">
+            <div className="flex flex-row justify-end items-center gap-4 mt-4">
+              <p ref={addToRefs} className="text-sm text-white font-bold mr-2">
+                Developed by:
+              </p>
+              {teamMembers.map((member, index) => (
+                <a
+                  key={index}
+                  href={member.github}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  ref={addToRefs}
+                  className="relative group"
+                >
+                  <div className="w-16 h-16 rounded-full overflow-hidden border-2 border-white/30 hover:border-white transition-colors bg-white/10 backdrop-blur-sm">
+                    <Image
+                      src={member.image}
+                      alt={member.name}
+                      width={64}
+                      height={64}
+                      className="object-cover w-full h-full transition-transform group-hover:scale-110 brightness-100 contrast-125"
+                    />
+                  </div>
+                  <span className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-3 py-1 text-sm bg-gray-800/90 text-white font-bold rounded-md opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
+                    {member.name}
+                  </span>
+                </a>
+              ))}
+            </div>
+          </div>
         </div>
       </div>
-
-      {/* Scroll to Top Button */}
-      <button
-        onClick={scrollToTop}
-        className={`fixed z-50 bottom-4 right-4 md:bottom-8 md:right-8 p-3 bg-gray-800 rounded-full shadow-lg hover:bg-gray-700 transition-all transform group ${
-          showScrollTop ? 'translate-y-0 opacity-100' : 'translate-y-16 opacity-0'
-        }`}
-        aria-label="Scroll to top"
-      >
-        <ArrowUp className="w-5 h-5 group-hover:-translate-y-1 transition-transform duration-300" />
-        <span className="absolute inset-0 rounded-full bg-white/10 scale-0 group-hover:scale-150 transition-transform duration-500" />
-      </button>
     </footer>
   );
 };

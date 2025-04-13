@@ -8,11 +8,10 @@ import { useRef, useEffect } from "react";
 import { Renderer, Program, Mesh, Triangle } from "ogl";
 
 export const LiquidChrome = ({
-  baseColor = [0.1, 0.1, 0.1],
-  speed = 0.3,
-  amplitude = 0.35,
-  frequencyX = 3,
-  frequencyY = 2,
+  speed = 0.2,
+  amplitude = 0.15,
+  frequencyX = 2.5,
+  frequencyY = 1.5,
   interactive = true,
   ...props
 }) => {
@@ -22,12 +21,11 @@ export const LiquidChrome = ({
     if (!containerRef.current) return;
 
     const container = containerRef.current;
-    // Enable built-in antialiasing.
     const renderer = new Renderer({ antialias: true });
     const gl = renderer.gl;
     gl.clearColor(1, 1, 1, 1);
 
-    // Vertex shader: passes along position and uv.
+    // Vertex shader remains the same
     const vertexShader = `
       attribute vec2 position;
       attribute vec2 uv;
@@ -38,68 +36,58 @@ export const LiquidChrome = ({
       }
     `;
 
-    // Fragment shader with slightly reduced glow and a subtler chrome-like Fresnel highlight.
+    // Updated fragment shader for professional black/white theme
     const fragmentShader = `
       precision highp float;
       uniform float uTime;
       uniform vec3 uResolution;
-      uniform vec3 uBaseColor;
       uniform float uAmplitude;
       uniform float uFrequencyX;
       uniform float uFrequencyY;
       uniform vec2 uMouse;
       varying vec2 vUv;
-    
-      // Render function for a given uv coordinate.
-      vec4 renderImage(vec2 uvCoord) {
-          // Convert uvCoord (in [0,1]) to a fragment coordinate.
-          vec2 fragCoord = uvCoord * uResolution.xy;
-          // Map fragCoord to a normalized space.
-          vec2 uv = (2.0 * fragCoord - uResolution.xy) / min(uResolution.x, uResolution.y);
-    
-          // Iterative cosine-based distortions.
-          for (float i = 1.0; i < 10.0; i++){
-              uv.x += uAmplitude / i * cos(i * uFrequencyX * uv.y + uTime + uMouse.x * 3.14159);
-              uv.y += uAmplitude / i * cos(i * uFrequencyY * uv.x + uTime + uMouse.y * 3.14159);
-          }
-    
-          // Add a liquid ripple effect based on the mouse position.
-          vec2 diff = (uvCoord - uMouse);
-          float dist = length(diff);
-          float falloff = exp(-dist * 20.0);
-          float ripple = sin(10.0 * dist - uTime * 2.0) * 0.03;
-          uv += (diff / (dist + 0.0001)) * ripple * falloff;
-    
-          // Compute glow intensity with slightly reduced intensity.
-          float intensity = abs(sin(uTime - uv.y - uv.x));
-          float glow = 1.0 / (intensity + 0.3); // increased denominator for less intensity
-          glow = pow(glow, 1.5); // lowered exponent for a subtler glow
-          vec3 baseGlow = uBaseColor * glow;
-    
-          // Fresnel effect for a reflective, chrome-like rim (subtler version).
-          vec2 fromCenter = uvCoord - vec2(0.5);
-          float fresnel = pow(1.0 - clamp(length(fromCenter) * 2.0, 0.0, 1.0), 2.0);
-          vec3 color = mix(baseGlow, vec3(1.0), fresnel * 0.3); // lower mixing factor
-    
-          return vec4(color, 1.0);
+  
+      float noise(vec2 p) {
+        return fract(sin(dot(p, vec2(12.9898, 78.233))) * 43758.5453);
       }
-    
+  
       void main() {
-          // 3x3 supersampling for anti-aliasing.
-          vec4 col = vec4(0.0);
-          int samples = 0;
-          for (int i = -1; i <= 1; i++){
-              for (int j = -1; j <= 1; j++){
-                  vec2 offset = vec2(float(i), float(j)) * (1.0 / min(uResolution.x, uResolution.y));
-                  col += renderImage(vUv + offset);
-                  samples++;
-              }
-          }
-          gl_FragColor = col / float(samples);
+        // Create base coordinates
+        vec2 uv = (vUv - 0.5) * 2.0;
+        uv.x *= uResolution.x / uResolution.y;
+  
+        // Create subtle wave pattern
+        float wave = 0.0;
+        for (float i = 1.0; i < 4.0; i++) {
+          wave += uAmplitude * 0.5 / i * 
+                 sin(i * uFrequencyX * uv.y + uTime * 0.5 + noise(uv * i) * 2.0) * 
+                 sin(i * uFrequencyY * uv.x + uTime * 0.3);
+        }
+  
+        // Add mouse interaction
+        vec2 mouseDist = (vUv - uMouse);
+        float dist = length(mouseDist);
+        float ripple = sin(10.0 * dist - uTime * 2.0) * 0.03 * exp(-dist * 20.0);
+        wave += ripple;
+  
+        // Create gradient from dark gray to light gray
+        float gradient = smoothstep(0.3, 0.7, vUv.y) * 0.7; // Reduced max brightness
+        
+        // Add subtle noise texture
+        float noiseTex = noise(vUv * 10.0 + uTime * 0.1) * 0.05;
+        
+        // Combine effects with reduced brightness range
+        float value = clamp(gradient + wave * 0.15 + noiseTex, 0.1, 0.7); // Lowered max value
+        
+        // Add subtle vignette effect
+        float vignette = 1.0 - smoothstep(0.7, 1.4, length(uv));
+        value *= vignette;
+  
+        gl_FragColor = vec4(vec3(value), 1.0);
       }
     `;
 
-    // Create geometry and program with uniforms.
+    // Create program without uBaseColor uniform
     const geometry = new Triangle(gl);
     const program = new Program(gl, {
       vertex: vertexShader,
@@ -113,7 +101,6 @@ export const LiquidChrome = ({
             gl.canvas.width / gl.canvas.height,
           ]),
         },
-        uBaseColor: { value: new Float32Array(baseColor) },
         uAmplitude: { value: amplitude },
         uFrequencyX: { value: frequencyX },
         uFrequencyY: { value: frequencyY },
@@ -188,7 +175,7 @@ export const LiquidChrome = ({
       }
       gl.getExtension("WEBGL_lose_context")?.loseContext();
     };
-  }, [baseColor, speed, amplitude, frequencyX, frequencyY, interactive]);
+  }, [speed, amplitude, frequencyX, frequencyY, interactive]); // Removed baseColor from dependencies
 
   return <div ref={containerRef} className="w-full h-full" {...props} />;
 };

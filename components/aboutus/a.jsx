@@ -11,11 +11,21 @@ import Footer from "@/components/Footer";
 import TeamCards from "@/components/TeamCards";
 import LiquidChrome from "@/components/LiquidChrome";
 
+// Add font import
+import localFont from 'next/font/local';
+
+// Load Aileron font
+const aileronFont = localFont({
+  src: '../../public/fonts/Aileron-Regular.otf',
+  variable: '--font-aileron'
+});
+
 gsap.registerPlugin(ScrollTrigger);
 
 // -------------------------
 // Scroll Progress Component
 // -------------------------
+// Update the ScrollProgress component for a more minimal look
 const ScrollProgress = () => {
   const [progress, setProgress] = useState(0);
   const [visible, setVisible] = useState(false);
@@ -23,19 +33,12 @@ const ScrollProgress = () => {
 
   useEffect(() => {
     const handleScroll = () => {
-      // Calculate scroll progress as a percentage of the document
-      const scrollTop =
-        window.pageYOffset || document.documentElement.scrollTop;
-      const docHeight =
-        document.documentElement.scrollHeight -
-        document.documentElement.clientHeight;
+      const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+      const docHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
       const scrolled = (scrollTop / docHeight) * 100;
       setProgress(scrolled);
-
-      // Show the progress bar when scrolling
       setVisible(true);
 
-      // Clear previous timeout and hide the bar after 500ms of inactivity
       if (timeoutRef.current) clearTimeout(timeoutRef.current);
       timeoutRef.current = setTimeout(() => {
         setVisible(false);
@@ -53,23 +56,23 @@ const ScrollProgress = () => {
     <div
       style={{
         position: "fixed",
-        right: "10px",
+        right: "8px",
         top: "50%",
         transform: "translateY(-50%)",
-        width: "2.5px", // Fixed narrow width
-        height: "100px", // Fixed small height
-        backgroundColor: "rgba(255, 255, 255, 0.2)",
+        width: "2px", // Thinner for minimalism
+        height: "80px", // Slightly shorter
+        backgroundColor: "rgba(255, 255, 255, 0.1)", // More subtle background
         borderRadius: "1px",
         zIndex: 9999,
-        opacity: visible ? 1 : 0,
+        opacity: visible ? 0.8 : 0, // More subtle opacity
         transition: "opacity 0.3s ease-in-out",
       }}
     >
       <div
         style={{
           width: "100%",
-          height: `${progress}%`, // Fills the container based on scroll progress
-          backgroundColor: "white",
+          height: `${progress}%`,
+          backgroundColor: "rgba(255, 255, 255, 0.7)", // More subtle indicator
           borderRadius: "1px",
         }}
       />
@@ -818,6 +821,13 @@ const About = () => {
 
   return (
     <ReactLenis root options={{ lerp: 0.1, smoothWheel: true }}>
+      {/* Add font style to the entire page */}
+      <style jsx global>{`
+        body {
+          font-family: ${aileronFont.style.fontFamily}, sans-serif;
+        }
+      `}</style>
+      
       {/* LiquidChrome Background with Fixed Position and a Low z-index */}
       <LiquidChrome
         className="liquid-chrome-bg"
@@ -982,15 +992,15 @@ const About = () => {
                   "/MULTIMEDIA.png",
                 ][index]
               }
-              className="card"
+              className="card1"
               memberNames={communityTeamMembers[index]} // Pass array of 4 member names
             />
           ))}
         </section>
 
-        <section className="footer min-h-screen flex items-center justify-center bg-black">
-          <Footer />
-        </section>
+        <section className="footer min-h-screen flex items-center justify-center bg-inherit">
+        <Footer />
+      </section>
       </div>
     </ReactLenis>
   );

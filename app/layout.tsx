@@ -4,8 +4,15 @@ import "./globals.css";
 import CustomCursor from "@/components/global/CustomCursor";
 import GlassNavbar from "@/components/global/GlassNavbar";
 
-// import ParticleBackground from "@/components/home/ParticleBackground"
 
+// import ParticleBackground from "@/components/home/ParticleBackground"
+import localFont from 'next/font/local'
+
+// Load Aileron font
+const aileronFont = localFont({
+  src: '../public/fonts/Aileron-Regular.otf',
+  variable: '--font-aileron'
+})
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -27,9 +34,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" className={`${aileronFont.variable}`}>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={aileronFont.className}
       >
         {" "}
         <GlassNavbar />
