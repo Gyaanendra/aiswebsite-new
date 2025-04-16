@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { ThemeProvider } from "next-themes";
 import { twMerge } from "tailwind-merge";
 import "./globals.css";
+import CustomCursor from "@/components/global/CustomCursor";
+import GlassNavbar from "@/components/global/GlassNavbar";
 
 export const metadata: Metadata = {
   title: "AIS",
@@ -22,6 +24,8 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
+          <GlassNavbar />
+          <CustomCursor />
           {children}
         </ThemeProvider>
       </body>
