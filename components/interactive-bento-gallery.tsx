@@ -2,6 +2,7 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { X } from 'lucide-react';
+import Image from 'next/image';
 
 
 // MediaItemType defines the structure of a media item
@@ -27,43 +28,44 @@ const MediaItem = ({ item, className, onClick }: { item: MediaItemType, classNam
             threshold: 0.1
         };
 
+        const video = videoRef.current; // Capture current value in closure
         const observer = new IntersectionObserver((entries) => {
             entries.forEach((entry) => {
                 setIsInView(entry.isIntersecting); // Set isInView to true if the video is in view
             });
         }, options);
 
-        if (videoRef.current) {
-            observer.observe(videoRef.current); // Start observing the video element
+        if (video) {
+            observer.observe(video);
         }
 
         return () => {
-            if (videoRef.current) {
-                observer.unobserve(videoRef.current); // Clean up observer when component unmounts
+            if (video) { // Use captured value in cleanup
+                observer.unobserve(video);
             }
         };
     }, []);
     // Handle video play/pause based on whether the video is in view or not
     useEffect(() => {
         let mounted = true;
+        const video = videoRef.current; // Capture current value
 
         const handleVideoPlay = async () => {
-            if (!videoRef.current || !isInView || !mounted) return; // Don't play if video is not in view or component is unmounted
+            if (!video || !isInView || !mounted) return;
 
             try {
-                if (videoRef.current.readyState >= 3) {
+                // Add optional chaining and use captured video reference
+                if (video?.readyState >= 3) {
                     setIsBuffering(false);
-                    await videoRef.current.play(); // Play the video if it's ready
+                    await video.play();
                 } else {
                     setIsBuffering(true);
                     await new Promise((resolve) => {
-                        if (videoRef.current) {
-                            videoRef.current.oncanplay = resolve; // Wait until the video can start playing
-                        }
+                        video.oncanplay = resolve; // Use captured video reference
                     });
                     if (mounted) {
                         setIsBuffering(false);
-                        await videoRef.current.play();
+                        await video.play();
                     }
                 }
             } catch (error) {
@@ -79,10 +81,10 @@ const MediaItem = ({ item, className, onClick }: { item: MediaItemType, classNam
 
         return () => {
             mounted = false;
-            if (videoRef.current) {
-                videoRef.current.pause();
-                videoRef.current.removeAttribute('src');
-                videoRef.current.load();
+            if (video) { // Use captured value
+                video.pause();
+                video.removeAttribute('src');
+                video.load();
             }
         };
     }, [isInView]);
@@ -119,14 +121,17 @@ const MediaItem = ({ item, className, onClick }: { item: MediaItemType, classNam
     }
 
     return (
-        <img
-            src={item.url} // Image source URL
-            alt={item.title} // Alt text for the image
-            className={`${className} object-cover cursor-pointer`} // Style the image
-            onClick={onClick} // Trigger onClick when the image is clicked
-            loading="lazy" // Lazy load the image for performance
-            decoding="async" // Decode the image asynchronously
-        />
+        <div className={`${className} relative overflow-hidden`}>
+            <Image
+                src={item.url}
+                alt={item.title}
+                width={400} // Add appropriate dimensions
+                height={300}
+                className="object-cover cursor-pointer w-full h-full"
+                onClick={onClick}
+                unoptimized // Add if using external images not configured in next.config.js
+            />
+        </div>
     );
 };
 
